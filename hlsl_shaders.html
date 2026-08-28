@@ -331,7 +331,7 @@ float4 RefractivePixelShaderFunction(VertexShaderOutput input) : SV_Target
 								</div>
 
 								N, V, L, and R are built exactly the same way as a Phong shader, R = reflect(-L, N) is the mirror-reflection of the 
-								light off the surface. This shader takes that same dot(V, R) as the Phong specular value and runs it through a four-way ladder 
+								light off the surface. This shader takes that same dot(V, R) as the Phong specular value and runs it through a four-way "ramp" 
 								that snaps it to one of four fixed grayscale outputs (black, 0.25, 0.5, or 1.0) with no interpolation between them.
 
 								<pre><code>// Input for vertices
