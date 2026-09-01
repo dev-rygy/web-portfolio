@@ -178,6 +178,10 @@
 					$img = $image.find('img'),
 					x;
 
+				// Skip video-based thumbnails (rendered natively, not as a CSS background).
+					if ($img.length === 0)
+						return;
+
 				// Assign image.
 					$image.css('background-image', 'url(' + $img.attr('src') + ')');
 

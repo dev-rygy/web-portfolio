@@ -3259,6 +3259,17 @@ padding: 10px;
 				display: block;
 			}
 
+			.spotlights > section > .image video {
+				border-radius: 0;
+				display: block;
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+
 			.spotlights > section > .image:before {
 				-moz-transition: opacity 1s ease;
 				-webkit-transition: opacity 1s ease;
@@ -3273,6 +3284,7 @@ padding: 10px;
 				position: absolute;
 				top: 0;
 				width: 100%;
+				z-index: 1;
 			}
 
 		.spotlights > section > .content {
