@@ -163,7 +163,7 @@
 								<li><a href="#backtracking">Backtracking</a></li>
 							</ul>
 						</li>
-						<li><a href="#room-parsing">Room Parsing</a>
+						<li><a href="#room-parsing">Blueprint Parsing</a>
 							<ul>
 								<li><a href="#room-entry-points">Room Entry Points</a></li>
 								<li><a href="#room-rotation">Room Rotation</a></li>
@@ -302,7 +302,7 @@
 											<td><img alt="Static Badge" src="https://img.shields.io/badge/Status-Active-green"></td>
 										</tr>
 										<tr>
-											<td>Room Parsing</td>
+											<td>Blueprint Parser</td>
 											<td> 
 												Blueprints are parsed and rooms are chosen to spawn based on their patterns.
 											</td>
@@ -767,7 +767,7 @@ public sealed class MapGenerationContext
 								Drunkard's Walk is still used today for branches that can lead to rewards, trials, and secrets.
 							</p>
 
-							<h2 id="room-parsing">Room Parsing</h2>
+							<h2 id="room-parsing">Blueprint Parsing</h2>
 							<p>
 								The final pass of the algorithm parses all available blueprints and determines what prefab rooms can be generated from them. 
 								The parsing rules are simple for now, and only five room shapes can currently be generated: "Small" rooms take up a (1, 1, 1) space, 
