@@ -676,6 +676,71 @@
   color: var(--color-text-muted);
 }
 
+/* ---- Email menu ("EMAIL ME") --------------------------------------------- */
+.email-menu {
+  position: relative;
+  display: inline-flex;
+}
+
+.email-menu__panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  min-width: 240px;
+  padding: 8px;
+  background: var(--color-card);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  transform: translateX(-50%);
+  text-align: left;
+}
+
+.email-menu__panel[hidden] {
+  display: none;
+}
+
+.email-menu__label {
+  padding: 6px 12px 8px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: var(--fs-tiny);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.email-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  background: none;
+  border: 0;
+  border-radius: var(--radius-button);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: var(--fs-meta);
+  color: var(--color-text);
+  text-align: left;
+  text-decoration: none;
+}
+
+.email-menu__item i {
+  width: 18px;
+  text-align: center;
+  color: var(--color-accent);
+}
+
+.email-menu__item:hover,
+.email-menu__item:focus-visible {
+  background: var(--color-surface);
+  outline: none;
+}
+
 /* ---- Social links -------------------------------------------------------- */
 .social-icons {
   display: flex;
