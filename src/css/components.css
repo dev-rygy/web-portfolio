@@ -280,12 +280,15 @@
   z-index: 1;
 }
 
+/* Centered with inset + auto margins (not transform), so the shared
+   .button:active press effect can't knock it off-center. */
 .card__learn-more {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  inset: 0;
   z-index: 3;
-  transform: translate(-50%, -50%);
+  width: fit-content;
+  height: fit-content;
+  margin: auto;
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--duration-base) var(--ease-out);
