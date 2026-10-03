@@ -1,0 +1,58 @@
+{
+  "name": "Ryan Carpenter",
+  "role": "Gameplay Programmer & Technical Artist",
+  "url": "https://ryancarpenterpf.dev",
+  "description": "Ryan Carpenter — Gameplay Programmer and Technical Artist specializing in procedural programming, multiplayer, combat systems, shaders and technical design.",
+  "email": "ryan.carpenter1184@gmail.com",
+  "location": "San Diego, CA",
+  "resume": "/assets/resume/ryan-carpenter-resume.pdf",
+  "ogImage": "",
+  "goatcounter": "",
+
+  "footer": {
+    "blurb": "Specializing in gameplay programming, custom engine tools, and high-fidelity physics interactions. Currently seeking contract or full-time opportunities.",
+    "availability": "AVAILABLE FOR Q3 2026",
+    "availabilityNote": "Open to remote work worldwide or on-site relocation."
+  },
+
+  "socials": [
+    { "label": "GitHub", "url": "https://github.com/dev-rygy", "icon": "github" },
+    { "label": "LinkedIn", "url": "https://www.linkedin.com/in/ryancarpenter1184/", "icon": "linkedin" },
+    { "label": "X", "url": "https://x.com/dev_rygy", "icon": "x-twitter" },
+    { "label": "Facebook", "url": "https://www.facebook.com/ryan.carpenter.756412/", "icon": "facebook" },
+    { "label": "Itch.io", "url": "https://dev-rygy.itch.io/", "icon": "itch-io" }
+  ],
+
+  "nav": [
+    { "key": "home", "label": "Home", "href": "/" },
+    { "key": "projects", "label": "Projects", "href": "/projects/" },
+    { "key": "shaders", "label": "Shaders", "href": "/shaders/" },
+    { "key": "blog", "label": "Blog", "href": "/blog/" },
+    { "key": "contact", "label": "Contact", "href": "/contact/" }
+  ],
+
+  "pages": {
+    "projects": {
+      "title": "Projects",
+      "intro": "Games and prototypes I've built — from shipped releases to experiments still in progress. Each one breaks down the systems behind it, the role I played, and what I learned along the way."
+    },
+    "shaders": {
+      "title": "Shaders",
+      "intro": "Shaders, VFX and post-process effects. Each entry covers the technique, the language or stack it was built with, and links to the source."
+    },
+    "blog": {
+      "title": "Blog",
+      "intro": "Write-ups on gameplay systems, technical art and engine tooling — devlogs, deep dives and lessons learned while building games."
+    },
+    "contact": {
+      "title": "Contact",
+      "intro": "Have a project, contract or role in mind, or just want to talk code and systems? Send a message and it will land straight in my inbox."
+    }
+  },
+
+  "emailjs": {
+    "publicKey": "YvZjzYc8N4wpiVIC5",
+    "serviceId": "service_x4ukigb",
+    "templateId": "template_sdx3uy4"
+  }
+}

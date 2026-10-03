@@ -1,0 +1,20 @@
+{
+  "name": "ryancarpenterpf-dev",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ryan Carpenter's portfolio — static site generated from content/ into dist/.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/dev.mjs",
+    "media": "node scripts/media.mjs"
+  },
+  "devDependencies": {
+    "gray-matter": "^4.0.3",
+    "highlight.js": "^11.10.0",
+    "marked": "^14.1.4"
+  }
+}

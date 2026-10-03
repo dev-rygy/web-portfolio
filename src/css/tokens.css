@@ -1,0 +1,80 @@
+/* ==========================================================================
+   Design tokens — the ONE place to change colors, fonts and sizes.
+   Values come from the Figma file's variables (names in comments).
+   ========================================================================== */
+
+:root {
+  /* ---- Colors -------------------------------------------------------- */
+  --color-bg: #313131;               /* Background */
+  --color-surface: #4d4d4d;          /* Foreground — header, footer, page intro, CTA */
+  --color-card: #565555;             /* Card Color — cards, code block, metric pane */
+  --color-chip: #696969;             /* Chip Color — role chips, progress track */
+  --color-line: #7b7d79;             /* Line Color — borders, separators, dashed dividers */
+
+  --color-accent: #7bd565;           /* Header Text Color — headings, links, primary button */
+  --color-text: #ffffff;             /* Normal Text Color */
+  --color-text-secondary: #9f9c9c;   /* Secondary Text Color — labels */
+  --color-text-muted: #94a3b8;       /* shader meta line, next/prev labels */
+  --color-text-inverse: #000000;     /* Third Text Color — text on light buttons/chips */
+
+  --color-button-light: #ffffff;     /* Button Color 2 */
+  --color-button-light-hover: #ececec;
+  --color-field: #ffffff;            /* input background */
+  --color-logo-bg: #ffffff;          /* Photo circle behind experience/education logos */
+  --color-media-bg: #1f1f1f;         /* behind media while it loads */
+  --color-checker-light: #f9f9f9;    /* Media Placeholder checkerboard */
+  --color-checker-dark: #ebebeb;
+  --color-highlight: #d5d5d5;        /* progress bar hover */
+  --color-error: #ff4e4e;
+  --color-available: #22c55e;        /* footer availability dot */
+
+  --status-shipped: #9dfba3;         /* Shipped Status Color */
+  --status-prototype: #82e8ff;       /* Prototype Status Color */
+  --status-awaiting: #ffec7e;        /* Awaiting Publication Color */
+
+  /* Code block syntax colors */
+  --code-text: #ffffff;              /* General Code Color */
+  --code-keyword: #569cd6;           /* Include & Attribute Color */
+  --code-object: #4ec9b0;            /* Object Color */
+  --code-string: #d69d85;            /* String Color */
+  --code-number: #b5cea8;            /* Number Color */
+  --code-struct: #c0d088;            /* Struct Color */
+  --code-function: #dcdcaa;          /* Code Function Color */
+  --code-comment: #57a64a;           /* Code Comment Color */
+
+  /* ---- Fonts --------------------------------------------------------- */
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
+
+  /* Type scale — fluid between ~1280px and the 1920px design width */
+  --fs-title: clamp(2rem, 1.2rem + 1.67vw, 3rem);          /* 48 — Title Text */
+  --fs-cta: clamp(1.75rem, 1.1rem + 1.35vw, 2.5rem);       /* 40 — homepage CTA */
+  --fs-heading: clamp(1.5rem, 1.07rem + 0.9vw, 2rem);      /* 32 — Heading Text */
+  --fs-card-title: 1.25rem;                                /* 20 — Card Title / Nav Bar Text */
+  --fs-body-lg: clamp(1rem, 0.9rem + 0.21vw, 1.125rem);    /* 18 — Normal Text Format */
+  --fs-body: 0.9375rem;                                    /* 15 */
+  --fs-small: 0.875rem;                                    /* 14 */
+  --fs-meta: 0.8125rem;                                    /* 13 */
+  --fs-label: 0.75rem;                                     /* 12 */
+  --fs-tiny: 0.6875rem;                                    /* 11 */
+
+  /* ---- Layout -------------------------------------------------------- */
+  --content-max: 1760px;                        /* 1920 frame minus 80px gutters */
+  --gutter: clamp(1.25rem, 4.17vw, 5rem);       /* 80px at 1920 */
+  --header-height: 90px;
+  --section-gap: 20px;
+
+  /* ---- Shape & effects ---------------------------------------------- */
+  --radius-button: 4px;
+  --radius-card: 5px;
+  --radius-media: 15px;
+  --radius-pill: 15px;
+  --shadow-card: 0 9px 4px rgba(0, 0, 0, 0.25);        /* Card Shadow */
+  --shadow-header: 0 40px 30px rgba(0, 0, 0, 0.25);
+  --shadow-footer: 0 -30px 15px rgba(0, 0, 0, 0.25);
+  --media-blur: 2px;                                    /* Media Blur (Figma radius 4) */
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+}
