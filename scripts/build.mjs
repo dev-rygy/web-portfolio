@@ -24,7 +24,7 @@ const DIST = path.join(ROOT, 'dist');
 
 // Order matters: later files can override earlier ones.
 const CSS_FILES = ['tokens.css', 'base.css', 'layout.css', 'components.css', 'pages.css'];
-const JS_FILES = ['header.js', 'nav.js', 'media.js', 'carousel.js', 'contact.js', 'email.js'];
+const JS_FILES = ['header.js', 'nav.js', 'media.js', 'carousel.js', 'contact.js'];
 
 function write(relativePath, contents) {
   const target = path.join(DIST, relativePath);

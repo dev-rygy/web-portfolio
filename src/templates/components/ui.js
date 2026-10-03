@@ -163,30 +163,6 @@ export function nextPrev({ prev, next, noun = 'TOPIC' }) {
 </nav>`;
 }
 
-/**
- * "Email me" button that opens a small menu of ways to write to `email`:
- * Gmail / Outlook in the browser (address pre-filled), the default mail app, or copy the address.
- * Without JavaScript it is a plain mailto: link.
- */
-export function emailButton({ email, label = 'EMAIL ME', variant = 'light', id = 'email-menu' }) {
-  const to = encodeURIComponent(email);
-  const options = [
-    { label: 'Gmail', icon: 'google', brand: true, href: `https://mail.google.com/mail/?view=cm&fs=1&to=${to}` },
-    { label: 'Outlook', icon: 'microsoft', brand: true, href: `https://outlook.office.com/mail/deeplink/compose?to=${to}` },
-    { label: 'Default email app', icon: 'envelope', href: `mailto:${email}` },
-  ];
-  return html`<div class="email-menu" data-email-menu>
-  ${button({ label, href: `mailto:${email}`, variant, className: 'email-menu__trigger', attrs: `aria-haspopup="true" aria-expanded="false" aria-controls="${id}"` })}
-  <div class="email-menu__panel" id="${id}" hidden>
-    <p class="email-menu__label">// Write to ${email}</p>
-    ${options.map(
-      (o) => html`<a class="email-menu__item" href="${o.href}"${o.href.startsWith('http') ? raw(' target="_blank" rel="noopener"') : ''}>${icon(o.icon, { brand: o.brand })}<span>${o.label}</span></a>`,
-    )}
-    <button class="email-menu__item" type="button" data-copy="${email}">${icon('copy')}<span>Copy address</span></button>
-  </div>
-</div>`;
-}
-
 /** Social links as icons (hero) or underlined text (footer). */
 export function socialLinks(socials = [], variant = 'icons') {
   if (variant === 'text') {

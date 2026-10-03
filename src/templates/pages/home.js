@@ -3,7 +3,7 @@
 import { html, raw } from '../../lib/html.js';
 import { renderInline } from '../../lib/markdown.js';
 import { blogCard, projectCard } from '../components/cards.js';
-import { button, chip, emailButton, sectionHeading, socialLinks } from '../components/ui.js';
+import { button, chip, sectionHeading, socialLinks } from '../components/ui.js';
 
 const LATEST_BLOG_COUNT = 8;
 
@@ -111,13 +111,12 @@ function toolsetSection(toolset) {
 </section>`;
 }
 
-function cta({ site, home }) {
+function cta({ home }) {
   return html`<section class="cta">
   <div class="container cta__inner">
     <h2 class="cta__title">${home.cta.title}</h2>
     <div class="button-row">
       ${button({ label: 'CONTACT ME', href: '/contact/', variant: 'primary' })}
-      ${emailButton({ email: site.email, label: 'EMAIL ME', variant: 'light' })}
     </div>
   </div>
 </section>`;
