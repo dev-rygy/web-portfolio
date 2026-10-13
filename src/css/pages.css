@@ -709,10 +709,50 @@
 }
 
 .feature__main {
+  --feature-gap: clamp(32px, 5.7vw, 109px);
   display: grid;
   grid-template-columns: minmax(0, 854fr) minmax(0, 747fr);
   align-items: start;
-  gap: clamp(32px, 5.7vw, 109px);
+  gap: var(--feature-gap);
+}
+
+/* The media is first in the markup (so it can float, below) but sits in the right column */
+.feature__main > .feature__text {
+  grid-area: 1 / 1;
+}
+
+.feature__main > .feature__media {
+  grid-area: 1 / 2;
+}
+
+/* Text far taller than its media (js/features.js decides): the media floats right at its column width and the
+   text wraps under it. A code block never wraps: one that starts beside the media stays docked in the left
+   column for its whole length; one that starts below the media spans the full width. */
+.feature__main--wrap {
+  display: flow-root;
+}
+
+.feature__main--wrap > .feature__media {
+  float: right;
+  width: calc((100% - var(--feature-gap)) * 747 / 1601);
+  margin: 0 0 24px var(--feature-gap);
+}
+
+.feature__main--wrap > .feature__text {
+  display: block;
+}
+
+.feature__main--wrap > .feature__text > * + * {
+  margin-top: 24px; /* the column's flex gap */
+}
+
+.feature--text .feature__main--wrap > .feature__text > * + * {
+  margin-top: 16px;
+}
+
+/* Auto width lets a code block narrow beside the floated media instead of being pushed below it */
+.feature__main--wrap .code-block {
+  width: auto;
 }
 
 .feature__main--full {
@@ -815,6 +855,11 @@
   .feature__main,
   .reflection {
     grid-template-columns: 1fr;
+  }
+
+  /* Stacked: text, then its media */
+  .feature__main > .feature__media {
+    grid-area: 2 / 1;
   }
 
   /* Stacked: media, metrics, then text */

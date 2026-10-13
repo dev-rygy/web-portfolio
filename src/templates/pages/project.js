@@ -79,21 +79,24 @@ function mediaStack(items) {
 </div>`;
 }
 
-/** Big feature: Figma "Name and Video" — green heading + text, its media stacked beside it (text fills the row without media). */
+/**
+ * Big feature: Figma "Name and Video" — green heading + text, its media stacked beside it (text fills the row without media).
+ * The media comes first in the markup so it can float when js/features.js lets long text wrap under it; CSS keeps it on the right.
+ */
 function bigFeature(feature) {
   const { body, items } = featureContent(feature);
   return html`<article class="feature">
   <div class="${cx('feature__main', !items.length && 'feature__main--full')}">
+    ${mediaStack(items)}
     <div class="feature__text">
       ${sectionHeading(feature.title, { tag: 'h3' })}
       <div class="prose">${body}</div>
     </div>
-    ${mediaStack(items)}
   </div>
 </article>`;
 }
 
-/** Sub feature: small heading. With media it gets its own row (media stacked beside the text); without, two per row. */
+/** Sub feature: small heading. With media it gets its own row (media stacked beside the text, as in bigFeature); without, two per row. */
 function subFeature(feature) {
   const { body, items } = featureContent(feature);
   const text = html`<h3 class="paragraph-heading feature__title">${feature.title}</h3>
@@ -101,8 +104,8 @@ function subFeature(feature) {
   if (!items.length) return html`<article class="feature feature--text">${text}</article>`;
   return html`<article class="feature feature--text">
   <div class="feature__main">
-    <div class="feature__text">${text}</div>
     ${mediaStack(items)}
+    <div class="feature__text">${text}</div>
   </div>
 </article>`;
 }
