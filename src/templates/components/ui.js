@@ -83,6 +83,11 @@ export function media({ src, alt = '', poster, autoplay = false, controls = fals
     }" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`;
   }
   if (kind === 'video') {
+    // "*.loop.mp4" files are converted GIFs: they always play silently on a loop, like a GIF.
+    if (/\.loop\.mp4$/i.test(src)) {
+      autoplay = true;
+      poster ||= src.replace(/\.mp4$/i, '.jpg');
+    }
     if (autoplay) {
       return html`<div class="${classes}"><video class="media__video" data-autoplay muted loop playsinline preload="none"${
         poster ? raw(` poster="${escapeHtml(poster)}"`) : ''
@@ -120,11 +125,17 @@ export function metricPane({ label = '// METRICS', groups = [] }) {
 </div>`;
 }
 
+/** Code blocks longer than this show this many lines and scroll vertically for the rest. */
+export const CODE_BLOCK_MAX_LINES = 40;
+
 /** Code Block — `code` must already be highlighted/escaped HTML. */
-export function codeBlock({ code, lang, label, caption }) {
-  return html`<figure class="code-block"${lang ? raw(` data-lang="${escapeHtml(lang)}"`) : ''}>
+export function codeBlock({ code, lang, label, caption, maxLines = CODE_BLOCK_MAX_LINES }) {
+  const scroll = code.replace(/\n+$/, '').split('\n').length > maxLines;
+  return html`<figure class="${cx('code-block', scroll && 'code-block--scroll')}"${lang ? raw(` data-lang="${escapeHtml(lang)}"`) : ''}${
+    scroll ? raw(` style="--code-max-lines: ${Number(maxLines)}"`) : ''
+  }>
   <figcaption class="code-block__label">// ${label || (lang ? `${lang.toUpperCase()}` : 'CODE BLOCK')}</figcaption>
-  <pre><code class="hljs">${raw(code)}</code></pre>
+  <pre${scroll ? raw(' tabindex="0"') : ''}><code class="hljs">${raw(code)}</code></pre>
   ${caption ? html`<p class="code-block__caption">${caption}</p>` : ''}
 </figure>`;
 }
@@ -181,6 +192,7 @@ const LINK_ICONS = {
   itch: { icon: 'itch-io', label: 'Itch.io' },
   youtube: { icon: 'youtube', label: 'YouTube' },
   website: { icon: 'globe', label: 'Website', solid: true },
+  tasks: { icon: 'list-check', label: 'Task Board', solid: true },
 };
 
 /** Ordered list of {key, url, icon, label} for a links object like {github, steam, itch}. */

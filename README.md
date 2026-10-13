@@ -34,7 +34,7 @@ Everything you write lives in `content/`. You never need to touch `src/` to add 
 
 The example files explain every field in comments. Blank fields are simply hidden, so a
 project without a "Thoughts & Reflection" or related blogs just won't show those sections.
-Lists are ordered newest-first by each file's `date`.
+Lists are ordered newest-first by **end date**: the end of a file's `dates` range (e.g. "May 2025 - Jul 2026" → Jul 2026; "Present" counts as today), or its `date` when there is no `dates`.
 
 **Drafts:** add `draft: true` to a file's frontmatter, or start its name with `_`, to keep it
 off the site.
@@ -89,6 +89,14 @@ A highlighted takeaway.
   `{ "src": "/assets/video/carousel/my-clip.mp4", "project": "my-game", "start": 5 }`.
   `project` makes the clip link to that project page; `start` and `maxSeconds` (default 15)
   choose which part plays.
+- **Card thumbnail videos** — put the full clip in `source-media/thumbnails/`, run
+  `npm run media`, and use `/assets/video/thumbs/<name>.mp4` (an 8-second, small loop) as the
+  project's `thumbnail`, with `/assets/video/thumbs/<name>.jpg` as its `poster`.
+- **GIFs** — don't publish GIFs directly (they're often 10–80 MB). Put them in
+  `source-media/images/<folder>/`, run `npm run media`, and reference
+  `/assets/images/<folder>/<name>.loop.mp4` instead. Files ending in `.loop.mp4` play silently
+  on a loop, just like a GIF, at a fraction of the size. You can also drop an `.mp4`/`.mov`
+  export there instead of a GIF (keep just one file per name).
 
 ## Changing colors and fonts
 

@@ -34,7 +34,7 @@ export function genericPage({ item, kind, prev, next }) {
   <div class="container">
     <div class="overview">
       <div class="overview__showcase">
-        ${media({ src: item.video || item.thumbnail, poster: item.poster, alt: item.title, controls: true })}
+        ${media({ src: item.video || item.thumbnail, poster: item.video ? item.videoPoster : item.poster, alt: item.title, controls: true })}
         ${metricPane({ label: '// METRICS', groups: metricsFor(item, kind) })}
       </div>
       ${intro ? html`<div class="prose"><p>${raw(renderInline(intro))}</p></div>` : html`<span></span>`}

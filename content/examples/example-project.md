@@ -7,7 +7,9 @@
 
 title: Example Project
 genre: Action Roguelike                 # shown on the card under the title
-date: 2026-06-01                        # YYYY-MM-DD — sets the order (newest first)
+date: 2026-06-01                        # YYYY-MM-DD — used for ordering when "dates" is blank
+dates: ""                               # optional, e.g. "May 2025 - Jul 2026" or "Nov 2024 - Present" — shown on the card;
+                                        # lists are ordered newest-first by its END date ("Present" = newest)
 status: prototype                       # shipped | prototype | awaiting
 roles:                                  # chips on the card + "My Roles" in the metrics
   - Gameplay Programmer
@@ -17,13 +19,19 @@ summary: >-
   One or two sentences for the small homepage card. Keep it short — it is cut off after three lines.
 description: >-
   A slightly longer summary used on the Projects page card (cut off after four lines) and as a
-  fallback for the page description if the body below is empty.
+  fallback for the Overview text if "overview" is empty.
+overview: |                             # keep every line indented two spaces, blank lines between paragraphs
+  This is the **Overview** text shown beside the project video. Write as much as you like in
+  normal Markdown — paragraphs, **bold**, [links](https://ryancarpenterpf.dev), lists and so on.
+
+  A second paragraph works the same way.
 
 thumbnail: ""        # card media: an image (.jpg/.png/.webp) or a short silent .mp4 loop — blank = placeholder
 poster: ""           # optional still frame shown before a video thumbnail starts
 video: ""            # Overview media on the project page: .mp4 path or a YouTube URL (blank = thumbnail)
+videoPoster: ""     # optional still frame for an .mp4 overview video
 
-links:               # any you leave out are hidden
+links:               # any you leave out are hidden; also available: website, youtube, tasks (task board)
   github: https://github.com/dev-rygy
   steam: ""
   itch: ""
@@ -32,22 +40,28 @@ engine: Unity 6
 platforms:
   - PC
   - Mobile
+relatedBlogs:        # blog file names (without .md), shown under the metrics in the Overview; leave empty to hide
+  - example-blog
 
-features:            # "Technical Features" — one block per feature, in this order
+features:            # "Technical Features" tab panel, in this order — leave empty to hide the section
   - title: Feature One
-    media: ""        # image, .mp4 or YouTube URL beside the text
+    size: big        # big = its own tab: green heading, text, media beside the text
+                     # sub = goes inside the tab of the big feature above it: small heading, media under the text,
+                     #       two per row (sub features before the first big one go in the first tab)
+                     # leave out to decide by content: big if it has media, otherwise sub
+    tabText: ""      # big features only: text on the tab (blank = same as the title)
+    media: ""        # image, .mp4 or YouTube URL (optional for either size)
     body: |
       Explain what the feature does and how you built it. **Markdown** works here,
       including `inline code` and lists:
 
       - Point one
       - Point two
-    relatedBlogs:    # blog file names (without .md); leave empty to hide "Related Blogs"
-      - example-blog
   - title: Feature Two
+    size: sub
     media: ""
     body: |
-      A second feature. Features without related blogs simply skip that row.
+      A sub feature. It shows inside the "Feature One" tab, below it.
 
 reflection:          # "Thoughts & Reflection" — remove the whole block to hide the section
   image: ""          # tall image on the left (roughly 1:2, portrait)
@@ -59,8 +73,3 @@ reflection:          # "Thoughts & Reflection" — remove the whole block to hid
     - question: Upcoming Features
       answer: Your answer.
 ---
-
-This is the **Overview** text shown beside the project video. Write as much as you like in
-normal Markdown — paragraphs, **bold**, [links](https://ryancarpenterpf.dev), lists and so on.
-
-A second paragraph works the same way.

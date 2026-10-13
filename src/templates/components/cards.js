@@ -21,13 +21,12 @@ function meta(parts, { muted = false } = {}) {
 
 /** Project card. size 'small' = homepage card, 'large' = Projects page card. */
 export function projectCard(project, { size = 'small' } = {}) {
-  const title = `PROJECT: ${project.title}`;
   const text = size === 'large' ? project.description || project.summary : project.summary;
   return html`<article class="card card--project card--${size}">
   ${showcase(project, { status: project.status, title: project.title })}
   <div class="card__header">
-    <h3 class="card__title"><a href="${project.url}">${title}</a></h3>
-    ${meta([project.genre, formatDate(project.date)])}
+    <h3 class="card__title"><a href="${project.url}">${project.title}</a></h3>
+    ${meta([project.genre, project.dates || formatDate(project.date)])}
     ${project.roles?.length ? html`<div class="card__chips">${project.roles.map((r) => chip(r, 'tag'))}</div>` : ''}
   </div>
   ${text ? html`<p class="card__text">${text}</p>` : ''}
@@ -41,7 +40,7 @@ export function blogCard(blog) {
   ${showcase(blog, { title: blog.title })}
   <div class="card__header">
     <h3 class="card__title"><a href="${blog.url}">Blog: ${blog.title}</a></h3>
-    ${meta([blog.genre, formatDate(blog.date)])}
+    ${meta([blog.genre, blog.dates || formatDate(blog.date)])}
   </div>
   ${blog.summary ? html`<p class="card__text">${blog.summary}</p>` : ''}
 </article>`;
@@ -52,7 +51,7 @@ export function shaderCard(shader) {
   ${showcase(shader, { title: shader.title })}
   <div class="card__header">
     <h3 class="card__title"><a href="${shader.url}">${shader.type || 'Shader'}: ${shader.title}</a></h3>
-    ${meta([shader.language, formatDate(shader.date)], { muted: true })}
+    ${meta([shader.language, shader.dates || formatDate(shader.date)], { muted: true })}
   </div>
   ${shader.description ? html`<p class="card__text">${shader.description}</p>` : ''}
   <hr class="card__separator">

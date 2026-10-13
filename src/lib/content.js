@@ -4,7 +4,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
-import { dateValue } from './format.js';
+import { dateValue, sortValue } from './format.js';
 
 const COLLECTIONS = {
   projects: { dir: 'projects', route: '/projects/', required: ['title', 'date'] },
@@ -13,6 +13,7 @@ const COLLECTIONS = {
 };
 
 const PROJECT_STATUSES = ['shipped', 'prototype', 'awaiting'];
+const FEATURE_SIZES = ['big', 'sub'];
 const MAX_FEATURED = 8;
 const MAX_CAROUSEL = 6;
 
@@ -40,12 +41,19 @@ function loadCollection(root, name) {
       return { ...data, slug, url: `${route}${slug}/`, body: content.trim(), file: `content/${dir}/${file}` };
     })
     .filter((item) => !item.draft)
-    .sort((a, b) => dateValue(b.date) - dateValue(a.date) || String(a.title).localeCompare(String(b.title)));
+    // Newest first by END date (end of `dates`, e.g. "May 2025 - Jul 2026"; "Present" = now),
+    // falling back to `date`. Ties are broken by `date`, then title.
+    .sort(
+      (a, b) =>
+        sortValue(b) - sortValue(a) ||
+        dateValue(b.date) - dateValue(a.date) ||
+        String(a.title).localeCompare(String(b.title)),
+    );
 }
 
 /** Every local media path referenced by an item (for existence checks). */
 function mediaRefs(item) {
-  const refs = [item.thumbnail, item.poster, item.video, item.reflection?.image];
+  const refs = [item.thumbnail, item.poster, item.video, item.videoPoster, item.reflection?.image];
   for (const feature of item.features ?? []) refs.push(feature.media);
   return refs.filter(Boolean);
 }
@@ -95,9 +103,16 @@ export function loadContent(root) {
       fail(project.file, `"status" must be one of ${PROJECT_STATUSES.join(', ')} (got "${project.status}")`);
     }
     if (project.roles && !Array.isArray(project.roles)) fail(project.file, '"roles" must be a list');
+    if (project.relatedBlogs && !Array.isArray(project.relatedBlogs)) fail(project.file, '"relatedBlogs" must be a list');
+    for (const slug of project.relatedBlogs ?? []) {
+      if (!blogSlugs.has(slug)) fail(project.file, `"relatedBlogs" links unknown blog "${slug}"`);
+    }
     for (const feature of project.features ?? []) {
-      for (const slug of feature.relatedBlogs ?? []) {
-        if (!blogSlugs.has(slug)) fail(project.file, `feature "${feature.title}" links unknown blog "${slug}"`);
+      if (feature.size && !FEATURE_SIZES.includes(feature.size)) {
+        fail(project.file, `feature "${feature.title}": "size" must be one of ${FEATURE_SIZES.join(', ')} (got "${feature.size}")`);
+      }
+      if (feature.relatedBlogs) {
+        fail(project.file, `feature "${feature.title}": "relatedBlogs" now goes at the project level (next to "links"), not on a feature`);
       }
     }
   }

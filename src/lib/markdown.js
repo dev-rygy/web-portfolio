@@ -36,6 +36,9 @@ import { escapeHtml } from './html.js';
 // HLSL/GLSL/ShaderLab are close enough to C-family syntax for highlighting.
 const LANGUAGE_ALIASES = { hlsl: 'cpp', shaderlab: 'cpp', usf: 'cpp', ush: 'cpp', compute: 'cpp', blueprint: 'plaintext' };
 
+// `![alt](src "caption")` lines inside a :::gallery block.
+const GALLERY_IMAGE = /!\[([^\]]*)\]\(([^)\s]*)(?:\s*"([^"]*)")?\)/g;
+
 /** Parse `key="value" key2=value2` attribute strings (with or without surrounding braces). */
 export function parseAttrs(input = '') {
   const attrs = {};
@@ -115,12 +118,16 @@ const containerExtension = {
           attrs.caption ? `<figcaption>${escapeHtml(attrs.caption)}</figcaption>` : ''
         }</figure>\n`;
       case 'gallery': {
-        const images = [...token.text.matchAll(/!\[([^\]]*)\]\(([^)\s]*)(?:\s*"([^"]*)")?\)/g)];
+        const images = [...token.text.matchAll(GALLERY_IMAGE)];
         const items = images
-          .map(
-            ([, alt, src, caption]) =>
-              `<figure>${media({ src, alt })}${caption ? `<figcaption>${escapeHtml(caption)}</figcaption>` : ''}</figure>`,
-          )
+          .map(([, alt, src, caption]) => {
+            const thumb = String(media({ src, alt }));
+            // Images open full size in a new tab; placeholders and videos are shown as-is.
+            const linked = src && /\.(png|jpe?g|webp|gif|avif)$/i.test(src)
+              ? `<a class="gallery__link" href="${escapeHtml(src)}" target="_blank" rel="noopener" aria-label="Open ${escapeHtml(alt || 'image')} full size">${thumb}</a>`
+              : thumb;
+            return `<figure>${linked}${caption ? `<figcaption>${escapeHtml(caption)}</figcaption>` : ''}</figure>`;
+          })
           .join('');
         return `<div class="block block--gallery" style="--gallery-cols:${Math.min(images.length || 1, 3)}">${items}</div>\n`;
       }
@@ -151,6 +158,27 @@ const marked = new Marked({
     },
   },
 });
+
+/**
+ * Pull `:::media` and `:::gallery` blocks out of a Markdown body, in order.
+ * Returns the body without them plus [{ src, alt, poster, caption, gallery }] — gallery items open full size.
+ */
+export function extractMedia(source = '') {
+  const items = [];
+  const body = String(source).replace(
+    /^:::(media|gallery)[ \t]*(\{[^\n]*\})?[ \t]*\n([\s\S]*?)\n?:::[ \t]*$/gm,
+    (_, kind, attrString, text) => {
+      if (kind === 'media') {
+        const { src, alt, poster, caption } = parseAttrs(attrString ?? '');
+        items.push({ src, alt, poster, caption });
+      } else {
+        for (const [, alt, src, caption] of text.matchAll(GALLERY_IMAGE)) items.push({ src, alt, caption, gallery: true });
+      }
+      return '';
+    },
+  );
+  return { body, items };
+}
 
 /** Render a Markdown document body. */
 export function renderMarkdown(source = '') {

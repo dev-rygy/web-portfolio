@@ -10,15 +10,15 @@
   "carousel": {
     "maxSeconds": 15,
     "clips": [
-      { "src": "/assets/video/carousel/futurescape_carousel.mp4" },
-      { "src": "/assets/video/carousel/oddFarm_carousel.mp4" },
-      { "src": "/assets/video/carousel/rogue_carousel.mp4" },
-      { "src": "/assets/video/carousel/thumbnail_carousel.mp4" },
-      { "src": "/assets/video/carousel/unstable_star_carousel.mp4" }
+      { "src": "/assets/video/carousel/labyrinth_carousel.mp4", "project": "labyrinth-project" },
+      { "src": "/assets/video/carousel/oddFarm_carousel.mp4", "project": "oddinary-farm" },
+      { "src": "/assets/video/carousel/futurescape_carousel.mp4", "project": "future-scape" },
+      { "src": "/assets/video/carousel/rogue_carousel.mp4", "project": "rogue-nebula" },
+      { "src": "/assets/video/carousel/unstable_star_carousel.mp4", "project": "unstable-star" }
     ]
   },
 
-  "featured": ["example-project"],
+  "featured": [ "labyrinth-project", "oddinary-farm", "future-scape", "rogue-nebula", "unstable-star" ],
 
   "sections": {
     "projects": "FEATURED PROJECTS",

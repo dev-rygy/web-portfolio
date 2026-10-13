@@ -1,7 +1,7 @@
 // Project page — Figma "Project Page" (177:928)
 
-import { html, raw } from '../../lib/html.js';
-import { renderMarkdown } from '../../lib/markdown.js';
+import { cx, html, raw } from '../../lib/html.js';
+import { extractMedia, renderMarkdown } from '../../lib/markdown.js';
 import { blogCard } from '../components/cards.js';
 import { linkList, media, metricPane, nextPrev, sectionHeading, titleBar } from '../components/ui.js';
 
@@ -17,47 +17,137 @@ function projectMetrics(project) {
   });
 }
 
-function overview(project) {
-  const body = project.body ? renderMarkdown(project.body) : '';
+/** Figma "Related Blogs" (2220:1270) — under the metrics; hidden when the project lists none. */
+function relatedBlogs(project, blogs) {
+  const related = (project.relatedBlogs ?? []).map((slug) => blogs.find((b) => b.slug === slug)).filter(Boolean);
+  if (!related.length) return '';
+  return html`<div class="related">
+  <p class="related__label">// Related Blogs</p>
+  <div class="card-grid card-grid--4">${related.map(blogCard)}</div>
+</div>`;
+}
+
+function overview(project, blogs) {
+  const text = project.overview || project.body;
+  const body = text ? renderMarkdown(text) : '';
   return html`<section class="section">
   <div class="container section__body">
     ${sectionHeading('OVERVIEW')}
-    <div class="overview">
-      <div class="overview__showcase">
-        ${media({ src: project.video || project.thumbnail, poster: project.poster, alt: `${project.title} overview`, controls: true })}
+    <div class="project-overview">
+      <div class="overview overview--split">
+        ${media({ src: project.video || project.thumbnail, poster: project.video ? project.videoPoster : project.poster, alt: `${project.title} overview`, controls: true })}
         ${projectMetrics(project)}
+        <div class="overview__text"><div class="prose">${raw(body || project.description || project.summary || '')}</div></div>
       </div>
-      <div class="prose">${raw(body || project.description || project.summary || '')}</div>
+      ${relatedBlogs(project, blogs)}
     </div>
   </div>
 </section>`;
 }
 
-function features(project, blogs) {
+/** `size: big | sub` in the feature's frontmatter; without it, features with media are big. */
+function isBigFeature(feature) {
+  if (feature.size) return feature.size === 'big';
+  return Boolean(feature.media);
+}
+
+/**
+ * A feature's text plus all of its media: the `media` field first, then any :::media / :::gallery
+ * blocks from its body (taken out of the text so they can stack beside it).
+ */
+function featureContent(feature) {
+  const { body, items } = extractMedia(feature.body ?? '');
+  if (feature.media) items.unshift({ src: feature.media, poster: feature.poster, alt: feature.title });
+  return { body: raw(renderMarkdown(body)), items };
+}
+
+function mediaStack(items) {
+  if (!items.length) return '';
+  return html`<div class="feature__media">
+  ${items.map((item) => {
+    const shown = media({ src: item.src, alt: item.alt, poster: item.poster, controls: true });
+    const linked = item.gallery && /\.(png|jpe?g|webp|gif|avif)$/i.test(item.src)
+      ? html`<a href="${item.src}" target="_blank" rel="noopener" aria-label="Open ${item.alt || 'image'} full size">${shown}</a>`
+      : shown;
+    return html`<figure class="feature__figure">${linked}${item.caption ? html`<figcaption>${item.caption}</figcaption>` : ''}</figure>`;
+  })}
+</div>`;
+}
+
+/** Big feature: Figma "Name and Video" — green heading + text, its media stacked beside it (text fills the row without media). */
+function bigFeature(feature) {
+  const { body, items } = featureContent(feature);
+  return html`<article class="feature">
+  <div class="${cx('feature__main', !items.length && 'feature__main--full')}">
+    <div class="feature__text">
+      ${sectionHeading(feature.title, { tag: 'h3' })}
+      <div class="prose">${body}</div>
+    </div>
+    ${mediaStack(items)}
+  </div>
+</article>`;
+}
+
+/** Sub feature: small heading. With media it gets its own row (media stacked beside the text); without, two per row. */
+function subFeature(feature) {
+  const { body, items } = featureContent(feature);
+  const text = html`<h3 class="paragraph-heading feature__title">${feature.title}</h3>
+  <div class="prose">${body}</div>`;
+  if (!items.length) return html`<article class="feature feature--text">${text}</article>`;
+  return html`<article class="feature feature--text">
+  <div class="feature__main">
+    <div class="feature__text">${text}</div>
+    ${mediaStack(items)}
+  </div>
+</article>`;
+}
+
+/** Sub features in order; runs of text-only ones share a two-column grid. */
+function subFeatures(subs) {
+  const groups = [];
+  for (const feature of subs) {
+    const textOnly = !feature.media && !extractMedia(feature.body ?? '').items.length;
+    const last = groups.at(-1);
+    if (textOnly && last?.textOnly) last.items.push(feature);
+    else groups.push({ textOnly, items: [feature] });
+  }
+  return groups.map((group) =>
+    group.textOnly ? html`<div class="feature-grid">${group.items.map((f) => subFeature(f))}</div>` : subFeature(group.items[0]),
+  );
+}
+
+/** Figma "Feature Tab Panel" (2222:1319) — one tab per big feature; js/tabs.js switches them. */
+function features(project) {
   const list = project.features ?? [];
   if (!list.length) return '';
+
+  // Sub features join the tab of the big feature above them; any before the first big one join the first tab.
+  const tabs = [];
+  const leading = [];
+  for (const feature of list) {
+    if (isBigFeature(feature)) tabs.push({ title: feature.tabText || feature.title, big: feature, subs: [] });
+    else (tabs.at(-1)?.subs ?? leading).push(feature);
+  }
+  if (!tabs.length) tabs.push({ title: 'Features', subs: [] });
+  tabs[0].subs.unshift(...leading);
+
   return html`<section class="section">
   <div class="container section__body">
     ${sectionHeading('TECHNICAL FEATURES')}
-    <div class="feature-list">
-      ${list.map((feature) => {
-        const related = (feature.relatedBlogs ?? []).map((slug) => blogs.find((b) => b.slug === slug)).filter(Boolean);
-        return html`<article class="feature">
-        <div class="feature__main">
-          <div class="feature__text">
-            ${sectionHeading(feature.title, { tag: 'h3' })}
-            <div class="prose">${raw(renderMarkdown(feature.body ?? ''))}</div>
-          </div>
-          ${media({ src: feature.media, poster: feature.poster, alt: feature.title, controls: true, className: 'feature__media' })}
-        </div>
-        ${related.length
-          ? html`<div class="related">
-          <p class="related__label">// Related Blogs</p>
-          <div class="card-grid card-grid--4">${related.map(blogCard)}</div>
-        </div>`
-          : ''}
-      </article>`;
-      })}
+    <div class="feature-tabs" data-tabs>
+      <div class="feature-tabs__list" role="tablist" aria-label="Technical features">
+        ${tabs.map(
+          (tab, i) => html`<button class="feature-tabs__tab" type="button" role="tab" id="feature-tab-${i + 1}" aria-controls="feature-panel-${i + 1}" aria-selected="${String(i === 0)}"${
+            i ? raw(' tabindex="-1"') : ''
+          }>${tab.title}</button>`,
+        )}
+      </div>
+      ${tabs.map(
+        (tab, i) => html`<div class="feature-tabs__panel" role="tabpanel" id="feature-panel-${i + 1}" aria-labelledby="feature-tab-${i + 1}"${i ? raw(' hidden') : ''}>
+        ${tab.big ? bigFeature(tab.big) : ''}
+        ${subFeatures(tab.subs)}
+      </div>`,
+      )}
     </div>
   </div>
 </section>`;
@@ -69,8 +159,8 @@ function reflection(project) {
   return html`<section class="section section--plain">
   <div class="container section__body">
     ${sectionHeading('THOUGHTS & REFLECTION')}
-    <div class="reflection">
-      ${media({ src: project.reflection.image, alt: `${project.title} reflection`, className: 'reflection__media' })}
+    <div class="reflection${project.reflection.image ? '' : ' reflection--text-only'}">
+      ${project.reflection.image ? media({ src: project.reflection.image, alt: `${project.title} reflection`, className: 'reflection__media' }) : ''}
       <div class="reflection__qa">
         ${qa.map(
           (item) => html`<div class="reflection__item">
@@ -86,8 +176,8 @@ function reflection(project) {
 
 export function projectPage({ project, blogs, prev, next }) {
   return html`${titleBar(project.title)}
-${overview(project)}
-${features(project, blogs)}
+${overview(project, blogs)}
+${features(project)}
 ${reflection(project)}
-${nextPrev({ prev, next, noun: 'TOPIC' })}`;
+${nextPrev({ prev, next, noun: 'PROJECT' })}`;
 }

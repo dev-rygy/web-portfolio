@@ -516,19 +516,127 @@
   min-width: 0;
 }
 
-.feature-list {
+/* Project page: text centred on the media alone, metrics 20px under the media
+   (Figma "Media and Text" row hugs 753 + 92 + 879). */
+.overview--split {
+  grid-template-rows: auto 1fr; /* text crosses the 1fr row, so only the media sizes row 1 */
+  align-items: start;
+  gap: 20px clamp(40px, 4.8vw, 92px);
+  max-width: 1724px;
+}
+
+.overview--split > .media {
+  grid-area: 1 / 1;
+}
+
+.overview--split > .metric-pane {
+  grid-area: 2 / 1;
+  justify-self: start;
+}
+
+/* Never shorter than the media (same column ratio), so short text centres on it
+   and long text starts level with it and runs down beside the metrics. */
+.overview__text {
+  grid-area: 1 / 2 / 3;
+  justify-self: stretch; /* aspect-ratio items otherwise shrink-to-fit */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  aspect-ratio: 879 / 380;
+  min-width: 0;
+}
+
+.overview--split:has(.media--embed) .overview__text {
+  aspect-ratio: 14064 / 6777; /* 16:9 embed in the 753fr column: (879 × 16) / (753 × 9) */
+}
+
+/* Media/text/metrics, then related blogs across the full width */
+.project-overview {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.project-overview .card-grid {
+  row-gap: 20px;
+}
+
+/* Figma "Feature Tab Panel" — tabs wrap onto extra rows when they don't fit */
+.feature-tabs {
+  width: 100%;
+  margin-top: 34px; /* Figma: 64px between the section heading and the tabs */
+}
+
+.feature-tabs__list {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Card-colored strip behind a wrapped row of tabs (sized by js/tabs.js) */
+.feature-tabs__fill {
+  position: absolute;
+  left: 0;
+  z-index: -1;
+  background: var(--color-card);
+  pointer-events: none;
+}
+
+.feature-tabs__tab {
+  min-height: 40px;
+  max-width: 100%;
+  padding: 7px 10px; /* 40px tall with the 26px line; long titles wrap on narrow screens */
+  border: 0;
+  border-radius: 5px 5px 0 0;
+  background: var(--color-surface);
+  font-family: var(--font-mono);
+  font-weight: 300;
+  font-size: var(--fs-card-title);
+  line-height: 26px; /* exactly 40px with the padding, so wrapped rows stack without seams */
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color var(--duration-base);
+}
+
+.feature-tabs__tab:hover {
+  color: var(--color-text);
+}
+
+.feature-tabs__tab[aria-selected='true'] {
+  background: var(--color-card);
+  color: var(--color-accent);
+  cursor: default;
+}
+
+.feature-tabs__tab:focus-visible {
+  outline-offset: -2px;
+}
+
+.feature-tabs__panel {
   display: flex;
   flex-direction: column;
   gap: 64px;
-  width: 100%;
-  margin-top: 34px; /* Figma: 64px between the section heading and the first feature */
+  padding: 30px 25px;
+  background: var(--color-card);
+  box-shadow: var(--shadow-card);
+}
+
+.feature-tabs__panel[hidden] {
+  display: none;
+}
+
+/* The panel is card-colored, so code blocks inside it use the page background to stand out */
+.feature-tabs__panel .code-block {
+  background: var(--color-bg);
 }
 
 .feature {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding-inline: 25px;
 }
 
 .feature__main {
@@ -538,6 +646,10 @@
   gap: clamp(32px, 5.7vw, 109px);
 }
 
+.feature__main--full {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .feature__text {
   display: flex;
   flex-direction: column;
@@ -545,8 +657,42 @@
   min-width: 0;
 }
 
+/* All of a feature's media, stacked in the right column */
 .feature__media {
   --media-ratio: 747 / 380;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+
+.feature__figure > a {
+  display: block;
+}
+
+.feature__figure figcaption {
+  margin-top: 10px;
+  font-size: var(--fs-meta);
+  color: var(--color-text-secondary);
+}
+
+.feature--text .feature__text {
+  gap: 16px;
+}
+
+/* Sub features flow two per row under their big feature */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px clamp(32px, 5.7vw, 109px);
+}
+
+.feature--text {
+  gap: 16px;
+}
+
+.feature--text .prose {
+  font-size: var(--fs-body-lg);
 }
 
 .related {
@@ -570,6 +716,11 @@
   align-items: stretch;
   gap: clamp(40px, 6.4vw, 123px);
   width: 100%;
+}
+
+/* No image to dock beside the answers: they take the full width */
+.reflection--text-only {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .reflection__media {
@@ -597,8 +748,30 @@
     grid-template-columns: 1fr;
   }
 
-  .feature {
-    padding-inline: 0;
+  /* Stacked: media, metrics, then text */
+  .overview--split {
+    grid-template-rows: none;
+  }
+
+  .overview--split > .media,
+  .overview--split > .metric-pane,
+  .overview__text {
+    grid-area: auto;
+  }
+
+  .overview__text,
+  .overview--split:has(.media--embed) .overview__text {
+    aspect-ratio: auto;
+    margin-top: 20px;
+  }
+
+  .feature-tabs__panel {
+    gap: 48px;
+    padding: 24px 20px;
+  }
+
+  .feature-grid {
+    grid-template-columns: 1fr;
   }
 
   .reflection__media {
