@@ -34,6 +34,7 @@ platforms:
 features:
   - title: Gameplay
     size: big
+    significance: trivial
     media: /assets/images/rogue-nebula-images/nebula_gameplay.png
     body: |
       The player begins by entering their name for a leaderboard entry; if a name is not selected, they are labeled "anonymous." When start is pressed, the player is thrust into battle immediately as endless waves of enemies barrage the screen. To survive, players must dodge incoming projectiles and retaliate with the weapons in their arsenal. To aid survival, players can use special abilities and select a wide array of weapons.

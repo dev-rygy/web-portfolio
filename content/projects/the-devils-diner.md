@@ -36,6 +36,7 @@ platforms:
 features:
   - title: Gameplay
     size: big
+    significance: trivial
     media: /assets/images/devils-diner-images/devils_gameplay.png
     body: |
       The player is given 5 stars at the start of a new run and can lose those stars if they fail to serve customers on time. Up to six demons can sit at the counter and order food; an order will appear as a ticket on the left. The player must gather the correct ingredients for the dish while juggling other demons' orders in the queue. The game is endless, challenging players to survive as long as possible while aiming for a high score.

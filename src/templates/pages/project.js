@@ -51,6 +51,11 @@ function isBigFeature(feature) {
   return Boolean(feature.media);
 }
 
+/** `significance: important` gives a big feature's tab the gold shine; anything else (e.g. `trivial`) is plain. */
+function isImportant(feature) {
+  return feature?.significance === 'important';
+}
+
 /**
  * A feature's text plus all of its media: the `media` field first, then any :::media / :::gallery
  * blocks from its body (taken out of the text so they can stack beside it).
@@ -137,9 +142,13 @@ function features(project) {
     <div class="feature-tabs" data-tabs>
       <div class="feature-tabs__list" role="tablist" aria-label="Technical features">
         ${tabs.map(
-          (tab, i) => html`<button class="feature-tabs__tab" type="button" role="tab" id="feature-tab-${i + 1}" aria-controls="feature-panel-${i + 1}" aria-selected="${String(i === 0)}"${
+          (tab, i) => html`<button class="feature-tabs__tab${isImportant(tab.big) ? ' feature-tabs__tab--important' : ''}" type="button" role="tab" id="feature-tab-${i + 1}" aria-controls="feature-panel-${i + 1}" aria-selected="${String(i === 0)}"${
             i ? raw(' tabindex="-1"') : ''
-          }>${tab.title}</button>`,
+          }>${
+            isImportant(tab.big)
+              ? html`<span class="feature-tabs__label">${tab.title}</span><span class="feature-tabs__bling" aria-hidden="true"></span>`
+              : tab.title
+          }</button>`,
         )}
       </div>
       ${tabs.map(

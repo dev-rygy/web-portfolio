@@ -25,6 +25,8 @@
   --color-checker-light: #f9f9f9;    /* Media Placeholder checkerboard */
   --color-checker-dark: #ebebeb;
   --color-highlight: #d5d5d5;        /* progress bar hover */
+  --color-gold: #e2b33c;             /* "important" feature tab text */
+  --color-gold-shine: #fff5cc;       /* glint that wipes across it + the sparkle */
   --color-error: #ff4e4e;
   --color-available: #22c55e;        /* footer availability dot */
 

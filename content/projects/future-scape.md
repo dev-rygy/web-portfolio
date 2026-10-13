@@ -37,6 +37,7 @@ platforms:
 features:
   - title: Gameplay
     size: big
+    significance: trivial
     media: /assets/images/future_scape_images/manufacturing_demo3.png
     body: |
       The gameplay varies across minigames, all accessible via portals from a main hub. Each game introduces unique challenges, from solving forensic puzzles to managing complex economic systems and building cities. The games that I created employ a sandbox-like environment where players can place and remove objects on a grid system without overlap, facilitated by an economy and resource system for object selection and placement.
@@ -60,6 +61,7 @@ features:
 
   - title: Component Linking
     size: big
+    significance: trivial
     media: /assets/images/future_scape_images/manufacturing_demo.png
     body: |
       In manufacturing, components are machines that can be linked via conveyor belts to create assembly lines. A complex system handles items that interact with these components: input item(s) are detected and accepted if a possible output item can be created.
@@ -71,12 +73,14 @@ features:
 
   - title: Resource Management Systems
     size: big
+    significance: trivial
     media: /assets/images/future_scape_images/urban_plan_demo.png
     body: |
       In urban planning, managing resources is critical to making sure your city is stable and functional. Each building has required and provided resources. Required resources must be met before a building can be taxed. Players strategize to balance required and available resources to optimize city operations.
 
   - title: Particle Systems and Shaders
     size: big
+    significance: trivial
     media: /assets/images/future_scape_images/main_hub_demo.png
     body: |
       Particles include ambient dust in manufacturing, and fireflies in astronomy. Shaders include the portals in the main hub room and the relay pad in urban planning. All shaders were made using Unity's Shader Graph.

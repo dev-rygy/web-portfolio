@@ -49,6 +49,8 @@ features:            # "Technical Features" tab panel, in this order — leave e
                      # sub = goes inside the tab of the big feature above it: small heading, media under the text,
                      #       two per row (sub features before the first big one go in the first tab)
                      # leave out to decide by content: big if it has media, otherwise sub
+    significance: trivial   # big features only: important = gold shine + sparkle on the tab text
+                            #                    trivial (or left out) = plain tab
     tabText: ""      # big features only: text on the tab (blank = same as the title)
     media: ""        # image, .mp4 or YouTube URL (optional for either size)
     body: |

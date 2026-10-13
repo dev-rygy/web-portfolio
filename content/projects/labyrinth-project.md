@@ -33,6 +33,7 @@ platforms:
 features:
   - title: Blueprints
     size: big
+    significance: important
     media: /assets/images/labyrinth-images/unique_blueprints.png
     body: |
       **Blueprints** are the backbone of the algorithm. They must exist in order for any rooms to generate. Blueprints are simply single-celled marks on a grid that tell the algorithm "a room can eventually spawn here". When the blueprints are done generating, a second pass parses the blueprints and generates rooms based on a set of rules. Think of how Rule Tiles work in game engines.
@@ -210,6 +211,7 @@ features:
 
   - title: Blueprint Graph
     size: big
+    significance: important
     media: /assets/images/labyrinth-images/blueprint_graph.png
     body: |
       The **Blueprint Graph** determines the order of execution of each individual **Blueprint Operation**. Taking inspiration from *Unreal's Blueprint system*, the developer can mix and match operations in order to generate specific progression patterns in the dungeon. The operations responsible for generation are *Pathfinding*, *Random Placement*, and the *Drunkard's Walk*. Although, these generation patterns can be combined and expanded via set operations - *union*, *intersection*, and *difference*. There are also *random access* operations for even more variation. Generation patterns can be repeated via the *branch* and *jump* operations.
@@ -331,6 +333,7 @@ features:
   - title: Lexgen (Blueprint Parsing)
     tabText: Lexgen
     size: big
+    significance: important
     media: /assets/images/labyrinth-images/room_walls.png
     body: |
       The final pass of the algorithm parses all available blueprints using a process I call **Lexgen**. The parsing determines what rooms can be generated from a orientation and pattern of blueprints. The parsing system is based on a top-down recursive technique commonly used in compilers called **Recursive Descent Parsing**. 

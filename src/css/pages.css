@@ -615,6 +615,75 @@
   outline-offset: -2px;
 }
 
+/* significance: important — a gold glint wipes across the tab text, and every other wipe ends in a sparkle.
+   With reduced motion both animations are cut short, leaving the resting style: plain gold text, no sparkle. */
+.feature-tabs__tab--important {
+  position: relative;
+  --shine-cycle: 4s;
+}
+
+.feature-tabs__label {
+  background: linear-gradient(105deg, var(--color-gold) 40%, var(--color-gold-shine) 50%, var(--color-gold) 60%) 100% 0 / 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: tab-shine var(--shine-cycle) ease-in-out infinite;
+}
+
+.feature-tabs__bling {
+  position: absolute;
+  top: 3px;
+  right: 2px;
+  width: 11px;
+  height: 11px;
+  background: var(--color-gold-shine);
+  clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
+  filter: drop-shadow(0 0 3px var(--color-gold));
+  transform: scale(0);
+  pointer-events: none;
+  animation: tab-bling calc(var(--shine-cycle) * 2) ease-out infinite;
+}
+
+/* Hovered or selected, an important tab behaves like the others (white on hover, green when selected);
+   the shine only plays while it sits unselected. */
+.feature-tabs__tab--important:hover .feature-tabs__label,
+.feature-tabs__tab--important[aria-selected='true'] .feature-tabs__label {
+  background: none;
+  color: inherit;
+  animation: none;
+}
+
+.feature-tabs__tab--important:hover .feature-tabs__bling,
+.feature-tabs__tab--important[aria-selected='true'] .feature-tabs__bling {
+  animation: none;
+}
+
+/* The glint crosses in the first 40% of each cycle, then rests */
+@keyframes tab-shine {
+  0% {
+    background-position: 100% 0;
+  }
+  40%,
+  100% {
+    background-position: 0 0;
+  }
+}
+
+/* Twice as long as the shine: pops right as every other glint reaches the end of the text */
+@keyframes tab-bling {
+  0%,
+  18% {
+    transform: scale(0) rotate(0deg);
+  }
+  22% {
+    transform: scale(1.15) rotate(45deg);
+  }
+  30%,
+  100% {
+    transform: scale(0) rotate(90deg);
+  }
+}
+
 .feature-tabs__panel {
   display: flex;
   flex-direction: column;

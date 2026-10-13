@@ -44,42 +44,49 @@ platforms:
 features:
   - title: Peer-to-peer Multiplayer
     size: big
+    significance: trivial
     media: /assets/images/oddinary-farm/gameplay_2.loop.mp4
     body: |
       Unity Netcode for GameObjects, transported over Facepunch (Steamworks). Networking is deeply woven through the codebase, not confined to one layer. Allows player clients to connect to a host over the internet through Steam invites.
 
   - title: Procedural Generation
     size: big
+    significance: trivial
     media: /assets/images/oddinary-farm/oddfarm_5.jpg
     body: |
       The system builds a synchronized island world out of four layered Perlin noise maps (elevation, moisture, ore, and resource), then streams terrain, foliage, and resources in and out around each player in real time. Map generation is done client-side with a seed to improve performance.
 
   - title: Inventory System
     size: big
+    significance: trivial
     media: /assets/images/oddinary-farm/gameplay_1.loop.mp4
     body: |
       Dynamic and scalable slot-based inventory system akin to *Minecraft's* system. Items are data-driven and situational. The player can perform a variety of actions depending on the item, including placement, combat, and buffs.
 
   - title: Object Pooling
     size: big
+    significance: trivial
     media: /assets/images/oddinary-farm/gameplay_1.loop.mp4
     body: |
       The game reuses identical items/objects instead of creating new ones to improve performance and frame rate.
 
   - title: Mounts
     size: big
+    significance: trivial
     media: /assets/images/oddinary-farm/oddfarm_1.jpg
     body: |
       The player can mount animals and other entities to increase movement speed and other properties.
 
   - title: Economy
     size: big
+    significance: trivial
     media: /assets/images/oddinary-farm/gameplay_1.loop.mp4
     body: |
       Shop, wallet/currency, quotas, loot tables/generator, and gambling.
 
   - title: Day and Night Cycle
     size: big
+    significance: trivial
     media: /assets/images/oddinary-farm/gameplay_1.loop.mp4
     body: |
       A time scale that affects the day/night cycle of the game. This changes the state of the game and the events that happen.

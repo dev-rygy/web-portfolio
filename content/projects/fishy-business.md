@@ -32,6 +32,7 @@ engine: GameMaker
 features:
   - title: Gameplay
     size: big
+    significance: trivial
     media: /assets/images/fishy-business-images/fishy_gameplay2.png
     body: |
       *Fishy Business* is a lively fishing game in which the player can freely explore, fish, sell their catches, and buy new gear. Starting in the "overworld," players explore a small lake area where they can fish and interact with *Fisher Frog* to sell and buy new gear. Players can upgrade their rod to increase the likelihood of catching rarer fish, improve their line to control tension more easily, and use better bait to raise the fish bite rate. Each fish is unique, with its own rarity and value — the rarer the fish, the more valuable it is to sell.

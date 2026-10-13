@@ -33,6 +33,7 @@ platforms:
 features:
   - title: Gameplay
     size: big
+    significance: trivial
     media: /assets/images/bloodlust-images/blood_gameplay3.png
     body: |
       The player starts with a full blood count that decreases over time. Once it reaches zero, the player dies. Study your victims' schedules closely and find the best time to strike, but be cautious — if a victim escapes, they'll alert the nearby guards. The player can take advantage of the weapons some NPCs drop to kill more effectively. The aim of the game is to survive and accrue as many kills as possible.

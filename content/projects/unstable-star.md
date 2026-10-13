@@ -37,6 +37,7 @@ platforms:
 features:
   - title: Gameplay
     size: big
+    significance: trivial
     media: /assets/images/unstable-star-images/unstable_gameplay2.png
     body: |
       *Unstable Star* features top-down bullet-hell combat across three levels, each with distinct challenges and unique boss fights. Swappable weapons and abilities are offered to the player to encourage gameplay diversity, while a dynamic dialogue system brings the characters and narrative to life.
