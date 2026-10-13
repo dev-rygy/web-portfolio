@@ -5,7 +5,7 @@ date: 2024-11-01
 dates: Nov 2024 - Present
 status: prototype
 roles:
-  - Procedural Programmer
+  - Gameplay Programmer
 
 summary: >-
   The Labyrinth is an interconnected procedural dungeon generation algorithm built in Unity/C# that creates seamlessly joined, thematically distinct 3D areas without loading screens.
