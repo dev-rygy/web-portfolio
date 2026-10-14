@@ -499,12 +499,12 @@ features:
     body: |
       The game economy revolves around a daily bill. Crops drop coins, the team spends them on seeds, tools and buildings, and every day ends with a quota the farm has to pay to stay in business. Players who reach the end escape with what's left in their wallet and put it toward a debt of 999 trillion coins that carries over between runs. This section follows the money from a coin hitting the ground to the Steam leaderboard.
 
-  - title: Coin Currenty
+  - title: Coin Currency
     size: sub
     body: |
       A coin is an ordinary item. `CurrencyProperty` extends the same `ItemProperty` base as seeds and tools, so a crop lists coins in its drop table like any other loot, and they spawn, scatter and despawn through the same item pipeline. Pickup is the only special case: instead of taking an inventory slot, the coin's value goes straight to the wallet and pops up in the coin's own color.
 
-      ```csharp label="CurrentyProperty.cs"
+      ```csharp label="CurrencyProperty.cs"
       [CreateAssetMenu(fileName = " Property", menuName = "Scriptable Objects/Item/Currency")]
       public class CurrencyProperty : ItemProperty
       {
@@ -553,9 +553,9 @@ features:
   - title: Shared Community Wallet
     size: sub
     body: |
-      Ultimately the decision was made for the entire team to share earnings, this ensures multiple roles are viable reguardless of how much they earn (farming, exploring, fighting). The server holds one number, GlobalWallet: every coin anyone has brought onto the farm. Each client keeps a private record of what it has spent and lost. A player's spendable balance is the team's income minus their own outgoings.
+      Ultimately the decision was made for the entire team to share earnings; this ensures multiple roles are viable regardless of how much they earn (farming, exploring, fighting). The server holds one number, GlobalWallet: every coin anyone has brought onto the farm. Each client keeps a private record of what it has spent and lost. A player's spendable balance is the team's income minus their own outgoings.
 
-      ```cshap label="WalletManager.cs"
+      ```csharp label="WalletManager.cs"
       [SerializeField] private NetworkVariable<ulong> GlobalWallet = new NetworkVariable<ulong>(0);
       [SerializeField] private ulong personalCoinsSpent = 0;
       // Penalties (a death, the vacation curse) leave the wallet too, but they are losses, not spending.
@@ -565,7 +565,7 @@ features:
 
       Nobody splits loot, two players can never race for the same coin, and a purchase doesn't wait on the server because it only changes a local number. The catch is that every player can spend the whole team's income. The game pays for that by multiplying prices by the number of players, and the daily quota grows the same way.
 
-      ```cshap label="PlayerManager.cs, ShopUI.cs, StructureUpgrader.cs"
+      ```csharp label="PlayerManager.cs, ShopUI.cs, StructureUpgrader.cs"
       // PlayerManager.cs
       public static int Scaling => Mathf.Max(1, ParticipantCount);
 
@@ -579,7 +579,7 @@ features:
 
       A new player also brings starting money. The server adds 150 coins whenever the player count reaches a new high, and only then, so leaving and rejoining can't print money.
 
-      ```cshap label="WalletManager.cs"
+      ```csharp label="WalletManager.cs"
       private int highestScaling = 0;
       private void HandleScalingChanged(int newScaling)
       {
@@ -599,14 +599,18 @@ features:
       A time scale that affects the day/night cycle of the game. This changes the state of the game and the events that happen. One in-game day lasts 6 real minutes. Players farm during the day (about 5 minutes). Then night falls and ShowTime begins: a one-minute rush where creatures attack the farm. The clock controls lighting, weather, music, crop behaviour, creature AI and the daily coin quota. Because the game is online co-op, every player has to see the same time.
 
 reflection:
-  image: "/assets/images/labyrinth-images/orbit_loop.mp4"
+  image: "/assets/images/oddinary-farm/kaedim_indie_showcase.png"
   qa:
-    - question: My contribution
+    - question: What was my role in this project?
       answer: |
-        - **Task Management** — Created, assigned, and managed project tasks in ClickUp based on team meetings.
-        - **Multiplayer Code** — Created base code for mounting objects and entities, including animals and the hot air balloon.
-        - **Game Design** — Contributed many ideas to the game, including enemies, shop upgrades and items, pets, and combat mechanics.
-        - **Documentation** — Constantly updated code documentation with new commits. Created conventions and style guides for both new and old developers on the project.
-        - **Sprites and Animation** — Created sprites and animations including the Laser Deer, scrum enemy, brute enemy, artillery enemy, hamster, and the player HUD.
+        I hopped on this project back in August of 2025. A very good friend of mine was the director of the game and decided to make me an associate director due to my previous experience working with games. As associate director I handled reviewing design documentation, making tasks for developers and artists, and overseeing codebase changes through Git. In addition to this responsibility I also programmed some  systems including the mounting system, procedural generation, UI, and some aspects of the lobby system. I also helped pitch the game at **Keadim Indie Showcase**, an event at 2026 GDC, which ended up winning an award for best pitch.
+
+    - question: What did I learn
+      answer: |
+        This was my first large-scale project where real stakes were involved. I took my role seriously and organized design meetings and tasks for developers alike. My biggest takaway was **learning to do what was best for the game** not just what looked good to me. This was also my first introduction to multiplayer programming which became a core personal interest.
+
+    - question: What would I change.
+      answer: |
+        With more time and experience, I would have decoupled more of the multiplayer code from the engine code. Since our game was peer-to-peer only aspects of the game that are essential for other client simulations should be sent over the network.
 ---
 

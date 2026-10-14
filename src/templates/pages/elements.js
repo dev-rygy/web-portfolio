@@ -58,10 +58,12 @@ Plain paragraphs are body text with **bold**, *italic*, [a link](#) and \`inline
 
 > A blockquote for pull quotes or citations.
 
+:::table {label="Example" caption="Optional caption under the table."}
 | Column | Description |
 | --- | --- |
-| Row one | Tables render with simple rules |
-| Row two | Useful for stats or comparisons |
+| Row one | Every table is framed like a code block |
+| Row two | \`:::table\` sets the label and caption |
+:::
 
 :::media-text {src="" side="left" alt="Placeholder"}
 ### :::media-text — media left
@@ -93,6 +95,16 @@ float edge = step(noise, _Cutoff);
 
 :::callout
 **:::callout** — a highlighted note or takeaway.
+:::
+`;
+
+const TABLE_SAMPLE = `
+:::table {label="Weapon stats" caption="Columns align with :--- (left), :---: (center) and ---: (right)."}
+| Weapon | Damage | Fire rate | Notes |
+| :----- | -----: | :-------: | :---- |
+| Pistol | 12 | 4/s | Infinite ammo, \`hitscan\` |
+| Shotgun | 8 × 6 | 1/s | Pellets spread in a **30°** cone |
+| Railgun | 90 | 0.5/s | Pierces every enemy in a line |
 :::
 `;
 
@@ -199,6 +211,15 @@ export function elementsPage({ site, projects, blogs, shaders }) {
           label: 'CODE BLOCK',
           caption: 'The multi-threaded solver outputs a lean coordinate map back to the main actor loop, which then paints instances using optimized GPU arrays.',
         })}</div>`,
+      ),
+    )}
+
+    ${group(
+      'Table Block',
+      item(
+        'Table Block',
+        '.table-block (Markdown table, optionally in :::table {label="…" caption="…"})',
+        html`<div style="max-width:890px">${raw(renderMarkdown(TABLE_SAMPLE))}</div>`,
       ),
     )}
 

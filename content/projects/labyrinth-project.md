@@ -336,16 +336,16 @@ features:
     significance: important
     media: /assets/images/labyrinth-images/room_walls.png
     body: |
-      The final pass of the algorithm parses all available blueprints using a process I call **Lexgen**. The parsing determines what rooms can be generated from a orientation and pattern of blueprints. The parsing system is based on a top-down recursive technique commonly used in compilers called **Recursive Descent Parsing**. 
+      The final pass of the algorithm parses all available blueprints using a process I call **Lexgen**. The parsing determines what rooms can be generated from an orientation and pattern of blueprints. The parsing system is based on a top-down recursive technique commonly used in compilers called **Recursive Descent Parsing**. 
 
       ### Shape Data
-      `ShapeData` is a object that essentually functions as a token for parsing. Generated blueprint cells are checked against each possible shape, the shapes that fit the blueprint structure perfectly are choosen to be generated. By generate I mean spawning the rooms that the shapes represent, each shape having a respective list of rooms. You can think of this method as similar to the old "Fitting Shapes In Their Correct Holes" game that toddlers play.
+      `ShapeData` is an object that essentially functions as a token for parsing. Generated blueprint cells are checked against each possible shape, the shapes that fit the blueprint structure perfectly are chosen to be generated. By generate I mean spawning the rooms that the shapes represent, each shape having a respective list of rooms. You can think of this method as similar to the old "Fitting Shapes In Their Correct Holes" game that toddlers play.
 
   - title: Recursive Descent
     size: sub
     media: ""
     body: |
-      A base blueprint is choosen for the algorithm to parse, usually the next available blueprint in a path. From this `candidates` are choosen from ShapeData cells that are considered to be contenders to fit in that blueprint position. For a candidate can be a contender its blueprint configuration needs to match the base blueprint's configuration. These are defined by the other cells surrounding it. All 6 directions are checked; a 'Dont Care' config means we do not need to worry about whether there is or isn't a blueprint in a certain direction, a 'Blueprint' config means there needs to be a blueprint in that direction or it will not succeed, and a 'No Blueprint' config means there must not be a blueprint in that direction.
+      A base blueprint is chosen for the algorithm to parse, usually the next available blueprint in a path. From this `candidates` are chosen from ShapeData cells that are considered to be contenders to fit in that blueprint position. For a candidate to be a contender its blueprint configuration needs to match the base blueprint's configuration. These are defined by the other cells surrounding it. All 6 directions are checked; a 'Dont Care' config means we do not need to worry about whether there is or isn't a blueprint in a certain direction, a 'Blueprint' config means there needs to be a blueprint in that direction or it will not succeed, and a 'No Blueprint' config means there must not be a blueprint in that direction.
 
       ```csharp label="ShapeCandidate"
       public class ShapeCandidate
@@ -398,7 +398,7 @@ features:
 
       Candidates that succeed are taken to the next round, this is where the recursion comes in. The base blueprint for the next round depends on whether or not a blueprint exists in a certain direction from the blueprint of the current function call. If there is then we parse bringing the candidates that passed into the next iteration. From this the configuration matching process begins again but now fitting against the new base blueprint.
 
-      If a candidate fits the blueprint orientation perfectly it is flagged as `accepted` and goes into a list. Once all candidates are exhausted the parsing terminates - a random shape and room are choosen from the accepted list.
+      If a candidate fits the blueprint orientation perfectly it is flagged as `accepted` and goes into a list. Once all candidates are exhausted the parsing terminates - a random shape and room are chosen from the accepted list.
 
         ```csharp label="ParseBlueprints"
         public void ParseBlueprints(Blueprint currentBlueprint, List<ShapeCandidate> candidates, HashSet<Blueprint> visited)
@@ -479,7 +479,7 @@ features:
     size: sub
     media: ""
     body: |
-      Shape rotation is considered in order to add more variation to the maps layout. This is done by rotating the positions of the shape cells with the **Rotation Matrix**. When a candidate is rotated it's configs must also be rotated in order to match it's new orientation. 
+      Shape rotation is considered in order to add more variation to the map's layout. This is done by rotating the positions of the shape cells with the **Rotation Matrix**. When a candidate is rotated its configs must also be rotated in order to match its new orientation. 
 
       Since we are only interested in the orthonormal directions setting up each rotation is simple and can be set static and immutable.
 
@@ -497,7 +497,7 @@ features:
       public static readonly Matrix3x3Int Identity = new Matrix3x3Int(1, 0, 0, 0, 1, 0, 0, 0, 1);
       ```
 
-      A separate class `RoomRotationExtensions` handles the actual rotation of each candidate cell by simply returning the rotation requested. The inverse matrix is used to map the offsets used to rotate a candidate back to it's original shape orientation.
+      A separate class `RoomRotationExtensions` handles the actual rotation of each candidate cell by simply returning the rotation requested. The inverse matrix is used to map the offsets used to rotate a candidate back to its original shape orientation.
 
       ```csharp label="RoomRotationExtensions"
       public static class RoomRotationExtensions

@@ -26,11 +26,20 @@
 //   A highlighted note or takeaway.
 //   :::
 //
+//   :::table {label="Weapon stats" caption="..."}
+//   | Weapon | Damage |
+//   | ------ | -----: |
+//   | Sword  | 12     |
+//   :::
+//
+// Every Markdown table renders as a Table Block (framed like a code block); wrapping it in :::table
+// sets its label and caption. Inside :::text-code, tables sit in the code column.
+//
 // `## Heading` renders as the green Section Heading; `### Heading` as a paragraph heading.
 
-import { Marked } from 'marked';
+import { Marked, Renderer } from 'marked';
 import hljs from 'highlight.js';
-import { codeBlock, media, sectionHeading } from '../templates/components/ui.js';
+import { codeBlock, media, sectionHeading, tableBlock } from '../templates/components/ui.js';
 import { escapeHtml } from './html.js';
 
 // HLSL/GLSL/ShaderLab are close enough to C-family syntax for highlighting.
@@ -106,11 +115,13 @@ const containerExtension = {
 </div>\n`;
       }
       case 'text-code': {
-        const codeTokens = token.tokens.filter((t) => t.type === 'code');
-        const textTokens = token.tokens.filter((t) => t.type !== 'code');
+        // Code blocks and tables (plain or :::table) go in the code column.
+        const isCode = (t) => t.type === 'code' || t.type === 'table' || (t.type === 'container' && t.kind === 'table');
+        const codeTokens = token.tokens.filter(isCode);
+        const textTokens = token.tokens.filter((t) => !isCode(t));
         return `<div class="block block--text-code">
   <div class="block__text prose">${inner(textTokens)}</div>
-  <div class="block__code">${codeTokens.map(renderCode).join('')}</div>
+  <div class="block__code">${inner(codeTokens)}</div>
 </div>\n`;
       }
       case 'media':
@@ -133,6 +144,10 @@ const containerExtension = {
       }
       case 'callout':
         return `<aside class="block block--callout prose">${inner(token.tokens)}</aside>\n`;
+      case 'table':
+        // The label and caption belong to the table inside; the table renderer reads them.
+        for (const t of token.tokens) if (t.type === 'table') t.attrs = attrs;
+        return inner(token.tokens);
       default:
         // Unknown block: render its contents so nothing is lost.
         return `<div class="block block--${escapeHtml(kind)} prose">${inner(token.tokens)}</div>\n`;
@@ -152,6 +167,10 @@ const marked = new Marked({
       if (depth === 2) return `${sectionHeading(text, { html: true })}\n`;
       if (depth === 3) return `<h3 class="paragraph-heading">${text}</h3>\n`;
       return `<h${depth}>${text}</h${depth}>\n`;
+    },
+    table(token) {
+      const table = Renderer.prototype.table.call(this, token);
+      return `${tableBlock({ table, label: token.attrs?.label, caption: token.attrs?.caption })}\n`;
     },
     image({ href, title, text }) {
       return `<img src="${escapeHtml(href)}" alt="${escapeHtml(text)}"${title ? ` title="${escapeHtml(title)}"` : ''} loading="lazy" decoding="async">`;

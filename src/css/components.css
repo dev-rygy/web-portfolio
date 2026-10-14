@@ -519,9 +519,10 @@
   color: var(--color-accent);
 }
 
-/* ---- Code Block ---------------------------------------------------------- */
-.code-block {
-  --code-line-height: 1.62;
+/* ---- Code Block / Table Block -------------------------------------------- */
+/* A Table Block is a Markdown table in the Code Block's frame: same card, label and caption. */
+.code-block,
+.table-block {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -531,7 +532,12 @@
   background: var(--color-card);
 }
 
-.code-block__label {
+.code-block {
+  --code-line-height: 1.62;
+}
+
+.code-block__label,
+.table-block__label {
   font-family: var(--font-mono);
   font-weight: 700;
   font-size: var(--fs-label);
@@ -539,7 +545,9 @@
   text-transform: uppercase;
 }
 
-.code-block pre {
+/* Long code lines and wide tables scroll sideways inside the block */
+.code-block pre,
+.table-block__scroll {
   margin: 0;
   overflow-x: auto;
   scrollbar-width: thin;
@@ -561,11 +569,84 @@
   tab-size: 2;
 }
 
-.code-block__caption {
+.code-block__caption,
+.table-block__caption {
   padding-top: 16px;
   border-top: 1px dashed var(--color-line);
   font-size: var(--fs-meta);
   color: var(--color-text-secondary);
+}
+
+/* Sideways only: a fractional table height would otherwise add a 1px vertical scrollbar */
+.table-block__scroll {
+  overflow-y: hidden;
+}
+
+.table-block table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-small);
+  line-height: 1.5;
+}
+
+.table-block th,
+.table-block td {
+  min-width: 7rem; /* on narrow screens the table scrolls instead of squeezing text to a word per line */
+  padding: 12px 16px;
+  vertical-align: top;
+}
+
+/* Edge cells line up with the label */
+.table-block th:first-child,
+.table-block td:first-child {
+  padding-left: 0;
+}
+
+.table-block th:last-child,
+.table-block td:last-child {
+  padding-right: 0;
+}
+
+.table-block th {
+  padding-top: 0;
+  border-bottom: 1px solid var(--color-line);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: var(--fs-meta);
+  text-align: left;
+}
+
+.table-block tbody tr + tr td {
+  border-top: 1px dashed var(--color-line);
+}
+
+.table-block tbody tr:last-child td {
+  padding-bottom: 0;
+}
+
+/* Markdown column alignment (:---:, ---:) */
+.table-block [align='center'] {
+  text-align: center;
+}
+
+.table-block [align='right'] {
+  text-align: right;
+}
+
+.table-block a {
+  color: var(--color-accent);
+}
+
+.table-block strong {
+  font-weight: 600;
+}
+
+.table-block code:not(.hljs) {
+  padding: 2px 6px;
+  background: var(--color-bg);
+  border-radius: var(--radius-button);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
 }
 
 /* highlight.js tokens → Figma code colors */

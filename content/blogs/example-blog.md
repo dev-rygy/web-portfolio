@@ -51,6 +51,16 @@ public class Example : MonoBehaviour
 }
 ```
 
+Any Markdown table gets the same frame as a code block. Wrap it in `:::table` to give it a label
+and caption (both optional). Inside `:::text-code`, a table sits in the code column instead.
+
+:::table {label="Weapon stats" caption="Use :--- , :---: or ---: in the divider row to align a column."}
+| Weapon  | Damage | Notes                       |
+| :------ | -----: | :-------------------------- |
+| Pistol  | 12     | Infinite ammo               |
+| Shotgun | 8 × 6  | Pellets spread in a 30° cone |
+:::
+
 :::callout
 **Callout:** use this for a key takeaway or a note you want to stand out.
 :::

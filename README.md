@@ -45,7 +45,7 @@ doesn't match a file, and so on.
 
 ### Writing posts (Markdown blocks)
 
-Blog and shader bodies are Markdown, plus a few layout blocks. All of them are shown on
+Blog and shader bodies (and project feature bodies) are Markdown, plus a few layout blocks. All of them are shown on
 `/elements.html` and used in `content/blogs/example-blog.md`.
 
 ````md
@@ -74,7 +74,18 @@ clip(noise - _Cutoff);
 :::callout
 A highlighted takeaway.
 :::
+
+:::table {label="Weapon stats" caption="Optional caption"}
+| Weapon | Damage |
+| :----- | -----: |
+| Pistol | 12     |
+:::
 ````
+
+Any Markdown table is drawn in the same frame as a code block (`// TABLE` label by default);
+`:::table` only adds the label and caption. Tables follow the code block's layout rules: full
+width in posts, beside the text inside `:::text-code`, and docked beside or below the media in
+project features.
 
 ### Media
 

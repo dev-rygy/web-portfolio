@@ -140,6 +140,15 @@ export function codeBlock({ code, lang, label, caption, maxLines = CODE_BLOCK_MA
 </figure>`;
 }
 
+/** Table Block — the Code Block's frame around a table. `table` must already be rendered `<table>` HTML. */
+export function tableBlock({ table, label, caption }) {
+  return html`<figure class="table-block">
+  <figcaption class="table-block__label">// ${label || 'TABLE'}</figcaption>
+  <div class="table-block__scroll">${raw(table)}</div>
+  ${caption ? html`<p class="table-block__caption">${caption}</p>` : ''}
+</figure>`;
+}
+
 /** Input Field — label + white field (input or textarea). */
 export function inputField({ id, name, label, placeholder, type = 'text', multiline = false, autocomplete }) {
   const control = multiline
@@ -153,20 +162,20 @@ export function inputField({ id, name, label, placeholder, type = 'text', multil
 </div>`;
 }
 
-/** Next/Prev Bar — walks a collection; either side may be missing. */
+/** Next/Prev Bar — walks a collection; either side may be missing. Each label names the page its button goes to. */
 export function nextPrev({ prev, next, noun = 'TOPIC' }) {
   if (!prev && !next) return '';
   return html`<nav class="next-prev" aria-label="More ${noun.toLowerCase()}s">
   <div class="container next-prev__inner">
     ${prev
       ? html`<div class="next-prev__item next-prev__item--prev">
-      <span class="next-prev__label">// PREV ${noun}</span>
+      <span class="next-prev__label">// ${prev.title}</span>
       ${button({ label: `← PREV ${noun}`, href: prev.href, variant: 'light', attrs: `title="${escapeHtml(prev.title)}"` })}
     </div>`
       : html`<span></span>`}
     ${next
       ? html`<div class="next-prev__item next-prev__item--next">
-      <span class="next-prev__label">// NEXT ${noun}</span>
+      <span class="next-prev__label">// ${next.title}</span>
       ${button({ label: `NEXT ${noun} →`, href: next.href, variant: 'primary', attrs: `title="${escapeHtml(next.title)}"` })}
     </div>`
       : ''}
