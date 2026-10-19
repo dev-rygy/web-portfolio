@@ -891,84 +891,111 @@ features:
       - TryGetCurrent3DRaycastHit returns the hit cached from the ray's latest update, which is where the arc was pointing when the player let go. Nothing is re-sampled after the stick snaps back to center.
       - We still send the move through TeleportationProvider.QueueTeleportRequest. The provider goes through LocomotionSystem, which grants exclusive access, so a teleport can't overlap a snap turn or continuous move in the same frame. We skipped TeleportationArea as the trigger and kept XRI's locomotion safety.
 
-    - title: One-Stick Teleport
-      size: sub
-      body: |
-        This is the main reason the custom rig exists. Here's the top of Update():
+  - title: Teleporting While Holding Items
+    size: sub
+    body: |
+      This is the main reason the custom rig exists. Here's the top of Update():
 
-        ```
-        void Update()
-        {
-            if (!_isActive)
-            {
-                // Idle: teleport ray off, grab ray fully restored
-                rightTpRayInteractor.enabled = false;
-                rightGrabRayInteractor.maxRaycastDistance = defaultGrabRayDistance;
-                rightGrabRayInteractor.gameObject.SetActive(true);
-                return;
-            }
+      ```csharp label=""
+      void Update()
+      {
+          if (!_isActive)
+          {
+              // Idle: teleport ray off, grab ray fully restored
+              rightTpRayInteractor.enabled = false;
+              rightGrabRayInteractor.maxRaycastDistance = defaultGrabRayDistance;
+              rightGrabRayInteractor.gameObject.SetActive(true);
+              return;
+          }
 
-            // Aiming a teleport: turn on the teleport ray
-            rightTpRayInteractor.enabled = true;
+          // Aiming a teleport: turn on the teleport ray
+          rightTpRayInteractor.enabled = true;
 
-            // Hide the grab ray WITHOUT disabling the interactor
-            rightGrabRayInteractor.maxRaycastDistance = 0;
+          // Hide the grab ray WITHOUT disabling the interactor
+          rightGrabRayInteractor.maxRaycastDistance = 0;
 
-            // Only fully switch off the grab ray if the hand is empty
-            if (rightGrabRayInteractor.interactablesSelected.Count <= 0)
-            {
-                rightGrabRayInteractor.gameObject.SetActive(false);
-            }
+          // Only fully switch off the grab ray if the hand is empty
+          if (rightGrabRayInteractor.interactablesSelected.Count <= 0)
+          {
+              rightGrabRayInteractor.gameObject.SetActive(false);
+          }
 
-            // ...teleport logic from above
-        }
-        ```
+          // ...teleport logic from above
+      }
+      ```
 
-        There are two ways to "turn off" an XRRayInteractor, and they behave very differently:
+      There are two ways to "turn off" an XRRayInteractor, and they behave very differently:
 
-        :::table {label="Turning Off The Grab Ray"}
-        | Approach | What happens to a held object |
-        | :----- | :----- |
-        | `gameObject.SetActive(false)` or `enabled = false` | The interaction manager unregisters the interactor and its selection ends. **The object drops.** |
-        | `maxRaycastDistance = 0` | The interactor stays registered and keeps its selection. The ray has zero length, so it finds no hover targets and can't grab anything new. **The object stays in hand.** |
-        :::
-        
-        The zero-length trick also hides the line. I checked the XRI source: XRInteractorLineVisual builds its line from the interactor's own sample points, and its Line Length setting can only shorten that line, never extend it. A zero-length ray draws a zero-length line.
-        So the rule is: if the hand is empty, switch the grab ray off completely; if it's holding something, mute it. Players can pick up a part, walk it across the room in a few teleports, and put it down, which is exactly what the stock rig prevented.
+      :::table {label="Turning Off The Grab Ray"}
+      | Approach | What happens to a held object |
+      | :----- | :----- |
+      | `gameObject.SetActive(false)` or `enabled = false` | The interaction manager unregisters the interactor and its selection ends. **The object drops.** |
+      | `maxRaycastDistance = 0` | The interactor stays registered and keeps its selection. The ray has zero length, so it finds no hover targets and can't grab anything new. **The object stays in hand.** |
+      :::
+      
+      The zero-length trick also hides the line. I checked the XRI source: XRInteractorLineVisual builds its line from the interactor's own sample points, and its Line Length setting can only shorten that line, never extend it. A zero-length ray draws a zero-length line.
+      So the rule is: if the hand is empty, switch the grab ray off completely; if it's holding something, mute it. Players can pick up a part, walk it across the room in a few teleports, and put it down, which is exactly what the stock rig prevented.
 
-    - title: One-Stick Teleport
-      size: sub
-      body: |
-        The grab rays use Force Grab, so grabbed objects snap to the controller. Without extra handling, the placeholder hand and the ray's line stayed visible on top of whatever the player was holding. XRI has a Hide Controller On Select option, but it hides the controller's assigned model. Our hands are nested prefabs under the model parent, and model is unassigned, so the built-in option had nothing to hide.
-        The fix listens to the grip action on each hand:
+  - title: Hiding the hand and line on grab
+    size: sub
+    body: |
+      The grab rays use Force Grab, so grabbed objects snap to the controller. Without extra handling, the placeholder hand and the ray's line stayed visible on top of whatever the player was holding. XRI has a Hide Controller On Select option, but it hides the controller's assigned model. Our hands are nested prefabs under the model parent, and model is unassigned, so the built-in option had nothing to hide.
+      The fix listens to the grip action on each hand:
 
-        ```csharp label=""
-        private void OnRightHandSelect(InputAction.CallbackContext context)
-        {
-            StartCoroutine(rightGrabCo(context));
-        }
+      ```csharp label=""
+      private void OnRightHandSelect(InputAction.CallbackContext context)
+      {
+          StartCoroutine(rightGrabCo(context));
+      }
 
-        private IEnumerator rightGrabCo(InputAction.CallbackContext context)
-        {
-            // Give XRI a moment to resolve the selection first
-            yield return new WaitForSeconds(_grabTimeDelay); // 0.1s
+      private IEnumerator rightGrabCo(InputAction.CallbackContext context)
+      {
+          // Give XRI a moment to resolve the selection first
+          yield return new WaitForSeconds(_grabTimeDelay); // 0.1s
 
-            if (rightGrabRayInteractor.interactablesSelected.Count >= 0)
-            {
-                if (context.performed)          // grip squeezed
-                {
-                    rightGrabRayInteractor.maxRaycastDistance = 0;
-                    rightHandModel.SetActive(false);
-                }
-                else                            // grip released
-                {
-                    rightGrabRayInteractor.maxRaycastDistance = defaultGrabRayDistance;
-                    rightHandModel.SetActive(true);
-                }
-            }
-        }
-        ```
+          if (rightGrabRayInteractor.interactablesSelected.Count >= 0)
+          {
+              if (context.performed)          // grip squeezed
+              {
+                  rightGrabRayInteractor.maxRaycastDistance = 0;
+                  rightHandModel.SetActive(false);
+              }
+              else                            // grip released
+              {
+                  rightGrabRayInteractor.maxRaycastDistance = defaultGrabRayDistance;
+                  rightHandModel.SetActive(true);
+              }
+          }
+      }
+      ```
 
-        It uses the same `maxRaycastDistance = 0` trick: the line disappears but the selection survives.
+      It uses the same `maxRaycastDistance = 0` trick: the line disappears but the selection survives.
 
+  - title: Teleporting With Layers
+    size: sub
+    body: |  
+      Unity and XRI have two separate layer systems, and the teleport-anywhere bug came from mixing them up:
+      - Physics layers (Unity's 32 built-in layers) decide what a raycast can hit.
+      - XRI interaction layers decide which interactors can interact with which interactables.
+      The first fix restricted the teleport ray's interaction layers from Everything to Teleport. That wasn't enough on its own. Our manager doesn't wait for an interactable to be selected; it reads the raw physics hit. So any collider the arc touched was still a valid destination.
+      The actual fix was a new physics layer:
+
+      ```
+      # ProjectSettings/TagManager.asset (layers)
+        - Scenetransition   # 10
+        - Teleportable      # 11  ← new
+
+      # Right Teleport Ray → XRRayInteractor
+        m_RaycastMask:
+      -   m_Bits: 4294967295   # Everything
+      +   m_Bits: 2048         # 1 << 11 (Teleportable)
+
+      # Teleportation Area.prefab
+      - m_Layer: 2    # Ignore Raycast
+      + m_Layer: 11   # Teleportable
+      ```
+      
+      Now the teleport ray can only physically hit Teleportable geometry. If it hits something, the destination is valid by definition. If it hits nothing, the reticle turns red and releasing the stick does nothing. The grab rays get the same treatment in reverse: their mask is `UI | Grabbable (160)`, so they never target floors or scenery.
+      This met the third design goal. A level designer marks a floor as walkable by setting its layer to Teleportable. No components or interaction-layer setup are required.
+      The "head on the floor" bug.
 ---
