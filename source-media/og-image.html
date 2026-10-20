@@ -16,7 +16,6 @@
     --color-surface: #4d4d4d;
     --color-accent: #7bd565;
     --color-text: #ffffff;
-    --color-text-secondary: #9f9c9c;
   }
 
   * { box-sizing: border-box; margin: 0; }
@@ -87,14 +86,8 @@
     justify-content: center;
   }
 
-  .comment {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 26px;
-    color: var(--color-text-secondary);
-  }
-
   h1 {
-    margin: 10px 0 22px;
+    margin: 0 0 22px;
     font-size: 112px;
     font-weight: 800;
     line-height: 0.98;
@@ -132,16 +125,6 @@
     font-size: 19px;
     font-weight: 700;
   }
-
-  .url {
-    position: absolute;
-    left: 76px;
-    bottom: 40px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--color-accent);
-  }
 </style>
 </head>
 <body>
@@ -159,7 +142,6 @@
   <div class="accent-bar"></div>
 
   <div class="text">
-    <p class="comment">// Hello, I'm</p>
     <h1>Ryan<br>Carpenter<span class="caret"></span></h1>
     <p class="role">Gameplay Programmer &amp; Technical Artist</p>
     <div class="chips">
@@ -169,7 +151,5 @@
       <span class="chip">Shaders</span>
     </div>
   </div>
-
-  <p class="url">ryancarpenterpf.dev</p>
 </body>
 </html>
