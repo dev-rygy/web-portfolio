@@ -1,13 +1,15 @@
 // Homepage — Figma "Home Page" (8:3)
 
+import { mediaKind } from '../../lib/format.js';
 import { html, raw } from '../../lib/html.js';
 import { renderInline } from '../../lib/markdown.js';
 import { blogCard, projectCard } from '../components/cards.js';
 import { button, chip, sectionHeading, socialLinks } from '../components/ui.js';
 
 const LATEST_BLOG_COUNT = 8;
+const MAX_CAROUSEL_CLIPS = 6;
 
-function hero({ site, home, projects }) {
+function hero({ site, home }, featured) {
   return html`<section class="hero">
   <div class="container hero__inner">
     <div class="hero__intro">
@@ -19,23 +21,24 @@ function hero({ site, home, projects }) {
       </div>
       ${socialLinks(site.socials, 'icons')}
     </div>
-    ${carousel(home.carousel, projects)}
+    ${carousel(home.carousel, featured)}
   </div>
 </section>`;
 }
 
-function carousel(config = {}, projects) {
-  const clips = (config.clips ?? []).map((clip, index) => {
-    const project = projects.find((p) => p.slug === clip.project);
-    return {
-      src: clip.src,
-      poster: clip.poster || clip.src.replace(/\.(mp4|webm)$/i, '.jpg'),
-      start: Number(clip.start) || 0,
-      max: Number(clip.maxSeconds) || Number(config.maxSeconds) || 15,
-      url: project?.url ?? '',
-      title: clip.title || project?.title || `Clip ${index + 1}`,
-    };
-  });
+/** Hero carousel — the card video of each featured project (first 6 with an .mp4 thumbnail), title typed over it. */
+function carousel(config = {}, featured) {
+  const clips = featured
+    .filter((project) => mediaKind(project.thumbnail) === 'video')
+    .slice(0, MAX_CAROUSEL_CLIPS)
+    .map((project) => ({
+      src: project.thumbnail,
+      poster: project.poster || project.thumbnail.replace(/\.(mp4|webm|mov|m4v)$/i, '.jpg'),
+      start: 0,
+      max: Number(config.maxSeconds) || 15,
+      url: project.url,
+      title: project.title,
+    }));
   if (!clips.length) return '';
   const first = clips[0];
 
@@ -44,6 +47,7 @@ function carousel(config = {}, projects) {
     <video class="media__video" muted playsinline preload="metadata" poster="${first.poster}" aria-label="Project highlight reel">
       <source src="${first.src}" type="video/mp4">
     </video>
+    <p class="carousel__title paragraph-heading" aria-hidden="true"><span class="carousel__title-text">${first.title}</span><span class="carousel__cursor"></span></p>
   </div>
   <div class="carousel__controls" role="group" aria-label="Project carousel">
     ${clips.map(
@@ -129,7 +133,7 @@ export function homePage(ctx) {
     ? home.featured.map((slug) => projects.find((p) => p.slug === slug)).filter(Boolean)
     : projects.slice(0, 8);
 
-  return html`${hero(ctx)}
+  return html`${hero(ctx, featured)}
 ${cardSection({
   title: home.sections.projects,
   items: featured,

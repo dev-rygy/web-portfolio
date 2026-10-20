@@ -26,7 +26,8 @@ overview: |                             # keep every line indented two spaces, b
 
   A second paragraph works the same way.
 
-thumbnail: ""        # card media: an image (.jpg/.png/.webp) or a short silent .mp4 loop — blank = placeholder
+thumbnail: ""        # card media: an image (.jpg/.png/.webp) or a short silent .mp4 loop — blank = placeholder;
+                     # a featured project's .mp4 also plays in the homepage carousel
 poster: ""           # optional still frame shown before a video thumbnail starts
 video: ""            # Overview media on the project page: .mp4 path or a YouTube URL (blank = thumbnail)
 videoPoster: ""     # optional still frame for an .mp4 overview video

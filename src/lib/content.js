@@ -15,7 +15,6 @@ const COLLECTIONS = {
 const PROJECT_STATUSES = ['shipped', 'prototype', 'awaiting'];
 const FEATURE_SIZES = ['big', 'sub'];
 const MAX_FEATURED = 8;
-const MAX_CAROUSEL = 6;
 
 function readJson(root, file) {
   const full = path.join(root, 'content', file);
@@ -123,15 +122,6 @@ export function loadContent(root) {
   if (featured.length > MAX_FEATURED) fail('content/home.json', `"featured" can list at most ${MAX_FEATURED} projects`);
   for (const slug of featured) {
     if (!projectSlugs.has(slug)) fail('content/home.json', `"featured" lists unknown project "${slug}"`);
-  }
-
-  const clips = home.carousel?.clips ?? [];
-  if (clips.length > MAX_CAROUSEL) fail('content/home.json', `the carousel can hold at most ${MAX_CAROUSEL} clips`);
-  for (const clip of clips) {
-    if (!assetExists(clip.src)) fail('content/home.json', `carousel clip not found: ${clip.src}`);
-    if (clip.project && !projectSlugs.has(clip.project)) {
-      fail('content/home.json', `carousel clip "${clip.src}" links unknown project "${clip.project}"`);
-    }
   }
 
   for (const [file, entries] of [['experience.json', experience], ['education.json', education]]) {

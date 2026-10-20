@@ -158,6 +158,46 @@
   opacity: 0.6;
 }
 
+/* Project title docked top-left over the clip (Figma 2273:1207); js/carousel.js types and erases it */
+.carousel__title {
+  position: absolute;
+  top: 19px; /* 20px from the outer edge, inside the stage's 1px border */
+  left: 19px;
+  right: 19px;
+  color: var(--color-accent);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6); /* keeps it readable over bright footage */
+  pointer-events: none;
+}
+
+/* Heavy Vertical Bar — the same terminal cursor as the header name, sized to the title */
+.carousel__cursor {
+  display: inline-block;
+  width: 0.7em;
+  height: 1.2em;
+  margin-left: 0.15em;
+  vertical-align: -0.25em;
+  background: var(--color-accent);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+.carousel__title[data-state='holding'] .carousel__cursor {
+  animation: cursor-blink 1.06s steps(1, end) infinite;
+}
+
+.carousel__title[data-state='done'] .carousel__cursor,
+.carousel__title[data-state='static'] .carousel__cursor {
+  visibility: hidden;
+}
+
+@media (max-width: 700px) {
+  .carousel__title {
+    top: 11px;
+    left: 11px;
+    right: 11px;
+    font-size: var(--fs-body);
+  }
+}
+
 .carousel__controls {
   display: flex;
   align-items: center;

@@ -27,7 +27,7 @@ Everything you write lives in `content/`. You never need to touch `src/` to add 
 | A blog post | `content/blogs/<name>.md` | Copy `example-blog.md`. |
 | A shader | `content/shaders/<name>.md` | Copy `example-shader.md`. |
 | Homepage featured projects | `content/home.json` → `featured` | List up to 8 project file names (without `.md`) in the order you want. |
-| Homepage carousel | `content/home.json` → `carousel` | Up to 6 clips. See *Media* below. |
+| Homepage carousel | `content/home.json` → `featured` | Plays the card video (`.mp4` thumbnail) of the first 6 featured projects, with each project's title typed over it. Projects with an image thumbnail are skipped. |
 | Experience / Education | `content/experience.json`, `content/education.json` | One entry per job/school, most recent first. |
 | Engineering toolset | `content/toolset.json` | Add/remove chips in each group. |
 | Name, socials, footer, email, page intros | `content/site.json` | |
@@ -94,12 +94,10 @@ project features.
 - Card thumbnails can be an image **or** a short silent `.mp4` loop; videos only play while
   the card is on screen.
 - Video fields also accept a YouTube URL.
-- **Carousel clips and the header graphic** are compressed for the web from the originals in
+- **Overview videos and the header graphic** are compressed for the web from the originals in
   `source-media/`. Drop a new clip into `source-media/carousel/`, run `npm run media`
-  (needs [ffmpeg](https://ffmpeg.org)), then add it to `content/home.json`, for example
-  `{ "src": "/assets/video/carousel/my-clip.mp4", "project": "my-game", "start": 5 }`.
-  `project` makes the clip link to that project page; `start` and `maxSeconds` (default 15)
-  choose which part plays.
+  (needs [ffmpeg](https://ffmpeg.org)), then use `/assets/video/carousel/my-clip.mp4` as a
+  project's `video`.
 - **Card thumbnail videos** — put the full clip in `source-media/thumbnails/`, run
   `npm run media`, and use `/assets/video/thumbs/<name>.mp4` (an 8-second, small loop) as the
   project's `thumbnail`, with `/assets/video/thumbs/<name>.jpg` as its `poster`.

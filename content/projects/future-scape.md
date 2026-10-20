@@ -948,7 +948,8 @@ features:
           StartCoroutine(rightGrabCo(context));
       }
 
-      private IEnumerator rightGrabCo(InputAction.CallbackContext context)
+      private IEnumerator 
+       nbnhjm(InputAction.CallbackContext context)
       {
           // Give XRI a moment to resolve the selection first
           yield return new WaitForSeconds(_grabTimeDelay); // 0.1s
