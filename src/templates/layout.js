@@ -44,7 +44,7 @@ ${html`<html lang="en">
   <meta name="theme-color" content="#313131">
   <meta property="og:type" content="${type}">
   <meta property="og:site_name" content="${site.name}">
-  <meta property="og:title" content="${title || site.name}">
+  <meta property="og:title" content="${title || `${site.name} — ${site.role}`}">
   <meta property="og:description" content="${description || site.description}">
   <meta property="og:url" content="${url}">
   ${ogImageUrl ? html`<meta property="og:image" content="${ogImageUrl}">

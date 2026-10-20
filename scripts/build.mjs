@@ -93,6 +93,13 @@ function neighbours(items, index) {
   return { prev: toLink(items[index - 1]), next: toLink(items[index + 1]) };
 }
 
+/** Link-preview image: an explicit ogImage, else an image thumbnail, else the video poster frame. */
+function previewImage(item) {
+  if (item.ogImage) return item.ogImage;
+  if (/\.(png|jpe?g|webp)$/i.test(item.thumbnail ?? '')) return item.thumbnail;
+  return item.poster;
+}
+
 export async function build({ quiet = false } = {}) {
   const started = Date.now();
   const content = loadContent(ROOT);
@@ -141,7 +148,7 @@ export async function build({ quiet = false } = {}) {
       {
         title: project.title,
         description: excerpt(project.summary || project.description || project.body),
-        image: project.ogImage || (/\.(png|jpe?g|webp)$/i.test(project.thumbnail ?? '') ? project.thumbnail : undefined),
+        image: previewImage(project),
         type: 'article',
         nav: 'projects',
         pageClass: 'page-project',
@@ -158,7 +165,7 @@ export async function build({ quiet = false } = {}) {
         {
           title: item.title,
           description: excerpt(item.summary || item.description || item.body),
-          image: item.ogImage || (/\.(png|jpe?g|webp)$/i.test(item.thumbnail ?? '') ? item.thumbnail : undefined),
+          image: previewImage(item),
           type: 'article',
           nav,
           pageClass: `page-generic page-${kind}`,
