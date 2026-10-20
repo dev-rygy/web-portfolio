@@ -1,0 +1,1098 @@
+/* ==========================================================================
+   Page sections
+   ========================================================================== */
+
+/* ---- Prose (Markdown bodies, long descriptions) -------------------------- */
+.prose {
+  font-size: var(--fs-body-lg);
+  line-height: 1.6;
+  min-width: 0;
+}
+
+.prose > * + * {
+  margin-top: 1em;
+}
+
+.prose .paragraph-heading + * {
+  margin-top: 20px;
+}
+
+.prose a {
+  color: var(--color-accent);
+}
+
+.prose strong {
+  font-weight: 600;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.4em;
+}
+
+.prose li + li {
+  margin-top: 0.35em;
+}
+
+.prose code:not(.hljs) {
+  padding: 2px 6px;
+  background: var(--color-card);
+  border-radius: var(--radius-button);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+}
+
+.prose blockquote {
+  padding-left: 20px;
+  border-left: 3px solid var(--color-accent);
+  color: var(--color-text-secondary);
+}
+
+.prose img {
+  border-radius: var(--radius-media);
+  border: 1px solid var(--color-line);
+}
+
+.prose hr {
+  border: 0;
+  border-top: 2px dashed var(--color-line);
+}
+
+.paragraph-heading {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: var(--fs-card-title);
+  line-height: 1.3;
+}
+
+/* ---- Hero ---------------------------------------------------------------- */
+.hero {
+  padding-block: 80px;
+  border-bottom: 2px dashed var(--color-line);
+}
+
+.hero__inner {
+  display: flex;
+  align-items: flex-start;
+  gap: 64px;
+}
+
+.hero__intro {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+.hero__title {
+  font-weight: 800;
+  font-size: var(--fs-title);
+  line-height: 1.2;
+  color: var(--color-accent);
+}
+
+.hero__text {
+  font-size: var(--fs-body-lg);
+  line-height: 1.6;
+}
+
+.hero__text p + p {
+  margin-top: 1.6em;
+}
+
+.hero__text strong {
+  font-weight: 600;
+}
+
+.hero__carousel {
+  flex: 0 0 43%;
+  max-width: 753px;
+  min-width: 0;
+}
+
+@media (max-width: 1200px) {
+  .hero__inner {
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .hero__carousel {
+    flex: none;
+    width: 100%;
+    max-width: 900px;
+  }
+}
+
+@media (max-width: 700px) {
+  .hero {
+    padding-block: 48px;
+  }
+
+  .social-icons a {
+    font-size: 36px;
+  }
+}
+
+/* ---- Project Carousel ---------------------------------------------------- */
+.carousel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.carousel__stage {
+  --media-ratio: 753 / 380;
+}
+
+.carousel__stage.is-linked {
+  cursor: pointer;
+}
+
+.carousel__stage .media__video {
+  transition: opacity var(--duration-base);
+}
+
+.carousel__stage.is-loading .media__video {
+  opacity: 0.6;
+}
+
+/* Project title docked top-left over the clip (Figma 2273:1207); js/carousel.js types and erases it */
+.carousel__title {
+  position: absolute;
+  top: 19px; /* 20px from the outer edge, inside the stage's 1px border */
+  left: 19px;
+  right: 19px;
+  color: var(--color-accent);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6); /* keeps it readable over bright footage */
+  pointer-events: none;
+}
+
+/* Heavy Vertical Bar — the same terminal cursor as the header name, sized to the title */
+.carousel__cursor {
+  display: inline-block;
+  width: 0.7em;
+  height: 1.2em;
+  margin-left: 0.15em;
+  vertical-align: -0.25em;
+  background: var(--color-accent);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+.carousel__title[data-state='holding'] .carousel__cursor {
+  animation: cursor-blink 1.06s steps(1, end) infinite;
+}
+
+.carousel__title[data-state='done'] .carousel__cursor,
+.carousel__title[data-state='static'] .carousel__cursor {
+  visibility: hidden;
+}
+
+@media (max-width: 700px) {
+  .carousel__title {
+    top: 11px;
+    left: 11px;
+    right: 11px;
+    font-size: var(--fs-body);
+  }
+}
+
+.carousel__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.carousel__bar {
+  position: relative;
+  flex: 0 1 110px;
+  height: 15px;
+  padding: 0;
+  background: none;
+  border: 0;
+}
+
+.carousel__bar::before,
+.carousel__fill {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 3px;
+  margin-top: -1.5px;
+  border-radius: 2px;
+}
+
+.carousel__bar::before {
+  right: 0;
+  background: var(--color-chip);
+  transition: background-color var(--duration-fast);
+}
+
+.carousel__bar:hover::before,
+.carousel__bar:focus-visible::before {
+  background: var(--color-highlight);
+}
+
+.carousel__fill {
+  width: 0;
+  background: var(--color-accent);
+}
+
+.carousel__toggle {
+  position: relative;
+  flex: none;
+  width: 23px;
+  height: 25px;
+  padding: 0;
+  background: var(--color-card);
+  border: 0;
+  border-radius: 3px;
+}
+
+/* Playing → pause icon (two bars); paused → play triangle */
+.carousel__toggle::before,
+.carousel__toggle::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  width: 5px;
+  height: 15px;
+  background: var(--color-accent);
+}
+
+.carousel__toggle::before {
+  left: 5px;
+}
+
+.carousel__toggle::after {
+  left: 13px;
+}
+
+.carousel__toggle[aria-pressed='true']::before {
+  left: 7.5px;
+  top: 6.5px;
+  width: 9px;
+  height: 12px;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.carousel__toggle[aria-pressed='true']::after {
+  display: none;
+}
+
+/* ---- Experience / Education lists ---------------------------------------- */
+.entry-list {
+  width: 100%;
+}
+
+.entry {
+  display: grid;
+  grid-template-columns: 50px 250px 160px minmax(0, 1fr);
+  align-items: start;
+  column-gap: 48px;
+  row-gap: 8px;
+  padding-block: 24px;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.entry:last-child {
+  border-bottom: 0;
+}
+
+.entry__logo {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--color-logo-bg);
+  object-fit: contain;
+  padding: 5px;
+}
+
+.entry__logo--placeholder {
+  display: block;
+}
+
+.entry__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.entry__name {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.entry__role {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--color-text-secondary);
+}
+
+.entry__dates {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  white-space: nowrap;
+}
+
+.entry__text {
+  font-size: var(--fs-body);
+  line-height: 1.6;
+}
+
+@media (max-width: 1100px) {
+  .entry {
+    grid-template-columns: 50px minmax(0, 1fr);
+    column-gap: 24px;
+  }
+
+  .entry__dates,
+  .entry__text {
+    grid-column: 2;
+  }
+}
+
+/* ---- Engineering Toolset ------------------------------------------------- */
+.toolset {
+  display: flex;
+  gap: 64px;
+  width: 100%;
+}
+
+.toolset__intro {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  flex: 0 0 569px;
+  max-width: 34%;
+}
+
+.toolset__intro p {
+  font-size: var(--fs-body);
+  line-height: 1.6;
+}
+
+.toolset__groups {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.toolset__group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.toolset__label {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: var(--fs-meta);
+  color: var(--color-text-secondary);
+}
+
+@media (max-width: 1000px) {
+  .toolset {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .toolset__intro {
+    flex: none;
+    max-width: none;
+  }
+}
+
+/* ---- Homepage CTA -------------------------------------------------------- */
+.cta {
+  padding-block: 96px;
+  background: var(--color-surface);
+}
+
+.cta__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  text-align: center;
+}
+
+.cta__title {
+  max-width: 800px;
+  font-weight: 800;
+  font-size: var(--fs-cta);
+  line-height: 1.2;
+  color: var(--color-accent);
+}
+
+.cta .button-row {
+  justify-content: center;
+}
+
+/* ---- List pages (Projects / Shaders / Blog) ------------------------------ */
+.list-section {
+  padding-block: 40px;
+}
+
+.list-section__empty {
+  font-family: var(--font-mono);
+  color: var(--color-text-secondary);
+}
+
+/* ---- Contact ------------------------------------------------------------- */
+.contact-section {
+  padding-block: 77px;
+}
+
+.message-box {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1644px;
+  margin-inline: auto;
+  padding: 32px;
+  background: var(--color-card);
+}
+
+.message-box__title {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 1.125rem;
+}
+
+.message-box__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.message-box__row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 30px;
+}
+
+.message-box__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+}
+
+.message-box__status {
+  font-size: var(--fs-tiny);
+  color: var(--color-error);
+}
+
+.message-box__status.is-success {
+  color: var(--color-accent);
+}
+
+.message-box__response {
+  font-size: var(--fs-tiny);
+  color: var(--color-text-secondary);
+}
+
+/* Honeypot field for bots */
+.message-box__trap {
+  position: absolute;
+  left: -9999px;
+}
+
+@media (max-width: 700px) {
+  .contact-section {
+    padding-block: 32px;
+  }
+
+  .message-box {
+    padding: 20px;
+  }
+
+  .message-box__row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* ---- Project page -------------------------------------------------------- */
+.overview {
+  display: grid;
+  grid-template-columns: minmax(0, 753fr) minmax(0, 879fr);
+  align-items: center;
+  gap: clamp(40px, 6.4vw, 123px);
+  width: 100%;
+}
+
+.overview__showcase {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  min-width: 0;
+}
+
+/* Project page: text centred on the media alone, metrics 20px under the media
+   (Figma "Media and Text" row hugs 753 + 92 + 879). */
+.overview--split {
+  grid-template-rows: auto 1fr; /* text crosses the 1fr row, so only the media sizes row 1 */
+  align-items: start;
+  gap: 20px clamp(40px, 4.8vw, 92px);
+  max-width: 1724px;
+}
+
+.overview--split > .media {
+  grid-area: 1 / 1;
+}
+
+.overview--split > .metric-pane {
+  grid-area: 2 / 1;
+  justify-self: start;
+}
+
+/* Never shorter than the media (same column ratio), so short text centres on it
+   and long text starts level with it and runs down beside the metrics. */
+.overview__text {
+  grid-area: 1 / 2 / 3;
+  justify-self: stretch; /* aspect-ratio items otherwise shrink-to-fit */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  aspect-ratio: 879 / 380;
+  min-width: 0;
+}
+
+.overview--split:has(.media--embed) .overview__text {
+  aspect-ratio: 14064 / 6777; /* 16:9 embed in the 753fr column: (879 × 16) / (753 × 9) */
+}
+
+/* Media/text/metrics, then related blogs across the full width */
+.project-overview {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.project-overview .card-grid {
+  row-gap: 20px;
+}
+
+/* Figma "Feature Tab Panel" — tabs wrap onto extra rows when they don't fit */
+.feature-tabs {
+  width: 100%;
+  margin-top: 34px; /* Figma: 64px between the section heading and the tabs */
+}
+
+.feature-tabs__list {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Card-colored strip behind a wrapped row of tabs (sized by js/tabs.js) */
+.feature-tabs__fill {
+  position: absolute;
+  left: 0;
+  z-index: -1;
+  background: var(--color-card);
+  pointer-events: none;
+}
+
+.feature-tabs__tab {
+  min-height: 40px;
+  max-width: 100%;
+  padding: 7px 10px; /* 40px tall with the 26px line; long titles wrap on narrow screens */
+  border: 0;
+  border-radius: 5px 5px 0 0;
+  background: var(--color-surface);
+  font-family: var(--font-mono);
+  font-weight: 300;
+  font-size: var(--fs-card-title);
+  line-height: 26px; /* exactly 40px with the padding, so wrapped rows stack without seams */
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color var(--duration-base);
+}
+
+.feature-tabs__tab:hover {
+  color: var(--color-text);
+}
+
+.feature-tabs__tab[aria-selected='true'] {
+  background: var(--color-card);
+  color: var(--color-accent);
+  cursor: default;
+}
+
+.feature-tabs__tab:focus-visible {
+  outline-offset: -2px;
+}
+
+/* significance: important — a gold glint wipes across the tab text, and every other wipe ends in a sparkle.
+   With reduced motion both animations are cut short, leaving the resting style: plain gold text, no sparkle. */
+.feature-tabs__tab--important {
+  position: relative;
+  --shine-cycle: 4s;
+}
+
+.feature-tabs__label {
+  background: linear-gradient(105deg, var(--color-gold) 40%, var(--color-gold-shine) 50%, var(--color-gold) 60%) 100% 0 / 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: tab-shine var(--shine-cycle) ease-in-out infinite;
+}
+
+.feature-tabs__bling {
+  position: absolute;
+  top: 3px;
+  right: 2px;
+  width: 11px;
+  height: 11px;
+  background: var(--color-gold-shine);
+  clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
+  filter: drop-shadow(0 0 3px var(--color-gold));
+  transform: scale(0);
+  pointer-events: none;
+  animation: tab-bling calc(var(--shine-cycle) * 2) ease-out infinite;
+}
+
+/* Hovered or selected, an important tab behaves like the others (white on hover, green when selected);
+   the shine only plays while it sits unselected. */
+.feature-tabs__tab--important:hover .feature-tabs__label,
+.feature-tabs__tab--important[aria-selected='true'] .feature-tabs__label {
+  background: none;
+  color: inherit;
+  animation: none;
+}
+
+.feature-tabs__tab--important:hover .feature-tabs__bling,
+.feature-tabs__tab--important[aria-selected='true'] .feature-tabs__bling {
+  animation: none;
+}
+
+/* The glint crosses in the first 40% of each cycle, then rests */
+@keyframes tab-shine {
+  0% {
+    background-position: 100% 0;
+  }
+  40%,
+  100% {
+    background-position: 0 0;
+  }
+}
+
+/* Twice as long as the shine: pops right as every other glint reaches the end of the text */
+@keyframes tab-bling {
+  0%,
+  18% {
+    transform: scale(0) rotate(0deg);
+  }
+  22% {
+    transform: scale(1.15) rotate(45deg);
+  }
+  30%,
+  100% {
+    transform: scale(0) rotate(90deg);
+  }
+}
+
+.feature-tabs__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+  padding: 30px 25px;
+  background: var(--color-card);
+  box-shadow: var(--shadow-card);
+}
+
+.feature-tabs__panel[hidden] {
+  display: none;
+}
+
+/* The panel is card-colored, so code blocks and tables inside it use the page background to stand out */
+.feature-tabs__panel .code-block,
+.feature-tabs__panel .table-block {
+  background: var(--color-bg);
+}
+
+.feature-tabs__panel .table-block code:not(.hljs) {
+  background: var(--color-card);
+}
+
+.feature {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.feature__main {
+  --feature-gap: clamp(32px, 5.7vw, 109px);
+  display: grid;
+  grid-template-columns: minmax(0, 854fr) minmax(0, 747fr);
+  align-items: start;
+  gap: var(--feature-gap);
+}
+
+/* The media is first in the markup (so it can float, below) but sits in the right column */
+.feature__main > .feature__text {
+  grid-area: 1 / 1;
+}
+
+.feature__main > .feature__media {
+  grid-area: 1 / 2;
+}
+
+/* Text far taller than its media (js/features.js decides): the media floats right at its column width and the
+   text wraps under it. A code block or table never wraps: one that starts beside the media stays docked in the
+   left column for its whole length; one that starts below the media spans the full width. */
+.feature__main--wrap {
+  display: flow-root;
+}
+
+.feature__main--wrap > .feature__media {
+  float: right;
+  width: calc((100% - var(--feature-gap)) * 747 / 1601);
+  margin: 0 0 24px var(--feature-gap);
+}
+
+.feature__main--wrap > .feature__text {
+  display: block;
+}
+
+.feature__main--wrap > .feature__text > * + * {
+  margin-top: 24px; /* the column's flex gap */
+}
+
+.feature--text .feature__main--wrap > .feature__text > * + * {
+  margin-top: 16px;
+}
+
+/* Auto width lets a code block or table narrow beside the floated media instead of being pushed below it */
+.feature__main--wrap .code-block,
+.feature__main--wrap .table-block {
+  width: auto;
+}
+
+.feature__main--full {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.feature__text {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+/* All of a feature's media, stacked in the right column */
+.feature__media {
+  --media-ratio: 747 / 380;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+
+.feature__figure > a {
+  display: block;
+}
+
+.feature__figure figcaption {
+  margin-top: 10px;
+  font-size: var(--fs-meta);
+  color: var(--color-text-secondary);
+}
+
+.feature--text .feature__text {
+  gap: 16px;
+}
+
+/* Sub features flow two per row under their big feature */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px clamp(32px, 5.7vw, 109px);
+}
+
+.feature--text {
+  gap: 16px;
+}
+
+.feature--text .prose {
+  font-size: var(--fs-body-lg);
+}
+
+.related {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.related__label {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: var(--fs-card-title);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+}
+
+.reflection {
+  display: grid;
+  grid-template-columns: minmax(0, 475fr) minmax(0, 1023fr);
+  align-items: stretch;
+  gap: clamp(40px, 6.4vw, 123px);
+  width: 100%;
+}
+
+/* No image to dock beside the answers: they take the full width */
+.reflection--text-only {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.reflection__media {
+  --media-ratio: auto;
+  height: 100%;
+  min-height: 420px;
+}
+
+.reflection__qa {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.reflection__item {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media (max-width: 1100px) {
+  .overview,
+  .feature__main,
+  .reflection {
+    grid-template-columns: 1fr;
+  }
+
+  /* Stacked: text, then its media */
+  .feature__main > .feature__media {
+    grid-area: 2 / 1;
+  }
+
+  /* Stacked: media, metrics, then text */
+  .overview--split {
+    grid-template-rows: none;
+  }
+
+  .overview--split > .media,
+  .overview--split > .metric-pane,
+  .overview__text {
+    grid-area: auto;
+  }
+
+  .overview__text,
+  .overview--split:has(.media--embed) .overview__text {
+    aspect-ratio: auto;
+    margin-top: 20px;
+  }
+
+  .feature-tabs__panel {
+    gap: 48px;
+    padding: 24px 20px;
+  }
+
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .reflection__media {
+    height: auto;
+    min-height: 0;
+    --media-ratio: 16 / 9;
+  }
+}
+
+/* ---- Generic page (blogs / shaders) -------------------------------------- */
+.generic-body {
+  padding-block: 20px 64px;
+}
+
+.generic-body__content > * + * {
+  margin-top: 24px;
+}
+
+.generic-body__content > .block,
+.generic-body__content > .code-block,
+.generic-body__content > .table-block,
+.generic-body__content > .section-heading,
+.generic-body__content > * + .block {
+  margin-top: clamp(40px, 4vw, 72px);
+}
+
+.generic-body__content > .section-heading + * {
+  margin-top: 30px;
+}
+
+.generic-body__content > :first-child {
+  margin-top: 0;
+}
+
+.generic-body__content > p,
+.generic-body__content > ul,
+.generic-body__content > ol,
+.generic-body__content > blockquote,
+.generic-body__content > h3,
+.generic-body__content > h4 {
+  max-width: 1023px;
+  font-size: var(--fs-body-lg);
+  line-height: 1.6;
+}
+
+.block {
+  width: 100%;
+}
+
+.block--media-text {
+  display: grid;
+  grid-template-columns: minmax(0, 605fr) minmax(0, 1023fr);
+  align-items: center;
+  gap: clamp(32px, 6.4vw, 123px);
+}
+
+.block--media-right {
+  grid-template-columns: minmax(0, 1023fr) minmax(0, 605fr);
+}
+
+.block--media-right .block__media {
+  order: 2;
+}
+
+.block__media {
+  --media-ratio: 605 / 380;
+  min-width: 0;
+}
+
+.block--text-code {
+  display: grid;
+  grid-template-columns: minmax(0, 840fr) minmax(0, 890fr);
+  align-items: center;
+  gap: 30px;
+}
+
+.block__code {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.block--media {
+  --media-ratio: 16 / 9;
+}
+
+.block--media figcaption,
+.block--gallery figcaption {
+  margin-top: 10px;
+  font-size: var(--fs-meta);
+  color: var(--color-text-secondary);
+}
+
+.block--gallery {
+  --media-ratio: 4 / 3;
+  display: grid;
+  grid-template-columns: repeat(var(--gallery-cols, 2), minmax(0, 1fr));
+  gap: 24px;
+}
+
+.block--callout {
+  padding: 24px 32px;
+  background: var(--color-surface);
+  border-left: 4px solid var(--color-accent);
+}
+
+@media (max-width: 1100px) {
+  .block--media-text,
+  .block--media-right,
+  .block--text-code {
+    grid-template-columns: 1fr;
+  }
+
+  .block--media-right .block__media {
+    order: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .block--gallery {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- 404 ------------------------------------------------------------------ */
+.not-found {
+  padding-block: 80px;
+}
+
+.not-found__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+.not-found__code {
+  font-family: var(--font-mono);
+  font-size: var(--fs-body-lg);
+  color: var(--color-text-secondary);
+}
+
+/* ---- Elements (style guide) ---------------------------------------------- */
+.elements {
+  padding-block: 40px 80px;
+}
+
+.elements__section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-block: 40px;
+  border-bottom: 2px dashed var(--color-line);
+}
+
+.elements__item {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.elements__name {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--color-text-secondary);
+}
+
+.elements__name code {
+  color: var(--color-accent);
+}
+
+.elements__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.elements__note {
+  max-width: 900px;
+  color: var(--color-text-secondary);
+}

@@ -1,0 +1,406 @@
+/* ==========================================================================
+   Layout — container, header, footer, page sections
+   ========================================================================== */
+
+.container {
+  width: 100%;
+  max-width: calc(var(--content-max) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Sections separated by a dashed rule (Figma: 2px dashed Line Color) */
+.section {
+  padding-block: 20px;
+  border-bottom: 2px dashed var(--color-line);
+}
+
+.section--plain {
+  border-bottom: 0;
+}
+
+.section__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 30px;
+}
+
+/* Homepage stacks its sections with a 20px gap (Figma Home Page frame). */
+.page-home main {
+  gap: var(--section-gap);
+  padding-block: var(--section-gap);
+}
+
+/* --------------------------------------------------------------------------
+   Header — Figma "Page Header" (53:509)
+   -------------------------------------------------------------------------- */
+
+.site-header {
+  position: relative;
+  z-index: 20;
+  background: var(--color-surface);
+  border-block: 2px solid var(--color-surface);
+  box-shadow: var(--shadow-header);
+}
+
+.site-header__inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 655px) auto;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 24px;
+  height: var(--header-height);
+}
+
+.site-header__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-decoration: none;
+  min-width: 0;
+}
+
+.site-header__name {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  height: 29px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1.25rem;
+  line-height: 1.3;
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+
+.site-header__name-text {
+  min-height: 26px;
+}
+
+/* Heavy Vertical Bar — terminal cursor */
+.site-header__cursor {
+  flex: none;
+  width: 14px;
+  height: 29px;
+  background: var(--color-accent);
+}
+
+.site-header__cursor.is-blinking {
+  animation: cursor-blink 1.06s steps(1, end) infinite;
+}
+
+@keyframes cursor-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Hide the name until the typewriter starts (set by the inline head script) */
+.will-type .site-header__name-text {
+  visibility: hidden;
+}
+
+.site-header__role {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+/* Motion graphic: the looping clip clipped to the Figma parallelogram, with a noise overlay */
+.site-header__graphic {
+  position: relative;
+  width: 100%;
+  height: var(--header-height);
+  overflow: hidden;
+  clip-path: polygon(0 0, 81.9% 0, 100% 100%, 18.1% 100%);
+  background: var(--color-media-bg);
+}
+
+.site-header__video,
+.site-header__noise {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.site-header__video {
+  object-fit: cover;
+}
+
+.site-header__noise {
+  mix-blend-mode: screen;
+  opacity: 0.35;
+  pointer-events: none;
+  image-rendering: pixelated;
+}
+
+/* Nav — Figma "Nav Link" (Idle / Active) */
+.site-nav ul {
+  display: flex;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 116px;
+  height: 40px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: var(--fs-card-title);
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 7.63%;
+  right: 7.63%;
+  bottom: 0;
+  height: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.nav-link:hover::after,
+.nav-link:focus-visible::after,
+.nav-link.is-active::after {
+  transform: scaleX(1);
+}
+
+.site-header__menu {
+  display: none;
+}
+
+@media (max-width: 1500px) {
+  .nav-link {
+    width: auto;
+    padding-inline: 12px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .site-header__inner {
+    grid-template-columns: auto auto;
+  }
+
+  .site-header__graphic {
+    display: none;
+  }
+}
+
+/* Tablet / phone: hamburger menu */
+@media (max-width: 900px) {
+  .site-header__menu {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    padding: 10px;
+    background: transparent;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-button);
+  }
+
+  .site-header__menu span {
+    display: block;
+    height: 2px;
+    background: var(--color-accent);
+    transition: transform var(--duration-base) var(--ease-out), opacity var(--duration-fast);
+  }
+
+  .site-header__menu[aria-expanded='true'] span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .site-header__menu[aria-expanded='true'] span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .site-header__menu[aria-expanded='true'] span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  .site-nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: none;
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-line);
+    box-shadow: var(--shadow-header);
+  }
+
+  .site-nav.is-open {
+    display: block;
+  }
+
+  .site-nav ul {
+    flex-direction: column;
+    gap: 0;
+    padding: 8px var(--gutter) 16px;
+  }
+
+  .nav-link {
+    justify-content: flex-start;
+    width: 100%;
+    height: 52px;
+    padding-inline: 0;
+  }
+
+  .nav-link::after {
+    left: 0;
+    right: auto;
+    width: 96px;
+    transform-origin: left;
+  }
+
+  /* Without JS the menu button can't work, so show the links inline instead. */
+  html:not(.js) .site-header__menu {
+    display: none;
+  }
+
+  html:not(.js) .site-nav {
+    position: static;
+    display: block;
+    border: 0;
+    box-shadow: none;
+    background: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-header__role {
+    font-size: 0.625rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Footer — Figma "Footer" (60:1010)
+   -------------------------------------------------------------------------- */
+
+.site-footer {
+  position: relative;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-footer);
+  padding-block: 64px 48px;
+}
+
+.site-footer__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 48px;
+}
+
+.site-footer__about {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 400px;
+  max-width: 100%;
+}
+
+.site-footer__name {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.site-footer__blurb {
+  font-size: var(--fs-small);
+  line-height: 1.5;
+}
+
+.site-footer__contact,
+.site-footer__availability {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.site-footer__contact {
+  width: 300px;
+}
+
+.site-footer__availability {
+  width: 250px;
+}
+
+.site-footer__label {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: var(--fs-label);
+  color: var(--color-text-secondary);
+}
+
+.site-footer__email {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  text-decoration: none;
+}
+
+.site-footer__email:hover {
+  color: var(--color-accent);
+}
+
+.site-footer__location {
+  font-size: var(--fs-small);
+}
+
+.site-footer__status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: var(--fs-meta);
+}
+
+.site-footer__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-available);
+}
+
+.site-footer__note {
+  font-size: var(--fs-label);
+}
+
+.site-footer__bottom {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 48px;
+}
+
+@media (max-width: 900px) {
+  .site-footer__top {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .site-footer__about,
+  .site-footer__contact,
+  .site-footer__availability {
+    width: auto;
+  }
+
+  .site-footer__bottom {
+    justify-content: flex-start;
+  }
+}

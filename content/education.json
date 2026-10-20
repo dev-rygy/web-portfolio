@@ -1,0 +1,16 @@
+[
+  {
+    "logo": "/assets/logos/asu.png",
+    "name": "Arizona State University",
+    "role": "B.S. Computer Science",
+    "dates": "2022 - 2025",
+    "description": "Graduated Cum Laude on May of 2025. Led ASU’s Video Game Development Club from September 2024 - May 2025. Worked at ASU’s Next Lab as a XR research associate."
+  },
+  {
+    "logo": "/assets/logos/occ.png",
+    "name": "Orange Coast College",
+    "role": "A.S. Computer Science",
+    "dates": "2020 - 2022",
+    "description": "Graduated and transferred from OCC in May of 2022. Was a member of OCC’s Computer Science Club."
+  }
+]

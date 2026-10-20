@@ -1,0 +1,27 @@
+{
+  "title": "ENGINEERING TOOLSET",
+  "intro": "Engineered systems designed to run deterministically and maintain low memory footprints. Comfortable digging deep into low-level architectures as well as high-level visual scripting.",
+  "groups": [
+    {
+      "label": "LANGUAGES",
+      "items": ["C#", "C++", "HLSL", "Python", "JavaScript"]
+    },
+    {
+      "label": "TECH STACK",
+      "items": ["Unity (C#)", "Unreal (C++/Blueprints)", "MonoGame", "Visual Studio", "Blender", "Adobe", "Aseprite"]
+    },
+    {
+      "label": "SPECIALTIES",
+      "items": [
+        "Procedurally Generated Content (PCGs)",
+        "Shaders & Shader Graph",
+        "Multiplayer (NGO)",
+        "Unity VR",
+        "Custom Physics",
+        "Behavior Trees",
+        "Animations",
+        "Game Engine Tooling"
+      ]
+    }
+  ]
+}
