@@ -769,6 +769,25 @@
   color: var(--color-text-muted);
 }
 
+/* Phones: side by side, the two buttons run past the screen, so they stack, each full width */
+@media (max-width: 699px) {
+  .next-prev__inner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* The placeholder that holds PREV's spot when there is no previous page */
+  .next-prev__inner > span:empty {
+    display: none;
+  }
+
+  .next-prev__item,
+  .next-prev__item--next {
+    align-items: stretch;
+    margin-left: 0;
+  }
+}
+
 /* ---- Social links -------------------------------------------------------- */
 .social-icons {
   display: flex;
