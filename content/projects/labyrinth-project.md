@@ -30,6 +30,7 @@ engine: Unity 6
 platforms:
   - PC
 
+featuresComment: "// Systems that I've contributed to"
 features:
   - title: Blueprints
     size: big

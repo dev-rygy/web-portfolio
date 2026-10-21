@@ -34,6 +34,7 @@ engine: Unity
 platforms:
   - PC
 
+featuresComment: "// Systems that I've contributed to"
 features:
   - title: Gameplay
     size: big

@@ -124,6 +124,17 @@ function subFeatures(subs) {
   );
 }
 
+const DEFAULT_FEATURES_COMMENT = "// Systems that I've contributed to";
+
+/** Small comment under the "Technical Features" heading — `featuresComment` in the frontmatter; "" hides it. */
+function featuresHeading(project) {
+  const comment = project.featuresComment === undefined ? DEFAULT_FEATURES_COMMENT : project.featuresComment;
+  return html`<div class="features-heading">
+    ${sectionHeading('TECHNICAL FEATURES')}
+    ${comment ? html`<p class="features-heading__comment">${comment}</p>` : ''}
+  </div>`;
+}
+
 /** Figma "Feature Tab Panel" (2222:1319) — one tab per big feature; js/tabs.js switches them. */
 function features(project) {
   const list = project.features ?? [];
@@ -141,7 +152,7 @@ function features(project) {
 
   return html`<section class="section">
   <div class="container section__body">
-    ${sectionHeading('TECHNICAL FEATURES')}
+    ${featuresHeading(project)}
     <div class="feature-tabs" data-tabs>
       <div class="feature-tabs__list" role="tablist" aria-label="Technical features">
         ${tabs.map(

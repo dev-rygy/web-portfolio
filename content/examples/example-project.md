@@ -44,6 +44,8 @@ platforms:
 relatedBlogs:        # blog file names (without .md), shown under the metrics in the Overview; leave empty to hide
   - example-blog
 
+featuresComment: "// Systems that I've contributed to"   # small comment under the "Technical Features" heading;
+                                                         # "" hides it (left out = this default text)
 features:            # "Technical Features" tab panel, in this order — leave empty to hide the section
   - title: Feature One
     size: big        # big = its own tab: green heading, text, media beside the text
