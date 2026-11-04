@@ -335,7 +335,7 @@ features:
     tabText: Lexgen
     size: big
     significance: important
-    media: /assets/images/labyrinth-images/room_walls.png
+    media: /assets/images/labyrinth-images/parser_thumbnail.mp4
     body: |
       The final pass of the algorithm parses all available blueprints using a process I call **Lexgen**. The parsing determines what rooms can be generated from an orientation and pattern of blueprints. The parsing system is based on a top-down recursive technique commonly used in compilers called **Recursive Descent Parsing**. 
 
@@ -734,7 +734,7 @@ features:
 reflection:
   image: "/assets/images/labyrinth-images/orbit_loop.mp4"
   qa:
-    - question: Backstory
+    - question: What started my obsession?
       answer: |
         I began building this algorithm back in 2023 for a club at my university. I was tasked with procedurally generating a 3D dungeon for an FPS we were making. It goes without saying that, between coursework and other obligations, a single semester wasn't enough time to finish a game of that scale. The game itself never came together, but it was enough to hook me on procedural generation. I picked the algorithm back up and kept developing it in 2024.
 

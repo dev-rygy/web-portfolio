@@ -9,17 +9,17 @@ roles:
   - Game Designer
 
 summary: >-
-  A virtual reality career explorer for primary and middle school students, built for ASU Enterprise
-  Technology. I created the pharmacy, manufacturing, and urban planning minigames.
+  A virtual reality career explorer for primary and middle school students, built for ASU Next Lab. 
+  I created the pharmacy, manufacturing, and urban planning minigames.
 description: >-
-  Developed for Enterprise Technology, this virtual reality career explorer targets primary and middle
+  Developed for ASU Next Lab, this virtual reality career explorer targets primary and middle
   school students. It features a variety of minigames exploring careers like pharmacology,
   manufacturing, forensic science and more. I built the pharmacy, manufacturing, and urban
   planning minigames.
 overview: |
-  Developed for [Enterprise Technology](https://tech.asu.edu/), *FutureScape* is a VR career exploration tool developed in Unity and lets middle schoolers try out careers across 15 STEAM industries through short, hands-on minigames. The project features interactive minigames, each attempting to emulate different careers such as pharmacology, manufacturing, forensic science, etc. Students played it at school visits, outreach programs and events.
+  Developed for [Next Lab](https://tech.asu.edu/), **FutureScape** is a VR career exploration tool developed in Unity and lets middle schoolers try out careers across 15 STEAM industries through short, hands-on minigames. The project features interactive minigames, each attempting to emulate different careers such as pharmacology, manufacturing, forensic science, etc. Students played it at school visits, outreach programs and events.
 
-  I worked on FutureScape as a student developer at ASU NextLab, on a team of five to eight developers. I specifically designed and developed the **pharmacy**, **manufacturing**, and **urban planning** minigames, plus the custom VR rig that every minigame uses. In the pharmacy minigame, players act as pharmacists, dispensing medications to patients within a time limit. The manufacturing minigame challenges players to build assembly lines and create products while managing a budget. The urban planning minigame involves designing a city and managing resources and budgeting effectively.
+  I worked on FutureScape as a programmer with a team of five to eight members. I specifically designed and developed the **pharmacy**, **manufacturing**, and **urban planning** minigames, plus the custom VR rig that every minigame uses. In the pharmacy minigame, players act as pharmacists, dispensing medications to patients within a time limit. The manufacturing minigame challenges players to build assembly lines and create products while managing a budget. The urban planning minigame involves designing a city and managing resources and budgeting effectively.
 
 thumbnail: /assets/video/thumbs/futurescape_thumbnail.mp4
 poster: /assets/video/thumbs/futurescape_thumbnail.jpg
@@ -364,4 +364,23 @@ features:
               CheckResources();
       }
       ```
+
+reflection:
+  image: "/assets/images/oddinary-farm/kaedim_indie_showcase.png"
+  qa:
+    - question: What accessibility issues came up when making VR for kids?
+      answer: |
+        Before we built a custom rig, we tried one with continuous movement, where players glide around freely with the joystick instead of teleporting. That let them hold objects and interact while moving, but it gave many of the students who playtested it motion sickness, and one student even threw up. Something had to change, and the custom rig was the answer. Teleporting avoids the mismatch between what your eyes see and what your body feels, which is what causes motion sickness, and my rig let players teleport while still holding objects, something the XR Interaction Toolkit's starter rig couldn't do.
+
+        Controls were the other hurdle. Many students were trying VR for the first time and only had a few minutes with each minigame, so the rig had to be learnable almost instantly. I reduced the right hand to one rule: push the stick forward to aim, let go to teleport, and push left or right to turn. As a result, we spent much less time explaining controls at events and more time watching students actually play.
+
+    - question: Complexity wasn't meant for this project
+      answer: |
+        I found making games for children to be much more difficult than making games for adults. Why? Wouldn't simpler games be easier to make? Building the features wasn't the issue; the gameplay was. We prototyped every minigame, and every one of them changed because it was too complex. The games were also meant to be played in short sessions at events, which meant cutting even more. The minigame with the largest cut was **Urban Planning**, which I built. Its resource cascade, where each working building's output could power the next, was cut not because the system didn't work, but because it was too hard for kids to understand. In the end, the game became a simple city-builder sandbox where players could build freely without managing resources.
+
+        It was a humbling lesson in designing for your audience instead of for yourself but it's also a nessessary one. A system can be technically solid and still be the wrong choice if players can't follow it.
+
+    - question: What would I change?
+      answer: |
+        Our team would have benefited heavily from more thorough design meetings with clear feedback loops and regular QA. Many of our cuts only became obvious once students played the games, and by then the systems were already built. The resource cascade in Urban Planning, for example, was fully working before a playtest showed it was too complex. Testing rough paper or greybox versions with kids earlier could have prevented many of the late changes and large cuts across the minigames.
 ---

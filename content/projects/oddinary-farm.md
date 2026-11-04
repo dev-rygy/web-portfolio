@@ -37,7 +37,7 @@ platforms:
 featuresComment: "// Systems that I've contributed to"
 features:
   - title: Steam Lobbies & Invites
-    tabText: Multiplayer
+    tabText: Peer-To-Peer Multiplayer
     size: big
     significance: important
     media: /assets/images/oddinary-farm/gameplay_2.loop.mp4
@@ -229,14 +229,22 @@ reflection:
   qa:
     - question: What was my role in this project?
       answer: |
-        I hopped on this project back in August of 2025. A very good friend of mine was the director of the game and decided to make me an associate director due to my previous experience working with games. As associate director I handled reviewing design documentation, making tasks for developers and artists, and overseeing codebase changes through Git. In addition to this responsibility I also programmed some systems including the mounting system, procedural generation, UI, and some aspects of the lobby system. I also helped pitch the game at **Kaedim Indie Showcase**, an event at 2026 GDC, which ended up winning an award for best pitch.
+        I joined this project in August 2025. A close friend of mine was the game's director and brought me on as associate director because of our prior experience making games together. As a director, I reviewed design documentation, created tasks for developers and artists, and oversaw changes to the codebase through Git. 
+        
+        On top of that, I programmed several systems myself that included networking, procedural generation systems, UI, and parts of the Steam lobby and invite flow. 
+        
+        I also helped pitch the game at the **Kaedim Indie Showcase** at GDC 2026, where it won **Best Presentation**.
 
-    - question: What did I learn
+    - question: What did I learn?
       answer: |
-        This was my first large-scale project where real stakes were involved. I took my role seriously and organized design meetings and tasks for developers alike. My biggest takeaway was **learning to do what was best for the game** not just what looked good to me. This was also my first introduction to multiplayer programming which became a core personal interest.
+        This was my first large-scale project with real stakes: an open playtest on Steam, 400+ wishlists, and a pitch at GDC. I took my role seriously, organizing design meetings and keeping developers supplied with clear tasks. My biggest takeaway was **learning to do what was best for the game**, not just what looked good to me. In practice, that meant prioritizing what players would actually feel, like fixing broken Steam invites before the open playtest, over whatever was most interesting to build.
 
-    - question: What would I change.
+        This was also my first introduction to multiplayer programming, which has since become a core personal interest. Networking forces you to think about every system from more than one machine's point of view, whether that's who owns a mount or where the team's shared wallet lives, and I enjoyed that challenge more than I expected.
+
+    - question: What would I change?
       answer: |
-        With more time and experience, I would have decoupled more of the multiplayer code from the engine code. Since our game was peer-to-peer only aspects of the game that are essential for other client simulations should be sent over the network.
+        With more time and experience, I would have decoupled more of the multiplayer code from the core game code. Because the game is peer-to-peer with one player hosting, only the state other clients need to run their own simulation should be sent over the network. Everything else, like cosmetic effects and UI, can stay local.
+
+        World generation already worked this way: clients build the island from four synced seeds instead of receiving a quarter of a million tiles. Applying that same thinking to the rest of the game from the start would have cut down on network traffic and made each system easier to test on its own.
 ---
 

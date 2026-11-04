@@ -2,7 +2,7 @@
 title: Fishy Business
 genre: Fishing
 date: 2023-01-01
-dates: "2023"
+dates: Oct 2023 - Dec 2023
 status: prototype
 roles:
   - Team Lead
@@ -29,59 +29,14 @@ links:
 
 engine: GameMaker
 
-featuresComment: "// Systems that I've contributed to"
-features:
-  - title: Gameplay
-    size: big
-    significance: trivial
-    media: /assets/images/fishy-business-images/fishy_gameplay2.png
-    body: |
-      *Fishy Business* is a lively fishing game in which the player can freely explore, fish, sell their catches, and buy new gear. Starting in the "overworld," players explore a small lake area where they can fish and interact with *Fisher Frog* to sell and buy new gear. Players can upgrade their rod to increase the likelihood of catching rarer fish, improve their line to control tension more easily, and use better bait to raise the fish bite rate. Each fish is unique, with its own rarity and value — the rarer the fish, the more valuable it is to sell.
+reflection:
+  image: "/assets/images/fishy-business-images/fishy_gameplay2.png"
+  qa:
+    - question: Learning a new game engine and scripting language
+      answer: |
+        This project was made in **GameMaker**, an engine I had never touched before. GameMaker works nothing like Unity. Everything, from its interface to its scripting language (GML), was new to me. This was also before AI coding agents existed, so I couldn't lean on agentic programming to help build out features. With a deadline of just two months, the team had to learn the engine fast while keeping up with the project's scope.
 
-      :::gallery
-      ![Fishy Business screenshot](/assets/images/fishy-business-images/fishy_gameplay4.png)
-      ![Fishy Business screenshot](/assets/images/fishy-business-images/fishy_gameplay6.png)
-      ![Fishy Business screenshot](/assets/images/fishy-business-images/fishy_gameplay3.png)
-      ![Fishy Business screenshot](/assets/images/fishy-business-images/fishy_gameplay7.png)
-      :::
+        GameMaker's documentation was our biggest help. It's intuitive and easy to navigate, which made it quick to look up how something worked. We also kept the features simple: easy to implement, but still fun to play. Those two things, along with clearly defined roles, made it possible to get a playable prototype out by the due date.
 
-  - title: Functional UI
-    size: sub
-    body: |
-      Intuitive UI for navigating menus and in-game controls.
-
-  - title: Overworld
-    size: sub
-    body: |
-      The game is divided into two separate gameplay areas: an "overworld" for exploration, inventory management, and shopping, and a minigame that offers a fun gameplay loop for catching fish.
-
-  - title: Fishing Gameplay
-    size: sub
-    body: |
-      Mechanics for rod casting, line reeling, and catching fish. Features fish rarity, rod animations, a tension meter for reeling, and fish AI.
-
-  - title: Inventory System
-    size: sub
-    body: |
-      A modular, *Minecraft*-like system for equipping, swapping, organizing, and selling items, as well as managing fish catches.
-
-  - title: Special Fish Behavior
-    size: sub
-    body: |
-      Unique fish behaviors that influence swim speed, lure caution, and tension difficulty.
-
-  - title: Shop
-    size: sub
-    body: |
-      A shop where players can purchase items and add them to their inventory.
-
-  - title: Custom Artwork
-    size: sub
-    body: |
-      Original tileset artwork and level design created using [Aseprite](https://www.aseprite.org/), a pixel art software.
-
-  - title: Music and Sound
-    size: sub
-    body: |
-      Sounds found on free websites and mixed.
+        The experience also showed me how much of what I knew carried over. Game loops, collisions and object state work the same way in any engine, so once I mapped Unity's components and scripts onto GameMaker's objects and events, I could focus on learning the new syntax instead of relearning how to make a game. That gave me a lot more confidence picking up unfamiliar tools on later projects.
 ---

@@ -31,50 +31,192 @@ engine: Unity
 platforms:
   - Web
 
-featuresComment: "// Systems that I've contributed to"
+featuresComment: "// Systems that I've created and contributed to"
 features:
-  - title: Gameplay
+  - title: Wave System
     size: big
     significance: trivial
     media: /assets/images/rogue-nebula-images/nebula_gameplay.png
     body: |
-      The player begins by entering their name for a leaderboard entry; if a name is not selected, they are labeled "anonymous." When start is pressed, the player is thrust into battle immediately as endless waves of enemies barrage the screen. To survive, players must dodge incoming projectiles and retaliate with the weapons in their arsenal. To aid survival, players can use special abilities and select a wide array of weapons.
+      This game picks a hand-built enemy formation from a difficulty pool, promotes some ships to tougher variants, and moves to a harder pool every eight waves.
 
-      Every eight waves, the difficulty increases, with the hardest level starting after wave sixteen. Enemies continue to scale with the difficulty, keeping the game a challenging and rewarding bullet-hell experience. High scores are displayed for other players who open the game.
+      Four main scripts share the work. WaveManager owns the pools and the wave count, WavePool assets hold the content, each Wave prefab tracks its own ships, and AnnouncementUI tells the player what is coming.
 
-      :::gallery
-      ![Rogue Nebula gameplay](/assets/images/rogue-nebula-images/nebula_gameplay2.png)
-      ![Rogue Nebula gameplay](/assets/images/rogue-nebula-images/nebula_gameplay3.png)
-      ![Rogue Nebula title screen](/assets/images/rogue-nebula-images/nebula_title.jpg)
+      :::table {label="The Pieces"}
+      | Module | Type | Purpose |
+      | :----- | :----- | :----- |
+      | `WaveManager` | MonoBehaviour | Chooses the `Wave` from a `WavePool` based on difficulty and random chance. |
+      | `WavePool` | ScriptableObject | Set of prefabed `Waves` and variant spawn chances. |
+      | `Wave` | MonoBehaviour | Prefabs formations of enemy types. |
+      | `AnnoucementUI` | MonoBehaviour | Responds to event calls and updates UI text to match wave number and difficulty. |
       :::
 
-  - title: High Score System
+  - title: Data-Driven Wave System
     size: sub
-    body: |
-      The high score persists across playthroughs using Unity's Scriptable Object system and a JSON save format.
+    body: | 
+      Each enemy formation is a prefab: an empty `Wave` object whose children are the ships, already placed in formation. Formations are grouped into three `WavePool` ScriptableObjects, one per difficulty. A pool holds its list of wave prefabs and the odds of spawning elite variants, so a whole difficulty tier can be rebalanced in the Inspector without touching code.
 
-  - title: Player Abilities
-    size: sub
-    body: |
-      The player is given a small set of unique abilities. Players can use an "Evade" ability, providing brief invulnerability and extra speed, and the "Bubble Shield," granting extended invulnerability. Each ability has a cooldown timer displayed on the HUD that communicates when abilities will be available again.
+      ```csharp ref="WavePool.cs"
+      [CreateAssetMenu(fileName = "WavePool", menuName = "Wave Pool")]
+      public class WavePool : ScriptableObject
+      {
+          [Header("Wave Settings")]
+          [SerializeField] private WaveDifficulty waveDifficulty = 0;
+          [SerializeField] private List<GameObject> waves = new List<GameObject>();
 
-  - title: Enemy Variety
-    size: sub
-    body: |
-      The game includes four enemy types: a basic enemy that flies back and forth, shooting periodically; radial enemies that fire bullets in all directions; bomber enemies that drop fused bombs; and homing enemies that track and shoot at the player's position.
+          [Header("Varient Enemies")]
+          [SerializeField] public int varientMedChance = 0;
+          [SerializeField] public int varientHardChance = 0;
+          [SerializeField] public int varientMaxSpawn = 0;
 
-  - title: Enemy Variants
-    size: sub
-    body: |
-      Each enemy type has its own movement and attack patterns, plus variants that increase attack speed, movement speed, health, and fire rate as the difficulty of the game changes.
+          public GameObject RandomWaveSelect()
+          {
+              if (waves.Count <= 0)       // If no waves currently selected then return null
+                  return null;
 
-  - title: Dynamic Wave System
-    size: sub
-    body: |
-      The game reacts to the player's wave count. Every ten waves, new enemies are introduced, and more challenging variants of basic enemies appear.
+              int roll = Random.Range(0, waves.Count);
+              if (waves[roll])
+                  return waves[roll];
+              else
+                  return RandomWaveSelect();
+          }
+      }
+      ```
 
-  - title: Particle System and Shaders
+      `RandomWaveSelect()` picks a random slot and re-rolls if that slot was left empty in the Inspector, so a half-filled pool still works while formations are being built.
+
+  - title: Wave Loop
     size: sub
+    body: | 
+      `WaveManager` is a singleton that starts on the first pool and spawns the first wave as soon as the scene loads. Spawning runs in a coroutine: it waits `waveDelay`, fires the onWaveStart event with the current wave number, then instantiates a random formation from the active pool.
+
+      ```csharp ref="WaveManager.cs"
+      [Header("Events")]
+      [SerializeField] public UnityEvent<int> onWaveStart;
+
+      private void Start()
+      {
+          currentWavePool = wavePools[0];     // Start currentWavePool at first wave in list
+          SpawnWave();
+      }
+
+      public void SpawnWave()
+      {
+          StartCoroutine(SpawnWaveCo());
+      }
+
+      private IEnumerator SpawnWaveCo()
+      {
+          GameObject waveParent = GameObject.Find(WAVE_PARENT_NAME);
+
+          yield return new WaitForSeconds(waveDelay);
+          // Event for UI
+          onWaveStart?.Invoke(waveCounter);
+
+          GameObject wave = Instantiate(currentWavePool.RandomWaveSelect(), waveParent.transform);
+      }
+      ```
+
+      `onWaveStart` is a `UnityEvent<int>` connected in the Inspector, so the manager has no reference to any UI. In the main scene it is wired to the wave announcement, and other listeners can be added without changing this script.
+
+  - title: Difficulty
+    size: sub
+    body: | 
+      Each cleared wave increments the counter. When it reaches the next multiple of `changePoolAfterWaves` (set to 8 in the main scene), the manager switches to the next pool. On the last pool the check fails and the game stays at Hard for the rest of the run.
+
+      ```csharp ref="WaveManager.cs"
+      public void UpdateWaveCounter()
+      {
+          waveCounter++;
+          // changeWavePoolAfter * i = nextWavePoolChange
+          if (waveCounter >= changePoolAfterWaves * waveCountMult)
+          {
+              RaiseDifficulty();
+              waveCountMult++;
+          }
+      }
+
+      public void RaiseDifficulty()
+      {
+          // Check if we are not at the end of wavePools; otherwise, stay on last WavePool
+          if (((int)currentDifficulty + 1) < wavePools.Count)
+          {
+              currentDifficulty++;
+              currentWavePool = wavePools[((int)currentDifficulty)];
+          }
+      }
+      ```
+
+      :::table {label="Difficulty Selection"}
+      | Pool | Waves | Med Variant Chance | Hard Variant Chance | Variant Cap | 
+      | :----- | :----- | :----- | :----- | :----- |
+      | Easy | 1-7 | 10% | 0% | 1 |
+      | Medium | 8-15 | 35% | 5% | 2 |
+      | Hard | 16+ | 50% | 20% | 3 |
+      :::
+
+  - title: Ability System
+    size: big
+    significance: important
+    media: /assets/images/rogue-nebula-images/nebula_gameplay.png
     body: |
-      The game incorporates arcade-inspired hit and explosion particles, with voxel-based 3D effects and dynamic hit effects that change color based on the damaged entity.
+      I built the player ability system that ended up becoming a baseline system for many games to follow. Both sit on one small base class that handles cooldowns, sound and the HUD, so each ability only has to describe what it actually does.
+
+      Every ability inherits from `Ability`, a `MonoBehaviour` that lives on the Player prefab. Its Execute() method handles everything the abilities have in common:
+
+      - **Cooldown gate:** If the ability is still cooling down, Execute() returns true and stops there.
+      - **Feedback:** It plays the ability's startup sound through the AudioManager.
+      - **HUD Update:** It invokes onAbilityCooldown with the cooldown length, so the UI knows how long to animate.
+      - **Timer:** A coroutine clears the cooldown flag after abilityCooldown seconds.
+      
+      It also caches the Player, Rigidbody and `EntityHealth` components as protected fields, so subclasses can use them without looking anything up.
+
+      ```csharp ref="Ability.cs"
+      public class Ability : MonoBehaviour
+      {
+          [Header("Unity Events")]
+          [SerializeField] public UnityEvent<float> onAbilityCooldown;
+
+          [Header("Ability Cooldown")]
+          [SerializeField] private float abilityCooldown = 0f;
+          private bool abilityOnCooldown = false;
+
+          [Header("Sounds")]
+          [SerializeField] protected AudioClip abilityStartupSound;
+          [SerializeField] protected AudioClip abilityEndSound;
+
+          // Components
+          protected Player playerComponent;
+          protected Rigidbody rbComponent;
+          protected EntityHealth healthComponent;
+
+          private void Awake()
+          {
+              playerComponent = GetComponent<Player>();
+              healthComponent = GetComponent<EntityHealth>();
+              rbComponent = GetComponent<Rigidbody>();
+          }
+
+          public virtual bool Execute()       // overriden function to execute ability; return true if on cooldown, return false otherwise
+          {
+              if (abilityCooldown > 0 && abilityOnCooldown)
+                  return true;
+
+              AudioManager.instance?.PlaySFX(abilityStartupSound);
+
+              onAbilityCooldown?.Invoke(abilityCooldown);
+              StartCoroutine(CooldownCo());
+              return false;
+          }
+
+          private IEnumerator CooldownCo()
+          {
+              abilityOnCooldown = true;
+              yield return new WaitForSeconds(abilityCooldown);
+              abilityOnCooldown = false;
+          }
+      }
+      ```
+
+      *This structure evolved in later projects also implementing a `Tick()`, `Start()`, and `Exit()` function that all abilities would inherit.*
 ---
