@@ -315,7 +315,7 @@ features:
 
   - title: Delaunay Triangulation
     size: big
-    media: /assets/images/labyrinth-images/triangulation.loop.mp4
+    media: /assets/images/labyrinth-images/triangulation_showcase.mp4
     body: |
       Delaunay Triangulation takes a set of defined points and creates a mesh such that no vertex lies inside the circumcircle of a triangle in the mesh. That mesh can later be used as a graph for pathfinding. In 2D it's fairly simple, but in 3D it gets more complicated: instead of triangles we must use tetrahedra and find the circumsphere of each tetrahedron using the determinant. [This article](https://mathworld.wolfram.com/Circumsphere.html) helped me calculate those things.
 
@@ -523,7 +523,7 @@ features:
       ```
   - title: Pathfinding
     size: big
-    media: /assets/images/labyrinth-images/heuristic_showcase.loop.mp4
+    media: /assets/images/labyrinth-images/heuristic_showcase.mp4
     body: |
       Many pathfinding algorithms exist that could help connect blueprints together, but none are as fast and versatile as A*. Encapsulating A* into an operation, I can either connect two blueprints directly or pass in a graph and connect all of its nodes. A* returns all the positions needed to connect the blueprints, and from there I simply spawn new blueprints in their place.
 

@@ -70,7 +70,8 @@ function mediaStack(items) {
   if (!items.length) return '';
   return html`<div class="feature__media">
   ${items.map((item) => {
-    const shown = media({ src: item.src, alt: item.alt, poster: item.poster, controls: true });
+    // Feature videos play like GIFs: muted, looping, no controls, only while on screen (js/media.js).
+    const shown = media({ src: item.src, alt: item.alt, poster: item.poster, autoplay: true });
     const linked = item.gallery && /\.(png|jpe?g|webp|gif|avif)$/i.test(item.src)
       ? html`<a href="${item.src}" target="_blank" rel="noopener" aria-label="Open ${item.alt || 'image'} full size">${shown}</a>`
       : shown;
