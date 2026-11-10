@@ -614,7 +614,7 @@ features:
   - title: Command Line Interface
     tabText: CLI
     size: big
-    media: ""
+    media: /assets/images/labyrinth-images/cli_showcase.mp4
     body: |
       As my project grew larger, having a solid debugging system in place became essential. Procedural generation is already hard to debug — many errors are semantic, meaning it can be difficult to trace through code alone. That's what sparked the idea of building a CLI.
 

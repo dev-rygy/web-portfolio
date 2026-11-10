@@ -40,7 +40,7 @@ features:
     tabText: Peer-To-Peer Multiplayer
     size: big
     significance: important
-    media: /assets/images/oddinary-farm/gameplay_2.loop.mp4
+    media: /assets/images/oddinary-farm/multiplayer_showcase.mp4
     body: |
       Oddinary Farm is peer-to-peer co-op built on Unity Netcode for GameObjects and Facepunch Steamworks. One player hosts from their own PC, friends join through Steam, and all traffic runs over Steam Datagram Relay, so nobody forwards ports and players never see each other's IP addresses. On top of the team's networking layer, I built the lobby and invite flow that every player goes through to get into a game, in the open Steam playtest and at our events.
 
@@ -120,7 +120,7 @@ features:
     tabText: World Streaming
     size: big
     significance: important
-    media: /assets/images/oddinary-farm/oddfarm_5.jpg
+    media: /assets/images/oddinary-farm/world_stream_showcase.mp4
     body: |
       Every match is played on a fresh 500 × 500-tile island built from the team's layered Perlin noise maps, and none of it is saved to disk. I made that world work in multiplayer and run fast: every player generates the same island from a handful of synced seeds, and the world streams in chunks around each player. Streaming took mid-range machines from about 20 fps to about 60 fps.
 
@@ -158,7 +158,7 @@ features:
   - title: Object Pooling
     size: big
     significance: trivial
-    media: /assets/images/oddinary-farm/gameplay_1.loop.mp4
+    media: /assets/images/oddinary-farm/object_pool_showcase.mp4
     body: |
       Oddinary Farm creates and removes objects constantly: bullets every time someone fires, tiles and foliage as chunks stream, and item drops for every player in a session. Creating each one with `Instantiate` and removing it with `Destroy` caused garbage-collection stutter, and every networked spawn and destroy also sent a message to every client. I built the game's object pools, which switch finished objects off and hand them out again the next time something asks for that prefab.
 
@@ -201,7 +201,7 @@ features:
   - title: Shop
     size: big
     significance: trivial
-    media: /assets/images/oddinary-farm/gameplay_1.loop.mp4
+    media: /assets/images/oddinary-farm/shop_showcase.mp4
     body: |
       Crops drop coins into one wallet that the whole team shares, and the shop is where that money gets spent. I built the shop: buying items, buying in quantity, selling items back, and per-shop upgrades that unlock better stock. I also built the in-game HUD.
 
