@@ -39,7 +39,7 @@ features:
   - title: Custom VR Rig
     size: big
     significance: important
-    media: /assets/images/future_scape_images/main_hub_demo.png
+    media: /assets/images/future_scape_images/custom_rig_showcase.mp4
     body: |
       The XR Interaction Toolkit's starter rig makes carrying and moving mutually exclusive: grabbing something turns off teleporting on that hand, and starting a teleport drops whatever the hand is holding. It also juggles more movement modes than a first-time VR player can learn quickly. Four of us each prototyped a replacement, and mine became the standard rig for every FutureScape minigame. With it, students carry parts across a room in a few teleports, and we spent less time explaining controls at events.
 
@@ -137,7 +137,7 @@ features:
   - title: Manufacturing Minigame
     size: big
     significance: important
-    media: /assets/images/future_scape_images/manufacturing_demo.png
+    media: /assets/images/future_scape_images/manufacturing_showcase.mp4
     body: |
       The Manufacturing minigame drops a student onto an empty factory floor with $0 and one goal: build production lines that turn raw materials into products worth money. Students buy machines, snap them onto a grid, link them with conveyors and ship what comes out the end, and each sale pays for the next, more complex line, from $25 sodas up to $150 jet turbines. I designed and built the minigame: grid building, placement for VR and desktop, the machines and their recipes, and the economy.
 
@@ -240,7 +240,7 @@ features:
   - title: Pharmacy Minigame
     size: big
     significance: trivial
-    media: /assets/images/future_scape_images/pharm_demo.png
+    media: /assets/images/future_scape_images/pharmacy_showcase.mp4
     body: |
       The Pharmacy minigame turns a pharmacist's job into a two-minute race: read each patient's symptoms, prepare the right medication and hand it over before the clock runs out. I built the original game loop in 2023, including the medication system, pill bottles, patients and difficulty scaling; teammates later added the medicine guidebook, desktop tooltips and a reworked timer. The hardest parts were the pill-bottle physics and keeping the game easy for middle schoolers to follow.
 
@@ -329,7 +329,7 @@ features:
   - title: Urban Planning Minigame
     size: big
     significance: trivial
-    media: /assets/images/future_scape_images/urban_plan_demo.png
+    media: /assets/images/future_scape_images/urban_plan_showcase.mp4
     body: |
       The Urban Planning minigame lets students build a sci-fi city one tile at a time, in VR or at a desktop: they pick one of 19 buildings or four road pieces, and a see-through preview snaps to the grid, green when the tile is free and red when it's taken. I built the core in 2024: the scene, the building system, grid placement and removal, the preview, and a resource and happiness simulation that was cut after playtests showed it was too complex for middle schoolers. Teammates later added the guided tutorial and the paged build menu.
 
