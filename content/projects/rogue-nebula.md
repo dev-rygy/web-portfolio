@@ -36,7 +36,7 @@ features:
   - title: Wave System
     size: big
     significance: trivial
-    media: /assets/images/rogue-nebula-images/nebula_gameplay.png
+    media: /assets/images/rogue-nebula-images/rogue_gameplay_1.mp4
     body: |
       This game picks a hand-built enemy formation from a difficulty pool, promotes some ships to tougher variants, and moves to a harder pool every eight waves.
 
@@ -158,7 +158,7 @@ features:
   - title: Ability System
     size: big
     significance: important
-    media: /assets/images/rogue-nebula-images/nebula_gameplay.png
+    media: /assets/images/rogue-nebula-images/rogue_gameplay_2.mp4
     body: |
       I built the player ability system that ended up becoming a baseline system for many games to follow. Both sit on one small base class that handles cooldowns, sound and the HUD, so each ability only has to describe what it actually does.
 
