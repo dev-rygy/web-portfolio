@@ -29,6 +29,8 @@ links:
 engine: Unity 6
 platforms:
   - PC
+relatedBlogs:        # blog file names (without .md), shown under the metrics in the Overview; leave empty to hide
+  - parse-gen-blog
 
 featuresComment: "// Systems that I've contributed to"
 features:
@@ -331,13 +333,13 @@ features:
     body: |
       A major problem I faced was dealing with degenerate tetrahedra, which can occur when all four points are coplanar (the determinant is 0, which breaks the triangulation logic). I needed to ensure that at least one blueprint point used in a tetrahedron exists on a different floor than the other three to prevent this from happening. When a zone is completely flat (one floor), I can just use 2D Delaunay to connect the blueprints instead.
 
-  - title: Lexgen (Blueprint Parsing)
-    tabText: Lexgen
+  - title: ParseGen (Blueprint Parsing)
+    tabText: ParseGen
     size: big
     significance: important
     media: /assets/images/labyrinth-images/parser_thumbnail.mp4
     body: |
-      The final pass of the algorithm parses all available blueprints using a process I call **Lexgen**. The parsing determines what rooms can be generated from an orientation and pattern of blueprints. The parsing system is based on a top-down recursive technique commonly used in compilers called **Recursive Descent Parsing**. 
+      The final pass of the algorithm parses all available blueprints using a process I call **ParseGen**. The parsing determines what rooms can be generated from an orientation and pattern of blueprints. The parsing system is based on a top-down recursive technique commonly used in compilers called **Recursive Descent Parsing**. 
 
       ### Shape Data
       `ShapeData` is an object that essentially functions as a token for parsing. Generated blueprint cells are checked against each possible shape, the shapes that fit the blueprint structure perfectly are chosen to be generated. By generate I mean spawning the rooms that the shapes represent, each shape having a respective list of rooms. You can think of this method as similar to the old "Fitting Shapes In Their Correct Holes" game that toddlers play.

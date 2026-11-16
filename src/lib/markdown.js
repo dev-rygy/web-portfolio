@@ -82,6 +82,49 @@ function renderCode(token) {
   );
 }
 
+const CONTAINER_OPEN = /^:::([\w-]+)[ \t]*(\{[^\n]*\})?[ \t]*$/;
+const CONTAINER_CLOSE = /^:::[ \t]*$/;
+const FENCE = /^ {0,3}(`{3,}|~{3,})/;
+
+/**
+ * Match a `:::kind {attrs}` block at the start of src, up to its own closing `:::`.
+ * Containers can nest (e.g. :::table inside :::text-code), so inner opens and closes are counted.
+ * Lines inside fenced code blocks are ignored.
+ */
+function findContainer(src) {
+  const lines = src.split('\n');
+  const open = CONTAINER_OPEN.exec(lines[0]);
+  if (!open) return undefined;
+  let depth = 0;
+  let fence = null;
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i];
+    const fenceMatch = FENCE.exec(line);
+    if (fence) {
+      if (fenceMatch && fenceMatch[1][0] === fence[0] && fenceMatch[1].length >= fence.length) fence = null;
+      continue;
+    }
+    if (fenceMatch) {
+      fence = fenceMatch[1];
+      continue;
+    }
+    if (CONTAINER_OPEN.test(line)) {
+      depth++;
+    } else if (CONTAINER_CLOSE.test(line)) {
+      if (depth > 0) {
+        depth--;
+        continue;
+      }
+      // Include the closing line and any blank lines after it, as the old pattern did.
+      let end = i + 1;
+      while (end < lines.length && lines[end] === '' && end < lines.length - 1) end++;
+      const raw = lines.slice(0, end).join('\n') + (end < lines.length ? '\n' : '');
+      return { raw, kind: open[1], attrs: open[2] ?? '', text: lines.slice(1, i).join('\n') };
+    }
+  }
+  return undefined;
+}
+
 const containerExtension = {
   name: 'container',
   level: 'block',
@@ -89,17 +132,17 @@ const containerExtension = {
     return src.match(/^:::[\w-]/m)?.index;
   },
   tokenizer(src) {
-    const match = /^:::([\w-]+)[ \t]*(\{[^\n]*\})?[ \t]*\n([\s\S]*?)\n?:::[ \t]*(?:\n+|$)/.exec(src);
+    const match = findContainer(src);
     if (!match) return undefined;
     const token = {
       type: 'container',
-      raw: match[0],
-      kind: match[1],
-      attrs: parseAttrs(match[2] ?? ''),
-      text: match[3],
+      raw: match.raw,
+      kind: match.kind,
+      attrs: parseAttrs(match.attrs),
+      text: match.text,
       tokens: [],
     };
-    this.lexer.blockTokens(match[3], token.tokens);
+    this.lexer.blockTokens(match.text, token.tokens);
     return token;
   },
   renderer(token) {

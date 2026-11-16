@@ -39,7 +39,7 @@ export function blogCard(blog) {
   return html`<article class="card card--blog">
   ${showcase(blog, { title: blog.title })}
   <div class="card__header">
-    <h3 class="card__title"><a href="${blog.url}">Blog: ${blog.title}</a></h3>
+    <h3 class="card__title"><a href="${blog.url}">${blog.title}</a></h3>
     ${meta([blog.genre, blog.dates || formatDate(blog.date)])}
   </div>
   ${blog.summary ? html`<p class="card__text">${blog.summary}</p>` : ''}
