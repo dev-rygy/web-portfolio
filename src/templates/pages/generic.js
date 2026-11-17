@@ -1,4 +1,4 @@
-// Generic page for blogs and shaders — Figma "Generic Page" (180:1488)
+// Generic page for blogs — Figma "Generic Page" (180:1488)
 
 import { html, raw } from '../../lib/html.js';
 import { formatDate } from '../../lib/format.js';
@@ -12,13 +12,6 @@ function metricsFor(item, kind) {
       title: group.title,
       items: (group.items ?? []).map((i) => (typeof i === 'string' ? { text: i } : i)),
     }));
-  }
-  if (kind === 'shaders') {
-    return [
-      { title: 'Links', items: linkList(item.links).map((l) => ({ text: l.label, href: l.url })) },
-      { title: 'Language', items: item.language ? [{ text: item.language }] : [] },
-      { title: 'Type', items: item.type ? [{ text: item.type }] : [] },
-    ];
   }
   return [
     { title: 'Genre', items: item.genre ? [{ text: item.genre }] : [] },

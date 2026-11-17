@@ -1,12 +1,11 @@
-// Projects / Shaders / Blog list pages — Figma 53:482, 69:1552, 69:2331
+// Projects / Blog list pages — Figma 53:482, 69:2331
 
 import { html } from '../../lib/html.js';
-import { blogCard, projectCard, shaderCard } from '../components/cards.js';
+import { blogCard, projectCard } from '../components/cards.js';
 import { pageIntro } from '../components/ui.js';
 
 const LISTS = {
   projects: { grid: 'card-grid--3', render: (p) => projectCard(p, { size: 'large' }), empty: 'No projects yet.' },
-  shaders: { grid: 'card-grid--3', render: shaderCard, empty: 'No shaders yet.' },
   blogs: { grid: 'card-grid--4 card-grid--blog', render: blogCard, empty: 'No blog posts yet.' },
 };
 

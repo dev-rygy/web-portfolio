@@ -12,7 +12,6 @@ export function notFoundPage() {
     <div class="button-row">
       ${button({ label: 'HOME', href: '/', variant: 'primary' })}
       ${button({ label: 'PROJECTS', href: '/projects/', variant: 'light' })}
-      ${button({ label: 'SHADERS', href: '/shaders/', variant: 'light' })}
       ${button({ label: 'BLOG', href: '/blog/', variant: 'light' })}
     </div>
   </div>

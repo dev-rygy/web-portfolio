@@ -103,7 +103,7 @@ function previewImage(item) {
 export async function build({ quiet = false } = {}) {
   const started = Date.now();
   const content = loadContent(ROOT);
-  const { site, projects, blogs, shaders } = content;
+  const { site, projects, blogs } = content;
 
   // ---- Clean + static files ----------------------------------------------
   cleanDist();
@@ -128,7 +128,6 @@ export async function build({ quiet = false } = {}) {
 
   const lists = [
     { kind: 'projects', path: '/projects/', nav: 'projects', items: projects },
-    { kind: 'shaders', path: '/shaders/', nav: 'shaders', items: shaders },
     { kind: 'blogs', path: '/blog/', nav: 'blog', items: blogs },
   ];
   for (const list of lists) {
@@ -158,7 +157,7 @@ export async function build({ quiet = false } = {}) {
     );
   });
 
-  for (const [kind, items, nav] of [['blogs', blogs, 'blog'], ['shaders', shaders, 'shaders']]) {
+  for (const [kind, items, nav] of [['blogs', blogs, 'blog']]) {
     items.forEach((item, index) => {
       page(
         item.url,

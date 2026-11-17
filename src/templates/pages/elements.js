@@ -3,7 +3,7 @@
 
 import { html, raw } from '../../lib/html.js';
 import { highlight, renderMarkdown } from '../../lib/markdown.js';
-import { blogCard, projectCard, shaderCard } from '../components/cards.js';
+import { blogCard, projectCard } from '../components/cards.js';
 import {
   button,
   chip,
@@ -118,12 +118,12 @@ public class SomeClass
   private void SomeFunction() { }
 }`;
 
-export function elementsPage({ site, projects, blogs, shaders }) {
+export function elementsPage({ site, projects, blogs }) {
   const project = projects[0] ?? SAMPLE_PROJECT;
   return html`<section class="elements">
   <div class="container">
     <h1 class="hero__title">Elements</h1>
-    <p class="elements__note">Reference page of every reusable component on the site. It is not linked anywhere and is hidden from search engines. Class names are shown above each example so the markup can be copied; the Markdown blocks at the bottom are what you can use inside blog and shader posts.</p>
+    <p class="elements__note">Reference page of every reusable component on the site. It is not linked anywhere and is hidden from search engines. Class names are shown above each example so the markup can be copied; the Markdown blocks at the bottom are what you can use inside blog posts.</p>
 
     ${group(
       'Typography',
@@ -250,7 +250,6 @@ export function elementsPage({ site, projects, blogs, shaders }) {
         html`<div class="card-grid card-grid--3">${projectCard(project, { size: 'large' })}</div>`,
       ),
       blogs[0] ? item('Blog Card', '.card.card--blog', html`<div class="card-grid card-grid--4">${blogCard(blogs[0])}</div>`) : '',
-      shaders[0] ? item('Shader Card', '.card.card--shader', html`<div class="card-grid card-grid--3">${shaderCard(shaders[0])}</div>`) : '',
     )}
 
     ${group(

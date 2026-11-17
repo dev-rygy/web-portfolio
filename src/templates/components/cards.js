@@ -1,4 +1,4 @@
-// Cards — Figma "Card" component set (Project / Large Project / Blog / Shader, Idle + Hover).
+// Cards — Figma "Card" component set (Project / Large Project / Blog, Idle + Hover).
 // Hover/focus state (blurred thumbnail + "Learn More" button) is pure CSS.
 
 import { html } from '../../lib/html.js';
@@ -43,18 +43,5 @@ export function blogCard(blog) {
     ${meta([blog.genre, blog.dates || formatDate(blog.date)])}
   </div>
   ${blog.summary ? html`<p class="card__text">${blog.summary}</p>` : ''}
-</article>`;
-}
-
-export function shaderCard(shader) {
-  return html`<article class="card card--shader card--large">
-  ${showcase(shader, { title: shader.title })}
-  <div class="card__header">
-    <h3 class="card__title"><a href="${shader.url}">${shader.type || 'Shader'}: ${shader.title}</a></h3>
-    ${meta([shader.language, shader.dates || formatDate(shader.date)], { muted: true })}
-  </div>
-  ${shader.description ? html`<p class="card__text">${shader.description}</p>` : ''}
-  <hr class="card__separator">
-  ${iconLinks(shader.links)}
 </article>`;
 }

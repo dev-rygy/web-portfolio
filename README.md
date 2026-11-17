@@ -25,7 +25,6 @@ Everything you write lives in `content/`. You never need to touch `src/` to add 
 | --- | --- | --- |
 | A project | `content/projects/<name>.md` | Copy `example-project.md`. The file name becomes the URL (`/projects/<name>/`). |
 | A blog post | `content/blogs/<name>.md` | Copy `example-blog.md`. |
-| A shader | `content/shaders/<name>.md` | Copy `example-shader.md`. |
 | Homepage featured projects | `content/home.json` → `featured` | List up to 8 project file names (without `.md`) in the order you want. |
 | Homepage carousel | `content/home.json` → `featured` | Plays the card video (`.mp4` thumbnail) of the first 6 featured projects, with each project's title typed over it. Projects with an image thumbnail are skipped. |
 | Experience / Education | `content/experience.json`, `content/education.json` | One entry per job/school, most recent first. |
@@ -45,7 +44,7 @@ doesn't match a file, and so on.
 
 ### Writing posts (Markdown blocks)
 
-Blog and shader bodies (and project feature bodies) are Markdown, plus a few layout blocks. All of them are shown on
+Blog bodies (and project feature bodies) are Markdown, plus a few layout blocks. All of them are shown on
 `/elements.html` and used in `content/blogs/example-blog.md`.
 
 ````md

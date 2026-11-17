@@ -9,7 +9,6 @@ import { dateValue, sortValue } from './format.js';
 const COLLECTIONS = {
   projects: { dir: 'projects', route: '/projects/', required: ['title', 'date'] },
   blogs: { dir: 'blogs', route: '/blog/', required: ['title', 'date'] },
-  shaders: { dir: 'shaders', route: '/shaders/', required: ['title', 'date'] },
 };
 
 const PROJECT_STATUSES = ['shipped', 'prototype', 'awaiting'];
@@ -71,7 +70,7 @@ export function loadContent(root) {
   for (const name of Object.keys(COLLECTIONS)) {
     collections[name] = loadCollection(root, name);
   }
-  const { projects, blogs, shaders } = collections;
+  const { projects, blogs } = collections;
 
   const assetExists = (ref) => {
     if (!ref || /^https?:\/\//.test(ref)) return true;
@@ -137,5 +136,5 @@ export function loadContent(root) {
     throw error;
   }
 
-  return { site, home, experience, education, toolset, projects, blogs, shaders };
+  return { site, home, experience, education, toolset, projects, blogs };
 }
