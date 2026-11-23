@@ -58,6 +58,12 @@ Plain paragraphs are body text with **bold**, *italic*, [a link](#) and \`inline
 
 > A blockquote for pull quotes or citations.
 
+Inline math (\`$…$\`) sits in a sentence: a room has $a \\times r$ candidates, one per anchor $a$ and rotation $r$.
+
+$$
+\\text{cell} = \\text{anchor} + R^{-1}\\,(p - b)
+$$
+
 :::table {label="Example" caption="Optional caption under the table."}
 | Column | Description |
 | --- | --- |

@@ -36,9 +36,21 @@
 // sets its label and caption. Inside :::text-code, tables sit in the code column.
 //
 // `## Heading` renders as the green Section Heading; `### Heading` as a paragraph heading.
+//
+// Math is LaTeX, typeset with KaTeX at build time (no JavaScript runs in the browser):
+//
+//   Inline: the cell is $c = a + R^{-1}(p - b)$ in shape space.
+//
+//   $$
+//   \text{candidates} = a \times r
+//   $$
+//
+// Inline math needs no space just inside the dollars, and a closing `$` followed by a digit
+// doesn't count, so "$5 and $10" stays plain text. Write `\$` for a literal dollar sign.
 
 import { Marked, Renderer } from 'marked';
 import hljs from 'highlight.js';
+import katex from 'katex';
 import { codeBlock, media, sectionHeading, tableBlock } from '../templates/components/ui.js';
 import { escapeHtml } from './html.js';
 
@@ -198,9 +210,54 @@ const containerExtension = {
   },
 };
 
+/** Typeset TeX with KaTeX. Bad TeX stops the build with the offending source in the message. */
+function renderMath(tex, displayMode) {
+  try {
+    return katex.renderToString(tex.trim(), { displayMode, throwOnError: true, strict: 'ignore' });
+  } catch (error) {
+    throw new Error(`Could not render math ${displayMode ? '$$' : '$'}${tex.trim()}${displayMode ? '$$' : '$'}\n  ${error.message}`);
+  }
+}
+
+// `$$ … $$` starting a line, on one line or spread over several.
+const BLOCK_MATH = /^ {0,3}\$\$([\s\S]+?)\$\$[ \t]*(?:\n+|$)/;
+// `$…$` with no space just inside the dollars and no digit right after the closing one.
+const INLINE_MATH = /^\$(?![\s$])((?:\\[\s\S]|[^\\$])+?)(?<!\s)\$(?!\d)/;
+
+const blockMathExtension = {
+  name: 'blockMath',
+  level: 'block',
+  start(src) {
+    return src.match(/^ {0,3}\$\$/m)?.index;
+  },
+  tokenizer(src) {
+    const match = BLOCK_MATH.exec(src);
+    if (match) return { type: 'blockMath', raw: match[0], text: match[1] };
+  },
+  renderer(token) {
+    return `<div class="math-display">${renderMath(token.text, true)}</div>\n`;
+  },
+};
+
+const inlineMathExtension = {
+  name: 'inlineMath',
+  level: 'inline',
+  start(src) {
+    return src.indexOf('$') >= 0 ? src.indexOf('$') : undefined;
+  },
+  tokenizer(src) {
+    const match = INLINE_MATH.exec(src);
+    // A blank line ends a paragraph, so it can't sit inside inline math.
+    if (match && !/\n\s*\n/.test(match[1])) return { type: 'inlineMath', raw: match[0], text: match[1] };
+  },
+  renderer(token) {
+    return renderMath(token.text, false);
+  },
+};
+
 const marked = new Marked({
   gfm: true,
-  extensions: [containerExtension],
+  extensions: [containerExtension, blockMathExtension, inlineMathExtension],
   renderer: {
     code(token) {
       return renderCode(token);
@@ -244,7 +301,13 @@ export function extractMedia(source = '') {
 
 /** Render a Markdown document body. */
 export function renderMarkdown(source = '') {
-  return marked.parse(String(source));
+  try {
+    return marked.parse(String(source));
+  } catch (error) {
+    // marked appends a "please report this" line to every error; ours are content mistakes.
+    error.message = error.message.replace(/\s*Please report this to https:\/\/github\.com\/markedjs\/marked\.?\s*$/, '');
+    throw error;
+  }
 }
 
 /** Render a single line of Markdown (bold, links, code) without a wrapping <p>. */

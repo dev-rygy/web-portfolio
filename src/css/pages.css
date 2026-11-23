@@ -58,6 +58,43 @@
   border-top: 2px dashed var(--color-line);
 }
 
+/* ---- Math (KaTeX, typeset at build time) ---------------------------------- */
+/* KaTeX's default 1.21em looks oversized next to Inter; 1.1em keeps the x-heights close. */
+.katex {
+  font-size: 1.1em;
+}
+
+/* Inline math never breaks across lines in the middle of an expression. */
+.prose .katex {
+  white-space: nowrap;
+}
+
+/* Display equations: centered, scroll sideways on narrow screens instead of overflowing. */
+.math-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-block: 4px;
+  text-align: center;
+}
+
+.math-display .katex-display {
+  margin: 0;
+}
+
+/* A standalone equation is the point of its block, so it reads a step larger than inline math. */
+.math-display .katex {
+  font-size: 1.25em;
+}
+
+/* Inside a callout, an equation on its own sits left, in line with the callout text. */
+.block--callout .math-display {
+  text-align: left;
+}
+
+.block--callout .math-display .katex-display > .katex {
+  text-align: left;
+}
+
 .paragraph-heading {
   font-family: var(--font-mono);
   font-weight: 800;

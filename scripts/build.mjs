@@ -87,6 +87,19 @@ function concat(dir, files) {
     .join('\n');
 }
 
+/**
+ * KaTeX stylesheet + fonts for pages with math (see renderMarkdown), self-hosted from node_modules
+ * so they always match the version that typeset the HTML. Only .woff2 fonts are copied; every
+ * current browser uses them first.
+ */
+function copyKatex() {
+  const src = path.join(ROOT, 'node_modules', 'katex', 'dist');
+  write('vendor/katex/katex.min.css', fs.readFileSync(path.join(src, 'katex.min.css')));
+  for (const font of fs.readdirSync(path.join(src, 'fonts'))) {
+    if (font.endsWith('.woff2')) write(`vendor/katex/fonts/${font}`, fs.readFileSync(path.join(src, 'fonts', font)));
+  }
+}
+
 /** Neighbours in list order: prev = the item shown before it, next = the item after it. */
 function neighbours(items, index) {
   const toLink = (item) => (item ? { href: item.url, title: item.title } : null);
@@ -115,6 +128,7 @@ export async function build({ quiet = false } = {}) {
   const version = crypto.createHash('sha1').update(css).update(js).digest('hex').slice(0, 10);
   write('css/site.css', css);
   write('js/site.js', js);
+  copyKatex();
 
   // ---- Pages ---------------------------------------------------------------
   const pages = []; // { path, html, sitemap }

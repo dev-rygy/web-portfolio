@@ -81,6 +81,20 @@ A highlighted takeaway.
 :::
 ````
 
+Math is LaTeX, typeset with [KaTeX](https://katex.org/docs/supported) when the site builds:
+`$a \times r$` inline, or a `$$ … $$` block on its own lines for a centered equation (it works
+inside `:::callout` too). Prices like `$5` are left alone; write `\$` for a literal dollar sign.
+A typo in the TeX stops the build and shows the equation that failed. Pages with math load
+KaTeX's stylesheet; other pages don't.
+
+```md
+The cell is $c = \text{anchor} + R^{-1}(p - b)$.
+
+$$
+\text{origin} = b - R \cdot \text{anchor}
+$$
+```
+
 Any Markdown table is drawn in the same frame as a code block (`// TABLE` label by default);
 `:::table` only adds the label and caption. Tables follow the code block's layout rules: full
 width in posts, beside the text inside `:::text-code`, and docked beside or below the media in
