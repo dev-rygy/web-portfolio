@@ -8,7 +8,7 @@ roles:
   - Gameplay Programmer
 
 summary: >-
-  A Hellish-themed cooking game first built in 72 hours for Ludum Dare 50, then ported to iOS and Android
+  A Hell-themed cooking game first built in 72 hours for Ludum Dare 50, then ported to iOS and Android
   in Unity. Serve demons in Hell's most treacherous kitchen.
 description: >-
   First built in 72 hours with a small team for Ludum Dare Game Jam #50, then extended into a Unity build
@@ -44,7 +44,7 @@ reflection:
 
     - question: Primary Setbacks Before Release
       answer: |
-        The largest setback of turning a jam game into a real title was scope creep. As mentioned above, we wanted a full campaign running from the tutorial to the final boss (Satan), an endless mode to give players a reason to keep playing after finishing the campaign, and a shop where players could buy cosmetics with a secondary currency earned by reaching checkpoints in both modes. All of this, on top of polishing the game, stretched development to around five months, far beyond our original plan of just four weeks.
+        The largest setback in turning a jam game into a real title was scope creep. As mentioned above, we wanted a full campaign running from the tutorial to the final boss (Satan), an endless mode to give players a reason to keep playing after finishing the campaign, and a shop where players could buy cosmetics with a secondary currency earned by reaching checkpoints in both modes. All of this, on top of polishing the game, stretched development to around five months, far beyond our original plan of just four weeks.
 
         Each feature sounded small on its own, but together they multiplied the work of balancing, testing and polishing. If I did it again, I would lock the scope before writing any new code: define the smallest version worth releasing, ship that, and treat everything else as post-launch updates.
 

@@ -2,8 +2,8 @@
   "hero": {
     "greeting": "Hello, I’m Ryan Carpenter",
     "intro": [
-      "I’m a **Gameplay Programmer and Technical Designer** with a background in procedural programming, multiplayer, combat systems, and graphical programming.",
-      "I love making systems that feel impactful, rewarding, natural, and give clear feedback to the player. My goal is always to create gameplay that feels effortless on the surface, while being carefully engineered underneath."
+      "I’m a **Gameplay Programmer and Technical Designer** with a background in procedural generation, multiplayer, combat systems, and graphics programming.",
+      "I love making systems that feel impactful, rewarding, and natural, and that give clear feedback to the player. My goal is always to create gameplay that feels effortless on the surface, while being carefully engineered underneath."
     ]
   },
 
@@ -16,7 +16,7 @@
   "sections": {
     "projects": "FEATURED PROJECTS",
     "blogs": "LATEST BLOG POSTS",
-    "experience": "Experience",
+    "experience": "EXPERIENCE",
     "education": "EDUCATION"
   },
 

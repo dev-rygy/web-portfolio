@@ -17,7 +17,7 @@ description: >-
   manufacturing, forensic science and more. I built the pharmacy, manufacturing, and urban
   planning minigames.
 overview: |
-  Developed for [Next Lab](https://tech.asu.edu/), **FutureScape** is a VR career exploration tool developed in Unity and lets middle schoolers try out careers across 15 STEAM industries through short, hands-on minigames. The project features interactive minigames, each attempting to emulate different careers such as pharmacology, manufacturing, forensic science, etc. Students played it at school visits, outreach programs and events.
+  Developed for [Next Lab](https://tech.asu.edu/), **FutureScape** is a VR career exploration tool, built in Unity, that lets middle schoolers try out careers across 15 STEAM industries through short, hands-on minigames. The project features interactive minigames, each attempting to emulate different careers such as pharmacology, manufacturing, and forensic science. Students played it at school visits, outreach programs and events.
 
   I worked on FutureScape as a programmer with a team of five to eight members. I specifically designed and developed the **pharmacy**, **manufacturing**, and **urban planning** minigames, plus the custom VR rig that every minigame uses. In the pharmacy minigame, players act as pharmacists, dispensing medications to patients within a time limit. The manufacturing minigame challenges players to build assembly lines and create products while managing a budget. The urban planning minigame involves designing a city and managing resources and budgeting effectively.
 
@@ -46,7 +46,7 @@ features:
   - title: One-Stick Teleport
     size: sub
     body: |
-      I rebuilt the right hand around one rule: push the stick forward to aim, let go to teleport, push left or right to snap-turn. A custom Thumbstick Held action replaces XRI's stock teleport, turn and move actions. It only fires in the stick's North sector, so turning and aiming can never collide, and its canceled callback, which fires when the stick springs back to center, is the "let go" signal.
+      I rebuilt the right hand around one rule: push the stick forward to aim, let go to teleport, push left or right to snap-turn. A custom Thumbstick Held action replaces XRI's stock teleport, turn and move actions. It only fires in the stick's north sector, so turning and aiming can never collide, and its canceled callback, which fires when the stick springs back to center, is the "let go" signal.
 
       The input callbacks only set flags, and `Update` does the work. It reads where the arc was pointing when the player let go and hands the move to XRI's `TeleportationProvider` instead of moving the rig directly. The provider goes through XRI's locomotion system, which grants exclusive access, so a teleport can never overlap a snap turn in the same frame.
 
@@ -378,9 +378,9 @@ reflection:
       answer: |
         I found making games for children to be much more difficult than making games for adults. Why? Wouldn't simpler games be easier to make? Building the features wasn't the issue; the gameplay was. We prototyped every minigame, and every one of them changed because it was too complex. The games were also meant to be played in short sessions at events, which meant cutting even more. The minigame with the largest cut was **Urban Planning**, which I built. Its resource cascade, where each working building's output could power the next, was cut not because the system didn't work, but because it was too hard for kids to understand. In the end, the game became a simple city-builder sandbox where players could build freely without managing resources.
 
-        It was a humbling lesson in designing for your audience instead of for yourself but it's also a nessessary one. A system can be technically solid and still be the wrong choice if players can't follow it.
+        It was a humbling lesson in designing for your audience instead of for yourself, but it was also a necessary one. A system can be technically solid and still be the wrong choice if players can't follow it.
 
     - question: What would I change?
       answer: |
-        Our team would have benefited heavily from more thorough design meetings with clear feedback loops and regular QA. Many of our cuts only became obvious once students played the games, and by then the systems were already built. The resource cascade in Urban Planning, for example, was fully working before a playtest showed it was too complex. Testing rough paper or greybox versions with kids earlier could have prevented many of the late changes and large cuts across the minigames.
+        Our team would have benefited greatly from more thorough design meetings with clear feedback loops and regular QA. Many of our cuts only became obvious once students played the games, and by then the systems were already built. The resource cascade in Urban Planning, for example, was fully working before a playtest showed it was too complex. Testing rough paper or greybox versions with kids earlier could have prevented many of the late changes and large cuts across the minigames.
 ---

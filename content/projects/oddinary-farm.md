@@ -17,7 +17,7 @@ description: >-
   Facepunch. Players plant crops, build defenses, and explore a procedurally generated landscape. Made
   with Spring Rolls Studio, it has 400+ wishlists and won Best Presentation at the Kaedim Indie Showcase at GDC.
 overview: |
-  Oddinary Farm is an arcade-style co-op farming game built in Unity. The game combines classic farming mechanics with chaotic gameplay by juggling casual building with a tower defense aspect. The game is made by [Spring Rolls Studio](https://oddinaryfarm.com/about), a small team made up of college graduates. 
+  Oddinary Farm is an arcade-style co-op farming game built in Unity. The game combines classic farming mechanics with chaotic gameplay, blending casual building with tower defense. The game is made by [Spring Rolls Studio](https://oddinaryfarm.com/about), a small team made up of college graduates. 
   
   The lead programmer is Khoa Nguyen and I was the associate lead programmer. The game hosts peer-to-peer multiplayer utilizing Steamworks Facepunch and Unity's Netcode for GameObjects. The open playtest is out now on [Steam](https://store.steampowered.com/app/3848990/Oddinary_Farm/)!
 
@@ -170,7 +170,7 @@ features:
       - **Local pool:** runs on each machine for projectiles, terrain tiles, foliage, VFX and UI popups.
       - **Network pool:** runs on the server for item drops. It is registered with Netcode as an `INetworkPrefabInstanceHandler`, so when the server spawns a pooled drop, every client takes its copy from its own pool too.
 
-      The other hard part was making reused objects come back clean. Pooled objects implement spawn and despawn hooks that reset their own state, and the pool itself resets the Rigidbody, transform and parent when an object is returned.
+      Another hard part was making reused objects come back clean. Pooled objects implement spawn and despawn hooks that reset their own state, and the pool itself resets the Rigidbody, transform and parent when an object is returned.
 
   - title: Mount System
     size: big
@@ -231,7 +231,7 @@ reflection:
       answer: |
         I joined this project in August 2025. A close friend of mine was the game's director and brought me on as associate director because of our prior experience making games together. As a director, I reviewed design documentation, created tasks for developers and artists, and oversaw changes to the codebase through Git. 
         
-        On top of that, I programmed several systems myself that included networking, procedural generation systems, UI, and parts of the Steam lobby and invite flow. 
+        On top of that, I programmed several systems myself, including networking, procedural generation, UI, and parts of the Steam lobby and invite flow. 
         
         I also helped pitch the game at the **Kaedim Indie Showcase** at GDC 2026, where it won **Best Presentation**.
 

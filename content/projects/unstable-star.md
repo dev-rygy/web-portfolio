@@ -17,7 +17,7 @@ description: >-
   levels with dynamic objectives and challenging boss fights, with a full animated dialogue system, weapon
   and ability inventory, and varied enemy behaviors.
 overview: |
-  *Unstable Star* was developed in collaboration with the [Video Game Development Club](https://asu.campuslabs.com/engage/organization/vgdc) at Arizona State University. This action-packed, lighthearted adventure spans three unique levels and two challenging boss fights. Players play as a former Border Guard of the Intragalactic Coalition as he becomes entangled in a rebellion to save the galaxy.
+  *Unstable Star* was developed in collaboration with the [Video Game Development Club](https://asu.campuslabs.com/engage/organization/vgdc) at Arizona State University. This action-packed, lighthearted adventure spans three unique levels and two challenging boss fights. Players take control of a former Border Guard of the Intragalactic Coalition as he becomes entangled in a rebellion to save the galaxy.
 
   As the club's vice president and systems lead, I oversaw project management, task organization, and project scheduling.
 
@@ -41,7 +41,7 @@ features:
     significance: trivial
     media: /assets/images/unstable-star-images/wave_spawn.png
     body: |
-      The base code for the wave system in this project carried over from it's predecessor [Rogue Nebula](https://ryancarpenterpf.dev/projects/rogue-nebula/). Hand-built prefabed formations that fly in, settle into position and fight until the last ship is down. The moment a wave is cleared, the next one is rolled from a pool and sent in. I built the system from three small pieces connected by two global events, so new formations could be added as prefabs without touching code.
+      The base code for the wave system in this project carried over from its predecessor [Rogue Nebula](https://ryancarpenterpf.dev/projects/rogue-nebula/). Waves are hand-built, prefabbed formations that fly in, settle into position and fight until the last ship is down. The moment a wave is cleared, the next one is rolled from a pool and sent in. I built the system from three small pieces connected by two global events, so new formations could be added as prefabs without touching code.
 
       :::table {label="The pieces"}
       | Module | Type | Purpose |
@@ -52,10 +52,10 @@ features:
       | `EventData` | Static Events | `OnEnemyDeath` and `OnWaveComplete` carry every message between the other three. |
       :::
 
-  - title: Prefabed Waves
+  - title: Prefabbed Waves
     size: sub
     body: |
-      Each formation is an empty parent object with enemy prefabs placed as its children, arranged in the shape the wave should fly in. On Awake the wave walks its own children to build its enemy list. Designers can drag ships around inside the prefab and never keep a list in sync by hand.
+      Each formation is an empty parent object with enemy prefabs placed as its children, arranged in the shape the wave should fly in. On Awake the wave walks its own children to build its enemy list. Designers can drag ships around inside the prefab and never have to keep a list in sync by hand.
 
       ```csharp ref="Wave.cs"
       private void Awake()
@@ -119,9 +119,9 @@ features:
       :::table {label="Wave Pools"}
       | Act | Pool | Tier |
       | :----- | :----- | :----- |
-      | Act1 | `level1_pool` | Easy |
-      | Act2 | `level2_pool` | Medium |
-      | Act3 | `level3_pool` | Hard |
+      | Act 1 | `level1_pool` | Easy |
+      | Act 2 | `level2_pool` | Medium |
+      | Act 3 | `level3_pool` | Hard |
       :::
 
   - title: Wave Spawn Loop
@@ -171,7 +171,7 @@ features:
     significance: trivial
     media: /assets/images/unstable-star-images/unstable_gameplay2.png
     body: |
-      In addition to the player's guns, they can take one special ability into each level, chosen from a disk on the loadout screen. The base code for this system was carried over by it's predecessor [Rogue Nebula](https://ryancarpenterpf.dev/projects/rogue-nebula/). The **Phase Shift** ability makes the ship untouchable for a few seconds. The **Proximity Bomb** ability releases an expanding shockwave that damages anything it touches. Each ability has limited charges and its own cooldown. The system splits into three layers: data assets that designers tune in the inspector, an inventory that holds what the player equipped, and a component that carries out the effect.
+      In addition to their guns, players can take one special ability into each level, chosen from a disk on the loadout screen. The base code for this system was carried over from its predecessor [Rogue Nebula](https://ryancarpenterpf.dev/projects/rogue-nebula/). The **Phase Shift** ability makes the ship untouchable for a few seconds. The **Proximity Bomb** ability releases an expanding shockwave that damages anything it touches. Each ability has limited charges and its own cooldown. The system splits into three layers: data assets that designers tune in the inspector, an inventory that holds what the player equipped, and a component that carries out the effect.
 
       :::table {label="The pieces"}
       | Module | Type | Purpose |

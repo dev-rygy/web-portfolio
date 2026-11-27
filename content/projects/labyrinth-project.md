@@ -12,9 +12,9 @@ summary: >-
 description: >-
   The Labyrinth is an interconnected procedural dungeon generation algorithm built in Unity/C# that creates seamlessly joined, thematically distinct 3D areas without loading screens.
 overview: |
-  Procedural dungeon generation algorithm built in Unity/C# with the purpose of creating and linking seamlessly connected, thematically distinct areas into one contiguous map without teleporting or loading screens.
+  A procedural dungeon generation algorithm built in Unity/C# with the purpose of creating and linking seamlessly connected, thematically distinct areas into one contiguous map without teleporting or loading screens.
 
-  Most techniques used in the algorithm are fairly well known within the proc-gen community except for one feature. I first occupy grid space with marks I call **"Blueprints"** and then parse them later to create rooms of varying shape and size. This provides some variability to what can spawn between critical rooms, something I haven't seen in many rogue-like games that use similar techniques.
+  Most techniques used in the algorithm are fairly well known within the proc-gen community except for one feature. I first occupy grid space with marks I call **"Blueprints"** and then parse them later to create rooms of varying shape and size. This provides some variability to what can spawn between critical rooms, something I haven't seen in many roguelike games that use similar techniques.
 
   The algorithm was made in Unity 3D but can be rewritten to work in any game engine.
 
@@ -62,7 +62,7 @@ features:
 
       To prevent blueprints from spawning on top of other blueprints, a Dictionary is used. A C# dictionary has O(1) lookup time, cannot contain duplicates, and can allocate space dynamically. To prevent rooms from spawning on top of each other, blueprints house a flag called `Available` that tells the room parser whether or not to include the blueprint in its check. Finally, `EntryPointFlags` tell the room which doorways it needs to open. These flags are determined during the blueprint pass of the algorithm.
 
-      **Blueprint Operations** are individual instruction-set style units of execution that can generate Blueprints in a specific pattern. This not only fosters a more organically catered dungeon but also makes the generation easy to debug by stepping through each operation individually one-by-one.
+      **Blueprint Operations** are individual instruction-set style units of execution that can generate Blueprints in a specific pattern. This not only fosters a more organic, tailored dungeon but also makes the generation easy to debug by stepping through each operation one by one.
 
   - title: Blueprint Operations
     size: sub
@@ -75,7 +75,7 @@ features:
       ```csharp label="BlueprintOperation"
       public abstract class BlueprintOperation
       {
-          // DataID for is used strictly for debugging purposes.
+          // DataID is used strictly for debugging purposes.
           public string OperationID { get; protected set; }
 
           // Ports are the arguments and return values of operations.
@@ -217,7 +217,7 @@ features:
     significance: important
     media: /assets/images/labyrinth-images/blueprint_graph.png
     body: |
-      The **Blueprint Graph** determines the order of execution of each individual **Blueprint Operation**. Taking inspiration from *Unreal's Blueprint system*, the developer can mix and match operations in order to generate specific progression patterns in the dungeon. The operations responsible for generation are *Pathfinding*, *Random Placement*, and the *Drunkard's Walk*. Although, these generation patterns can be combined and expanded via set operations - *union*, *intersection*, and *difference*. There are also *random access* operations for even more variation. Generation patterns can be repeated via the *branch* and *jump* operations.
+      The **Blueprint Graph** determines the order of execution of each individual **Blueprint Operation**. Taking inspiration from *Unreal's Blueprint system*, the developer can mix and match operations in order to generate specific progression patterns in the dungeon. The operations responsible for generation are *Pathfinding*, *Random Placement*, and the *Drunkard's Walk*. However, these generation patterns can be combined and expanded via set operations - *union*, *intersection*, and *difference*. There are also *random access* operations for even more variation. Generation patterns can be repeated via the *branch* and *jump* operations.
 
       Right now, all nodes are hardcoded into a controller, though this feature would work perfectly with Unity's graphing toolkit in a future implementation. Below is the controller used to both store and execute operations. Operations can be stepped through by a specified `stepLength`, given via the `Advance()` function.
 
@@ -293,7 +293,7 @@ features:
     size: big
     media: /assets/images/labyrinth-images/zone_connection_showcase.loop.mp4
     body: |
-      One of the most important problems I set out to solve was a way to generate themed areas and connect them together in a seamless fashion, allowing the player to move back and forth between them. Alongside rogue-likes I'm also a huge fan of RPGs that can transport the player to different areas but also require them to come back to earlier areas for progression purposes. The concept of "Zones" helped me accomplish this.
+      One of the most important problems I set out to solve was a way to generate themed areas and connect them together in a seamless fashion, allowing the player to move back and forth between them. Alongside roguelikes, I'm also a huge fan of RPGs that can transport the player to different areas but also require them to come back to earlier areas for progression purposes. The concept of "Zones" helped me accomplish this.
 
       Zones connect to one another through intermediary zones I call "Connection Zones." These zones simply intersect their bounds with others and connect them via their own blueprint operations. In the clip, blue blueprints are part of the zone and purple ones are part of the connection zone.
 
@@ -311,7 +311,7 @@ features:
     size: sub
     media: ""
     body: |
-      Some zones may have few unique rooms, which means a small set of points for pathfinding. The resulting generation would be very simple and boring. To make the generation a bit more windy and organic, I place what I call "Divergent Rooms" to add more points to the pathfinding graph.
+      Some zones may have few unique rooms, which means a small set of points for pathfinding. The resulting generation would be very simple and boring. To make the generation a bit more winding and organic, I place what I call "Divergent Rooms" to add more points to the pathfinding graph.
 
       Divergent rooms are a set number of blueprints randomly spawned within a zone. These blueprints can have varied dimensions, described as an input to the operation. The blueprints generated from this operation can later be used as points by the Delaunay and A* operations.
 
@@ -342,13 +342,13 @@ features:
       The final pass of the algorithm parses all available blueprints using a process I call **ParseGen**. The parsing determines what rooms can be generated from an orientation and pattern of blueprints. The parsing system is based on a top-down recursive technique commonly used in compilers called **Recursive Descent Parsing**. 
 
       ### Shape Data
-      `ShapeData` is an object that essentially functions as a token for parsing. Generated blueprint cells are checked against each possible shape, the shapes that fit the blueprint structure perfectly are chosen to be generated. By generate I mean spawning the rooms that the shapes represent, each shape having a respective list of rooms. You can think of this method as similar to the old "Fitting Shapes In Their Correct Holes" game that toddlers play.
+      `ShapeData` is an object that essentially functions as a token for parsing. Generated blueprint cells are checked against each possible shape; the shapes that fit the blueprint structure perfectly are chosen to be generated. By generate I mean spawning the rooms that the shapes represent, each shape having a respective list of rooms. You can think of this method as similar to the old "Fitting Shapes In Their Correct Holes" game that toddlers play.
 
   - title: Recursive Descent
     size: sub
     media: ""
     body: |
-      A base blueprint is chosen for the algorithm to parse, usually the next available blueprint in a path. From this `candidates` are chosen from ShapeData cells that are considered to be contenders to fit in that blueprint position. For a candidate to be a contender its blueprint configuration needs to match the base blueprint's configuration. These are defined by the other cells surrounding it. All 6 directions are checked; a 'Dont Care' config means we do not need to worry about whether there is or isn't a blueprint in a certain direction, a 'Blueprint' config means there needs to be a blueprint in that direction or it will not succeed, and a 'No Blueprint' config means there must not be a blueprint in that direction.
+      A base blueprint is chosen for the algorithm to parse, usually the next available blueprint in a path. From this, `candidates` are chosen from ShapeData cells that are considered to be contenders to fit in that blueprint position. For a candidate to be a contender, its blueprint configuration needs to match the base blueprint's configuration. These are defined by the other cells surrounding it. All 6 directions are checked; a 'Don't Care' config means we do not need to worry about whether there is or isn't a blueprint in a certain direction, a 'Blueprint' config means there needs to be a blueprint in that direction or it will not succeed, and a 'No Blueprint' config means there must not be a blueprint in that direction.
 
       ```csharp label="ShapeCandidate"
       public class ShapeCandidate
@@ -399,9 +399,9 @@ features:
         }
       ```
 
-      Candidates that succeed are taken to the next round, this is where the recursion comes in. The base blueprint for the next round depends on whether or not a blueprint exists in a certain direction from the blueprint of the current function call. If there is then we parse bringing the candidates that passed into the next iteration. From this the configuration matching process begins again but now fitting against the new base blueprint.
+      Candidates that succeed are taken to the next round; this is where the recursion comes in. The base blueprint for the next round depends on whether or not a blueprint exists in a certain direction from the blueprint of the current function call. If there is, we parse it, bringing the candidates that passed into the next iteration. From this, the configuration matching process begins again but now fitting against the new base blueprint.
 
-      If a candidate fits the blueprint orientation perfectly it is flagged as `accepted` and goes into a list. Once all candidates are exhausted the parsing terminates - a random shape and room are chosen from the accepted list.
+      If a candidate fits the blueprint orientation perfectly, it is flagged as `accepted` and goes into a list. Once all candidates are exhausted, parsing terminates and a shape and room are picked from the accepted list.
 
         ```csharp label="ParseBlueprints"
         public void ParseBlueprints(Blueprint currentBlueprint, List<ShapeCandidate> candidates, HashSet<Blueprint> visited)
@@ -410,7 +410,7 @@ features:
             if (candidates.Count <= 0)
                 return;
 
-            // Shapes that pass this iteration have atleast one vaiable anchor
+            // Shapes that pass this iteration have at least one viable anchor
             List<ShapeCandidate> nextRoundCandidates = new List<ShapeCandidate>(candidates);
 
             // Make sure we don't visit a blueprint twice in a recursive branch
@@ -482,9 +482,9 @@ features:
     size: sub
     media: ""
     body: |
-      Shape rotation is considered in order to add more variation to the map's layout. This is done by rotating the positions of the shape cells with the **Rotation Matrix**. When a candidate is rotated its configs must also be rotated in order to match its new orientation. 
+      Shape rotation is considered in order to add more variation to the map's layout. This is done by rotating the positions of the shape cells with the **Rotation Matrix**. When a candidate is rotated, its configs must also be rotated in order to match its new orientation. 
 
-      Since we are only interested in the orthonormal directions setting up each rotation is simple and can be set static and immutable.
+      Since we are only interested in the orthogonal directions, setting up each rotation is simple, and the matrices can be static and immutable.
 
       ```csharp label="Matrix3x3Int"
       // 3D Rotation Matrices; each matches Unity's Quaternion.Euler about that axis (e.g. RotMatrixY90 == Euler(0, 90, 0))
@@ -577,7 +577,7 @@ features:
     size: big
     media: /assets/images/labyrinth-images/player_state_machine_nfa.png
     body: |
-      Originally, before I became obsessed with the procedural generator, this project leaned more toward a game than a tech demo. The player could wield multiple weapons, each housing its own set of abilities, and also cycled through situational states like falling, climbing, and emoting. Without a formal state model, the player codebase would have devolved into an unmanageable tangle of flags and booleans, so I turned to finite automata instead.
+      Originally, before I became obsessed with the procedural generator, this project leaned more toward a game than a tech demo. The player could wield multiple weapons, each housing its own set of abilities, and could also cycle through situational states like falling, climbing, and emoting. Without a formal state model, the player codebase would have devolved into an unmanageable tangle of flags and booleans, so I turned to finite automata instead.
 
       Using the principles from *Introduction to the Theory of Computation* by Michael Sipser, I modeled the player as an NFA: a set of states **Q**, whose transitions are triggered by an input symbol from the alphabet **Σ**, or by an empty input. The rules break down as follows:
 
@@ -618,7 +618,7 @@ features:
     size: big
     media: /assets/images/labyrinth-images/cli_showcase.mp4
     body: |
-      As my project grew larger, having a solid debugging system in place became essential. Procedural generation is already hard to debug — many errors are semantic, meaning it can be difficult to trace through code alone. That's what sparked the idea of building a CLI.
+      As my project grew larger, having a solid debugging system in place became essential. Procedural generation is already hard to debug — many errors are semantic, meaning they can be difficult to trace through code alone. That's what sparked the idea of building a CLI.
 
       Each command is an object of type `ConsoleCommand`, tied to a unique ID and a delegate. Commands are stored in a command registry — a dictionary keyed by command ID. The first string typed into the interface is parsed as the command name; everything after it is treated as that command's arguments.
 
@@ -709,7 +709,7 @@ features:
       }
       ```
 
-      With this setup, commands can be registered or unregistered from any script. Scripts can opt in/out of depending on the registry dynamically (e.g., register on enable, unregister on disable). Below is the typical format for registering a new command:
+      With this setup, commands can be registered or unregistered from any script. Scripts can opt in or out of the registry dynamically (e.g., register on enable, unregister on disable). Below is the typical format for registering a new command:
 
       ```csharp label="Registering a command"
       CommandRegistry.RegisterCommand(new ConsoleCommand(
@@ -740,13 +740,13 @@ reflection:
       answer: |
         I began building this algorithm back in 2023 for a club at my university. I was tasked with procedurally generating a 3D dungeon for an FPS we were making. It goes without saying that, between coursework and other obligations, a single semester wasn't enough time to finish a game of that scale. The game itself never came together, but it was enough to hook me on procedural generation. I picked the algorithm back up and kept developing it in 2024.
 
-        The procedural generation was simple at first, relying on a well known algorithm called The Drunkard's Walk that spawns rooms in random directions from the previous one. I later added Delaunay triangulation, A*, and Prim's algorithm to the pipeline.
+        The procedural generation was simple at first, relying on a well-known algorithm called The Drunkard's Walk that spawns rooms in random directions from the previous one. I later added Delaunay triangulation, A*, and Prim's algorithm to the pipeline.
 
     - question: What sets this algorithm apart from others?
       answer: |
-        Most of the algorithms the Labyrinth uses today are well known in the proc-gen community, but there's one feature I can genuinely call my own. Back in the club days, I had little knowledge of how procedural generation actually worked, so in a way, I had to get creative. Combining tools that I've learned over the years and from school, I came up with a feature I call "Blueprints" which are individual, single-celled components on a grid that combine to form an entire map. Using this blueprint method I then perform recursive descent parsing to generate rooms based on the patterns they create.
+        Most of the algorithms the Labyrinth uses today are well known in the proc-gen community, but there's one feature I can genuinely call my own. Back in the club days, I had little knowledge of how procedural generation actually worked, so in a way, I had to get creative. Combining tools that I've learned over the years and from school, I came up with a feature I call "Blueprints," which are individual, single-celled components on a grid that combine to form an entire map. Using this blueprint method, I then perform recursive descent parsing to generate rooms based on the patterns they create.
 
     - question: What's the ultimate goal for the project?
       answer: |
-        I've always admired how games like *The Binding of Isaac*, *Enter the Gungeon*, and *Wizard of Legend* generate their maps, but I equally admired the intricate, deliberate level design of games like *Zelda* and *Dark Souls*. Was there a way to randomize dungeon layouts while still producing levels that felt hand-crafted and made sense? Is it possible to link these levels together seamlessly so that different themed areas didn't need to be loaded in a different scene? That's the problem I set out to solve.
+        I've always admired how games like *The Binding of Isaac*, *Enter the Gungeon*, and *Wizard of Legend* generate their maps, but I equally admired the intricate, deliberate level design of games like *Zelda* and *Dark Souls*. Was there a way to randomize dungeon layouts while still producing levels that felt hand-crafted and made sense? Is it possible to link these levels together seamlessly so that different themed areas don't need to be loaded in a different scene? That's the problem I set out to solve.
 ---

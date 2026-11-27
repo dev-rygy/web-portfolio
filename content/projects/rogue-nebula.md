@@ -46,9 +46,9 @@ features:
       | Module | Type | Purpose |
       | :----- | :----- | :----- |
       | `WaveManager` | MonoBehaviour | Chooses the `Wave` from a `WavePool` based on difficulty and random chance. |
-      | `WavePool` | ScriptableObject | Set of prefabed `Waves` and variant spawn chances. |
-      | `Wave` | MonoBehaviour | Prefabs formations of enemy types. |
-      | `AnnoucementUI` | MonoBehaviour | Responds to event calls and updates UI text to match wave number and difficulty. |
+      | `WavePool` | ScriptableObject | Set of prefabbed `Waves` and variant spawn chances. |
+      | `Wave` | MonoBehaviour | A prefabbed formation of enemy ships. |
+      | `AnnouncementUI` | MonoBehaviour | Responds to event calls and updates UI text to match wave number and difficulty. |
       :::
 
   - title: Data-Driven Wave System
@@ -64,7 +64,7 @@ features:
           [SerializeField] private WaveDifficulty waveDifficulty = 0;
           [SerializeField] private List<GameObject> waves = new List<GameObject>();
 
-          [Header("Varient Enemies")]
+          [Header("Variant Enemies")]
           [SerializeField] public int varientMedChance = 0;
           [SerializeField] public int varientHardChance = 0;
           [SerializeField] public int varientMaxSpawn = 0;
@@ -160,7 +160,7 @@ features:
     significance: important
     media: /assets/images/rogue-nebula-images/rogue_gameplay_2.mp4
     body: |
-      I built the player ability system that ended up becoming a baseline system for many games to follow. Both sit on one small base class that handles cooldowns, sound and the HUD, so each ability only has to describe what it actually does.
+      I built the player ability system that ended up becoming a baseline system for many games to follow. Every ability sits on one small base class that handles cooldowns, sound and the HUD, so each ability only has to describe what it actually does.
 
       Every ability inherits from `Ability`, a `MonoBehaviour` that lives on the Player prefab. Its Execute() method handles everything the abilities have in common:
 
@@ -197,7 +197,7 @@ features:
               rbComponent = GetComponent<Rigidbody>();
           }
 
-          public virtual bool Execute()       // overriden function to execute ability; return true if on cooldown, return false otherwise
+          public virtual bool Execute()       // overridden function to execute ability; return true if on cooldown, return false otherwise
           {
               if (abilityCooldown > 0 && abilityOnCooldown)
                   return true;
@@ -218,5 +218,5 @@ features:
       }
       ```
 
-      *This structure evolved in later projects also implementing a `Tick()`, `Start()`, and `Exit()` function that all abilities would inherit.*
+      *In later projects, this structure grew to include `Tick()`, `Start()`, and `Exit()` functions that every ability inherits.*
 ---
