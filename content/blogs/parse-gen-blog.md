@@ -143,23 +143,25 @@ The recursion stops on its own. A candidate can only survive while the walk stay
 The walk uses all six directions, up and down included, which is how the same code places the extra-tall rooms. The demo is a 2D slice of the same idea.
 
 ## Rotation Without Rotating Anything
-The parser never rotates a shape. Each candidate carries a rotation, and the parser moves the world into the shape's frame instead. For a blueprint at $p$, parsing from base $b$:
+Each candidate carries a rotation, and the parser translates the world into the shape's frame instead using the rotation matrix. Each cell in a candidate is translated to the world's blueprint using the following formula. 
 
 :::callout
+For a blueprint at $p$, parsing from base $b$. The translated cell becomes:
 $$
 \text{cell} = \text{anchor} + R^{-1}\,(p - b)
 $$
 :::
 
-Neighbour checks go the other way. A shape cell's right side faces $R \cdot \text{right}$ in the world, so CheckConfigs compares the shape's six sides against the blueprint's six rotated sides. When a candidate wins, the room's origin is
+Neighbour checks go the other way. A shape cell's right side faces $R \cdot \text{right}$ in the world, so `CheckConfigs()` compares the shape's six sides against the blueprint's six rotated sides. When a candidate wins, the room's origin is
 
 :::callout
+For a candidate anchor $a$, starting from base $b$. The room's origin becomes:
 $$
-\text{origin} = b - R \cdot \text{anchor}
+\text{origin} = b - R \cdot \text{a}
 $$
 :::
 
-and the prefab spawns there with the same rotation. All of this is integer matrix math in 90° steps, so there are no floats and nothing to round.
+and the prefab spawns there with the same rotation. All of this is integer matrix math, so we minimize floats and rounding.
 
 ## Choosing a Winner
 One base blueprint usually ends up with several accepted candidates. Picking one of them uniformly would be biased in a quiet way: shapes that rotate, or that have more cells, produce more candidates, so they'd win more often for reasons that have nothing to do with design.
